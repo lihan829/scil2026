@@ -1,0 +1,287 @@
+% This file compiles with both LuaLaTeX and XeLaTeX
+\documentclass[11pt]{article}
+
+% Change "review" to "final" to generate the final (sometimes called camera-ready) version.
+% Change to "preprint" to generate a non-anonymous version with page numbers.
+\usepackage[review]{acl}
+
+% This is not strictly necessary, and may be commented out,
+% but it will improve the layout of the manuscript,
+% and will typically save some space.
+ \usepackage{microtype}
+
+% If the title and author information does not fit in the area allocated, uncomment the following
+%
+%\setlength\titlebox{<dim>}
+%
+% and set <dim> to something 5cm or larger.
+
+% These font selection commands work with
+% LuaLaTeX and XeLaTeX, but not pdfLaTeX.
+\usepackage[english,bidi=default]{babel} % English as the main language.
+\babelfont{rm}{TeXGyreTermesX} % similar to Times
+%%% include whatever languages you need below this line
+\babelprovide[import]{hindi}
+\babelfont[*devanagari]{rm}{Lohit Devanagari}
+\babelprovide[import]{arabic}
+\babelfont[*arabic]{rm}{Noto Sans Arabic}
+
+
+%\usepackage{polyglossia}
+%\setdefaultlanguage{english}
+%\setotherlanguages{arabic,russian,thai,hindi,kannada}
+\usepackage{subcaption}
+\usepackage{tikz}
+\usepackage{linguex}
+%%%%%
+
+
+\title{LuaLaTeX and XeLaTeX Template for *ACL Style Files}
+
+% Author information can be set in various styles:
+% For several authors from the same institution:
+% \author{Author 1 \and ... \and Author n \\
+%         Address line \\ ... \\ Address line}
+% if the names do not fit well on one line use
+%         Author 1 \\ {\bf Author 2} \\ ... \\ {\bf Author n} \\
+% For authors from different institutions:
+% \author{Author 1 \\ Address line \\  ... \\ Address line
+%         \And  ... \And
+%         Author n \\ Address line \\ ... \\ Address line}
+% To start a seperate ``row'' of authors use \AND, as in
+% \author{Author 1 \\ Address line \\  ... \\ Address line
+%         \AND
+%         Author 2 \\ Address line \\ ... \\ Address line \And
+%         Author 3 \\ Address line \\ ... \\ Address line}
+
+\author{First Author \\
+  Affiliation / Address line 1 \\
+  Affiliation / Address line 2 \\
+  Affiliation / Address line 3 \\
+  \texttt{email@domain} \\\And
+  Second Author \\
+  Affiliation / Address line 1 \\
+  Affiliation / Address line 2 \\
+  Affiliation / Address line 3 \\
+  \texttt{email@domain} \\}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+This document provides an example showing how
+to use the *ACL style files with either
+LuaLaTeX or XeLaTeX.
+\end{abstract}
+
+\section{Experiment: Hausa Tonotactics}
+
+In this section, we investigate the learnability of Hausa tonotactic patterns by comparing two representational choices: string vs. AR. In the meanwhile, we also adopt a string(ffeature)-based statitstical model. the gaol for this paper is to see which factor influence the learning more. The baseline is a set of grammar that complefiled from the rpvioues literature in Table 5. 
+
+To test two different rep chocies, we translate the same baseline into the corresponding rep: one over feature, the other over AR. The corresponding baseline grammar is listed in table6.
+\begin{table}[h]
+  \begin{tabular}{lll}
+                \hline
+                \textbf{Constraints}& \textbf{string representation}\\
+                \hline
+                \textbf{\textsc{*LH}$_\sigma$}    & *LH \\
+                \textbf{\textsc{*Contour}$_{\mu}$} & *R, *F\\
+                \textbf{\textsc{*3t-Contour}}&*HLL,*HHH,*LLL\\
+                \textbf{\textsc{*Clash}}& *LL\\
+                \textbf{\textsc{*NonfinalHL}}& *HL.\\
+                \hline
+        \end{tabular}\caption{}
+        \label{rules}
+\end{table}
+
+\begin{table}
+		\centering
+		\begin{tabular}{c}
+			\hline
+			
+			\scalebox{0.7}{\begin{subfigure}[t]{1.5cm}
+				\centering
+				\begin{tikzpicture}
+					\node (bt1) at (-.4,0.8) {L};
+					\node (bt2) at (.4,0.8) {H};
+					\node (bc1) at (0,0) {$\mu$};
+					\node (bs1) at (0,-0.8) {$\sigma$};
+					\draw (bt1) -- (bc1) -- (bs1);
+					\draw (bt2) -- (bc1);
+				\end{tikzpicture}
+				\vspace{-0.5em}
+				\subcaption{}
+			\end{subfigure}} 
+			
+			\scalebox{0.7}{\begin{subfigure}[t]{1.5cm}			
+				\begin{tikzpicture}
+					\node (bt1) at (-.4,0.8) {H};
+					\node (bt2) at (.4,0.8) {L};
+					\node (bc1) at (0,0) {$\mu$};
+					\node (bs1) at (0,-0.8) {$\sigma$};
+					\draw (bt1) -- (bc1) -- (bs1);
+					\draw (bt2) -- (bc1);
+				\end{tikzpicture}
+				\vspace{-0.5em}
+                \subcaption{}
+			        \end{subfigure}} 
+
+			\scalebox{0.7}{			\begin{subfigure}[t]{1.5cm}
+				\centering 
+				\begin{tikzpicture}
+					\node (bt1) at (-.4,0.8) {L};
+					\node (bt2) at (.4,0.8) {H};
+					\node (bc1) at (-.4,0) {$\mu$};
+					\node (bc2) at (.4,0) {$\mu$};
+					\node (bs1) at (0,-0.8) {$\sigma$};
+					\draw (bt1) -- (bc1) -- (bs1);
+					\draw (bt2) -- (bc2) -- (bs1);
+				\end{tikzpicture}
+				\vspace{-0.5em}
+				\subcaption{}
+			\end{subfigure}} 
+				\hspace{-1.3em}
+			\scalebox{0.7}{			\begin{subfigure}[t]{1.5cm}
+				\vspace{-4em}
+				\centering				
+				\begin{tikzpicture}
+					\node (bc1) at (-.4,0) {$\mu$};
+					\node (bc2) at (0,0) {$\mu$};
+					\node (bc3) at (.4,0) {$\mu$};
+					\node (bs1) at (0,-0.8) {$\sigma$};
+					\draw (bc1) -- (bs1);
+					\draw (bc2) -- (bs1);
+					\draw (bc3) -- (bs1);
+				\end{tikzpicture}
+%				\vspace{em}
+				\subcaption{}
+			\end{subfigure}} 
+		
+				\scalebox{0.7}{	\begin{subfigure}[t]{1.5cm}
+				\centering
+				\begin{tikzpicture}
+					\node (bt1) at (0,0.8) {L};
+					% \node (bt2) at (.4,0.8) {L};
+					\node (bc1) at (-.4,0) {$\mu$};
+					\node (bc2) at (.4,0) {$\mu$};
+					\node (bs1) at (-.4,-0.8) {$\sigma$};
+                    \node (bs2) at (0.4,-0.8) {$\sigma$};
+					\draw (bt1) -- (bc1) -- (bs1);
+					\draw (bt1) -- (bc2) -- (bs2);
+				\end{tikzpicture}
+				\vspace{-0.5em}
+				\subcaption{}
+			\end{subfigure}} 
+			
+			\scalebox{0.7}{			\begin{subfigure}[t]{1.5cm}
+				\centering
+				\begin{tikzpicture}
+					\node (bt1) at (-.4,0.8) {H};
+					\node (bt2) at (.4,0.8) {L};
+					\node (bc1) at (-.4,0) {$\mu$};
+					\node (bc3) at (1,0) {$\mu$};
+					\node (bc2) at (.4,0) {$\mu$};
+					\node (bs1) at (0,-0.8) {$\sigma$};
+					\node (bs2) at (1,-0.8) {$\sigma$};
+					\draw (bt1) -- (bc1) -- (bs1);
+					\draw (bt2) -- (bc2) -- (bs1);
+					\draw (bc3) -- (bs2);
+				\end{tikzpicture}
+				\subcaption{}
+			\end{subfigure}} \\ \hline
+        \end{tabular} \caption{}
+        \label{rules}
+\end{table}
+The analysis is restricted to non-derived, native Hausa words to ensure the learned grammar are comparable to the previous literature analysis
+
+\subsection{Data}
+
+The dataset is a curated corpus derived from the Hausa entries in the \textit{World Loanword Database} (WOLD; \citealt{wold}). We restrict attention to \textbf{monomorphemic, non-borrowed forms}; all loanwords and morphologically complex items were excluded. A Hausa corpus (541 words, 63 unique tonal types) was used as positive data \citep{wold-4, liLearningTonotactic2025}. 
+ After filtering, the dataset contains \textbf{621 native Hausa words}, transcribed in standard orthography and stored in a CSV format. Each word was converted into both a string-based tonal representation and an autosegmental representation encoding tone–mora–syllable associations.
+
+\subsection{Negative Data}
+
+To evaluate overgeneration, we constructed two classes of unattested forms:
+
+\paragraph{Hard constraints}
+These forms violate core phonological constraints, namely *LH, Contour, 3T. 
+
+\paragraph{Soft negatives (rare or exceptional patterns).}
+A second set consists of rare or marginal tonal patterns that are either extremely infrequent or restricted to exceptional lexical items. Because their grammatical status is uncertain, these forms are evaluated separately and are not treated as definitive negatives in computing false positive rates.
+
+\label{ex:exceptional-hausa}
+
+%     \ex \textit{b\^am.m\'\i i} \hfill `palm wine'
+%     \ex \textit{t\`a.f\`a.s\'aa} \hfill `a senna plant' \quad (LLH)
+%     \ex \textit{k\`u.z\`u} \hfill `tin' \quad (LL)
+%     \ex \textit{t\'am.b\`u.l\`an} \hfill `drinking glass' \quad (L.LL)
+%     \ex \textit{y\^am.m\'aa} \hfill `cheek' \quad (LL)
+%     \ex \textit{d\^ul.l\'uu} \hfill `tin' \quad (LL)
+%     \ex \textit{m\^an.y\'aa} \hfill `tin' \quad (LL)
+% \z
+
+
+All quantitative negative evaluation reported below is based exclusively on the \textbf{hard negative} set.
+
+\subsection{Evaluation}
+
+We performed four-fold cross-validation over the set of attested AR types. In each fold, grammars were trained on positive data only and evaluated on held-out positives together with the hard negative set.
+
+Performance was measured using:
+\begin{itemize}
+    \item \textbf{True Positive Rate (TPR / Recall$^{+}$)}: proportion of held-out attested forms accepted;
+    \item \textbf{False Positive Rate (FPR)}: proportion of hard negatives incorrectly accepted;
+    \item \textbf{Error Pass Rate (EPR)}: proportion of soft negatives accepted (reported for diagnostic purposes).
+\end{itemize}
+
+\subsection{Results}
+
+The averaged results across folds are shown below (mean $\pm$ standard deviation):
+
+\begin{quote}
+\textbf{BUFIA (categorical, AR-based):}\\
+TPR: $0.953 \pm 0.060$\\
+FPR: $0.143 \pm 0.000$\\
+EPR: $1.000 \pm 0.000$
+\end{quote}
+
+\begin{quote}
+\textbf{Newman grammar (descriptive baseline):}\\
+TPR: $0.891 \pm 0.107$\\
+FPR: $0.000 \pm 0.000$\\
+EPR: $0.286 \pm 0.000$
+\end{quote}
+
+BUFIA achieves substantially higher recall on attested forms, while the Newman grammar is more conservative and rejects a larger portion of exceptional or marginal patterns. This tradeoff reflects differences in inductive bias: the positive-only learner prioritizes coverage of observed structures, whereas the hand-specified grammar encodes strong a priori restrictions that reduce overgeneration.
+
+\section{Result}
+\begin{table*}
+  \centering
+  \begin{tabular}{lll}
+    \hline
+    \textbf{Model/Rep}           & \textbf{Held-out forms} & \textbf{Illegal data} \\
+    \hline
+    BUFIA-AR       &            &                           \\
+    BUFIA-Ftr     &          &                           \\
+    MaxEnt-Ftr       &           &                           \\
+
+    \hline
+  \end{tabular}
+  \caption{\label{citation-guide}
+    Citation commands supported by the style file.
+    The style is based on the natbib package and supports all natbib citation commands.
+    It also supports commands defined in previous ACL style files for compatibility.
+  }
+\end{table*}
+
+
+% Entries for the entire Anthology, followed by custom entries
+\bibliography{custom}
+
+\appendix
+
+\section{Example Appendix}
+\label{sec:appendix}
+
+This is an appendix.
+
+\end{document}
