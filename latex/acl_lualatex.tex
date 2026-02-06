@@ -75,7 +75,7 @@ LuaLaTeX or XeLaTeX.
 
 \section{Experiment: Hausa Tonotactics}
 
-In this section, we investigate the learnability of Hausa tonotactic patterns by comparing two representational choices: string vs. AR. In the meanwhile, we also adopt a string(ffeature)-based statitstical model. the gaol for this paper is to see which factor influence the learning more. The baseline is a set of grammar that complefiled from the rpvioues literature in Table 5. 
+In this section, we investigate the learnability of Hausa tonotactic patterns by comparing two representational choices: string vs. AR. In the meanwhile, we also adopt a string(feature)-based statistical model. the gaol for this paper is to see which factor influence the learning more. The baseline is a set of grammar that complefiled from the rpvioues literature in Table 5. 
 
 To test two different rep chocies, we translate the same baseline into the corresponding rep: one over feature, the other over AR. The corresponding baseline grammar is listed in table6.
 \begin{table}[h]
@@ -94,7 +94,7 @@ To test two different rep chocies, we translate the same baseline into the corre
 \end{table}
 
 \begin{table}
-		\centering
+%		\centering
 		\begin{tabular}{c}
 			\hline
 			
@@ -139,8 +139,8 @@ To test two different rep chocies, we translate the same baseline into the corre
 				\vspace{-0.5em}
 				\subcaption{}
 			\end{subfigure}} 
-				\hspace{-1.3em}
-			\scalebox{0.7}{			\begin{subfigure}[t]{1.5cm}
+%				\hspace{-1.3em}
+			\scalebox{0.7}{			\begin{subfigure}[t]{1.6cm}
 				\vspace{-4em}
 				\centering				
 				\begin{tikzpicture}
@@ -152,11 +152,11 @@ To test two different rep chocies, we translate the same baseline into the corre
 					\draw (bc2) -- (bs1);
 					\draw (bc3) -- (bs1);
 				\end{tikzpicture}
-%				\vspace{em}
+				\vspace{0.2em}
 				\subcaption{}
 			\end{subfigure}} 
 		
-				\scalebox{0.7}{	\begin{subfigure}[t]{1.5cm}
+				\scalebox{0.7}{	\begin{subfigure}[t]{1.6cm}
 				\centering
 				\begin{tikzpicture}
 					\node (bt1) at (0,0.8) {L};
@@ -172,7 +172,7 @@ To test two different rep chocies, we translate the same baseline into the corre
 				\subcaption{}
 			\end{subfigure}} 
 			
-			\scalebox{0.7}{			\begin{subfigure}[t]{1.5cm}
+			\scalebox{0.7}{			\begin{subfigure}[t]{2cm}
 				\centering
 				\begin{tikzpicture}
 					\node (bt1) at (-.4,0.8) {H};
@@ -185,7 +185,7 @@ To test two different rep chocies, we translate the same baseline into the corre
 					\draw (bt1) -- (bc1) -- (bs1);
 					\draw (bt2) -- (bc2) -- (bs1);
 					\draw (bc3) -- (bs2);
-				\end{tikzpicture}
+				\end{tikzpicture}				\vspace{-.5em}
 				\subcaption{}
 			\end{subfigure}} \\ \hline
         \end{tabular} \caption{}
@@ -195,43 +195,50 @@ The analysis is restricted to non-derived, native Hausa words to ensure the lear
 
 \subsection{Data}
 
-The dataset is a curated corpus derived from the Hausa entries in the \textit{World Loanword Database} (WOLD; \citealt{wold}). We restrict attention to \textbf{monomorphemic, non-borrowed forms}; all loanwords and morphologically complex items were excluded. A Hausa corpus (541 words, 63 unique tonal types) was used as positive data \citep{wold-4, liLearningTonotactic2025}. 
- After filtering, the dataset contains \textbf{621 native Hausa words}, transcribed in standard orthography and stored in a CSV format. Each word was converted into both a string-based tonal representation and an autosegmental representation encoding tone–mora–syllable associations.
-
-\subsection{Negative Data}
-
-To evaluate overgeneration, we constructed two classes of unattested forms:
-
-\paragraph{Hard constraints}
-These forms violate core phonological constraints, namely *LH, Contour, 3T. 
-
-\paragraph{Soft negatives (rare or exceptional patterns).}
-A second set consists of rare or marginal tonal patterns that are either extremely infrequent or restricted to exceptional lexical items. Because their grammatical status is uncertain, these forms are evaluated separately and are not treated as definitive negatives in computing false positive rates.
-
-\label{ex:exceptional-hausa}
-
-%     \ex \textit{b\^am.m\'\i i} \hfill `palm wine'
-%     \ex \textit{t\`a.f\`a.s\'aa} \hfill `a senna plant' \quad (LLH)
-%     \ex \textit{k\`u.z\`u} \hfill `tin' \quad (LL)
-%     \ex \textit{t\'am.b\`u.l\`an} \hfill `drinking glass' \quad (L.LL)
-%     \ex \textit{y\^am.m\'aa} \hfill `cheek' \quad (LL)
-%     \ex \textit{d\^ul.l\'uu} \hfill `tin' \quad (LL)
-%     \ex \textit{m\^an.y\'aa} \hfill `tin' \quad (LL)
-% \z
-
-
-All quantitative negative evaluation reported below is based exclusively on the \textbf{hard negative} set.
+The dataset is a curated corpus derived from the Hausa entries in the \textit{World Loanword Database}. We restrict attention to monomorphemic, non-borrowed forms.
+ After filtering, the dataset contains 621 lexical iterms (64 unique tonal types), transcribed in standard orthography and stored in a CSV format. Each word was converted into both a string-based tonal representation and an autosegmental representation encoding tone–mora–syllable associations.
+\subsection{Models}
 
 \subsection{Evaluation}
 
-We performed four-fold cross-validation over the set of attested AR types. In each fold, grammars were trained on positive data only and evaluated on held-out positives together with the hard negative set.
+We performed four-fold cross-validation over the set of attested AR types. In 
+each fold, grammars were trained on positive data only and evaluated on three 
+types of test sets:
+\begin{table*}
+	\centering
+	\renewcommand{\arraystretch}{1.2}
+	\begin{tabular}{p{2.8cm} p{5.2cm} p{7.5cm}}
+		\hline
+		\textbf{Test set} & \textbf{Meaning} & \textbf{Examples} \\
+		\hline
+		
+		Positive 
+		& Held-out well-formed items from the observed data
+		& (held-out attested forms) \\
+		
+		Negative 
+		& Constructed forms that violate hard phonotactic constraints
+		& \textit{bâ, bǎ, bǎs, bàa.bàa, bàaa, báaa} \\
+		
+		Exception 
+		& exceptional items not present in the training data
+		&
+		\begin{tabular}[t]{@{}l@{}}
+			\textit{b\^am.m\'\i i} `palm wine' \\
+			\textit{t\`a.f\`a.s\'aa} `a senna plant' (LLH) \\
+			\textit{k\`u.z\`u}  `tin' (LL) \\
+			\textit{t\'am.b\`u.l\`an}  `drinking glass' (L.LL) \\
+			\textit{y\^am.m\'aa}  `cheek' (LL) \\
+			\textit{d\^ul.l\'uu}  `tin' (LL) \\
+			\textit{m\^an.y\'aa}  `tin' (LL)
+		\end{tabular}
+		\\
+		
+		\hline
+	\end{tabular}
+	\caption{Composition of evaluation test sets used in learning experiments.}
+\end{table*}
 
-Performance was measured using:
-\begin{itemize}
-    \item \textbf{True Positive Rate (TPR / Recall$^{+}$)}: proportion of held-out attested forms accepted;
-    \item \textbf{False Positive Rate (FPR)}: proportion of hard negatives incorrectly accepted;
-    \item \textbf{Error Pass Rate (EPR)}: proportion of soft negatives accepted (reported for diagnostic purposes).
-\end{itemize}
 
 \subsection{Results}
 
@@ -256,32 +263,23 @@ BUFIA achieves substantially higher recall on attested forms, while the Newman g
 \section{Result}
 \begin{table*}
   \centering
-  \begin{tabular}{lll}
+  \begin{tabular}{llll}
     \hline
-    \textbf{Model/Rep}           & \textbf{Held-out forms} & \textbf{Illegal data} \\
+    \textbf{Model/Rep}           & \textbf{Held-out} & \textbf{Illegal} & \textbf{Exception} \\
     \hline
-    BUFIA-AR       &            &                           \\
-    BUFIA-Ftr     &          &                           \\
-    MaxEnt-Ftr       &           &                           \\
+    BUFIA-AR       &       0.906      &        0.143  &          0.857       \\
+    Baseline-AR    &        0.891    &         0 &    0.286 \\ \hline
+    BUFIA-Str     &         0.906 &         0.107 & 0.857                   \\
+    MaxEnt-Str       &           &                           \\   
+    Baseline-Str    &     0.812       &        0         & 0          \\ \hline
 
     \hline
   \end{tabular}
   \caption{\label{citation-guide}
-    Citation commands supported by the style file.
-    The style is based on the natbib package and supports all natbib citation commands.
-    It also supports commands defined in previous ACL style files for compatibility.
   }
 \end{table*}
 
 
-% Entries for the entire Anthology, followed by custom entries
-\bibliography{custom}
 
-\appendix
-
-\section{Example Appendix}
-\label{sec:appendix}
-
-This is an appendix.
 
 \end{document}
