@@ -36,7 +36,7 @@
 %%%%%
 
 
-\title{LuaLaTeX and XeLaTeX Template for *ACL Style Files}
+\title{Learning Bias: Representations or Models}
 
 % Author information can be set in various styles:
 % For several authors from the same institution:
@@ -68,12 +68,11 @@
 \begin{document}
 \maketitle
 \begin{abstract}
-This document provides an example showing how
-to use the *ACL style files with either
-LuaLaTeX or XeLaTeX.
+This paper investigates whether phonological learning primarily arises from the data representation (string vs. autosegmental representations) or from the learning model (probabilistic vs. categorical). We compare two learning frameworks: a Maximum Entropy (MaxEnt) model and BUFIA, a categorical learner adapted to operate over ARs. Using the same training and testing datasets across conditions, we systematically evaluate four combinations: MaxEnt-Ftr, BUFIA-Ftr, and BUFIA-AR. The results show that learning performance is strongest when grammars are induced over ARs, particularly when paired with a categorical learner. These findings suggest that representational structure plays a role in learning success than probabilistic weighting, and that categorical structure-sensitive learners benefit most from autosegmental representations.
 \end{abstract}
 
-\section{Experiment: Hausa Tonotactics}
+\section{Introduction}
+
 
 In this section, we investigate the learnability of Hausa tonotactic patterns by comparing two representational choices: string vs. AR. In the meanwhile, we also adopt a string(feature)-based statistical model. the gaol for this paper is to see which factor influence the learning more. The baseline is a set of grammar that complefiled from the rpvioues literature in Table 5. 
 
@@ -244,19 +243,6 @@ types of test sets:
 
 The averaged results across folds are shown below (mean $\pm$ standard deviation):
 
-\begin{quote}
-\textbf{BUFIA (categorical, AR-based):}\\
-TPR: $0.953 \pm 0.060$\\
-FPR: $0.143 \pm 0.000$\\
-EPR: $1.000 \pm 0.000$
-\end{quote}
-
-\begin{quote}
-\textbf{Newman grammar (descriptive baseline):}\\
-TPR: $0.891 \pm 0.107$\\
-FPR: $0.000 \pm 0.000$\\
-EPR: $0.286 \pm 0.000$
-\end{quote}
 
 BUFIA achieves substantially higher recall on attested forms, while the Newman grammar is more conservative and rejects a larger portion of exceptional or marginal patterns. This tradeoff reflects differences in inductive bias: the positive-only learner prioritizes coverage of observed structures, whereas the hand-specified grammar encodes strong a priori restrictions that reduce overgeneration.
 
