@@ -36,7 +36,7 @@
 %%%%%
 
 
-\title{Learning Bias: Representations or Models}
+\title{Learning Bias in Tonotactic Learning: Representations or Models}
 
 % Author information can be set in various styles:
 % For several authors from the same institution:
@@ -72,199 +72,95 @@ This paper investigates whether phonological learning primarily arises from the 
 \end{abstract}
 
 \section{Introduction}
+Phonotactic learning has long been a central topic in computational phonology. Despite tone being a core component of many linguistic systems, the computational learning of tonal patterns has received comparatively less attention. One reason for this gap may lie in representational differences. Segmental phonology is typically modeled using linear representations such as strings or feature bundles, and a wide range of existing learning models are designed to operate over such formats. Tonal grammars, however, depend on non-linear structure. Tonal patterns are commonly analyzed using autosegmental representations (ARs), which encode tones on separate tiers and capture association relations between tones and prosodic units such as moras or syllables [cite].
 
+Linear representational formats have proven effective for modeling segmental phonotactics, but they have been argued to be inadequate for tonal systems. Tonal phenomena frequently involve non-local dependencies, spreading processes, floating tones, and tier-based interactions. When such structure is collapsed into a linear string, critical generalizations may be obscured. As a result, learners operating over strings may face a substantially larger or less structured hypothesis space than learners operating over representations that explicitly encode tonal associations [cite; e.g., Odden].
 
-In this section, we investigate the learnability of Hausa tonotactic patterns by comparing two representational choices: string vs. AR. In the meanwhile, we also adopt a string(feature)-based statistical model. the gaol for this paper is to see which factor influence the learning more. The baseline is a set of grammar that complefiled from the rpvioues literature in Table 5. 
+This raises a broader question about the source of inductive bias in tonal learning. Is learning success primarily determined by the representational format, or by the learning model itself? To address this question, this paper introduces an adaptation of the Bottom-Up Factorial Inference Algorithm (BUFIA) [cite], a categorical grammar induction algorithm, to operate directly over autosegmental representations. We then compare learning outcomes across two representational formats (string vs. AR) and two learning paradigms (categorical vs. probabilistic).
 
-To test two different rep chocies, we translate the same baseline into the corresponding rep: one over feature, the other over AR. The corresponding baseline grammar is listed in table6.
-\begin{table}[h]
-  \begin{tabular}{lll}
-                \hline
-                \textbf{Constraints}& \textbf{string representation}\\
-                \hline
-                \textbf{\textsc{*LH}$_\sigma$}    & *LH \\
-                \textbf{\textsc{*Contour}$_{\mu}$} & *R, *F\\
-                \textbf{\textsc{*3t-Contour}}&*HLL,*HHH,*LLL\\
-                \textbf{\textsc{*Clash}}& *LL\\
-                \textbf{\textsc{*NonfinalHL}}& *HL.\\
-                \hline
-        \end{tabular}\caption{}
-        \label{rules}
-\end{table}
+Specifically, we evaluate three conditions: string-based learning and AR-based learning, each paired with either a categorical learner (BUFIA) or a probabilistic Maximum Entropy (MaxEnt) learner using strings. Admittedly, it 
+a complete study should include MAxetn with ARs, hwoever, the current 
+implementation of MaxEnt has not made ARs available for learning. In despite of
+this, holding the training and testing data constant across conditions, we isolate the contribution of representation and learning model. This factorial comparison allows us to determine whether improvements in learning are primarily driven by structural representations, by probabilistic weighting mechanisms, or by their interaction.
 
-\begin{table}
-%		\centering
-		\begin{tabular}{c}
-			\hline
-			
-			\scalebox{0.7}{\begin{subfigure}[t]{1.5cm}
-				\centering
-				\begin{tikzpicture}
-					\node (bt1) at (-.4,0.8) {L};
-					\node (bt2) at (.4,0.8) {H};
-					\node (bc1) at (0,0) {$\mu$};
-					\node (bs1) at (0,-0.8) {$\sigma$};
-					\draw (bt1) -- (bc1) -- (bs1);
-					\draw (bt2) -- (bc1);
-				\end{tikzpicture}
-				\vspace{-0.5em}
-				\subcaption{}
-			\end{subfigure}} 
-			
-			\scalebox{0.7}{\begin{subfigure}[t]{1.5cm}			
-				\begin{tikzpicture}
-					\node (bt1) at (-.4,0.8) {H};
-					\node (bt2) at (.4,0.8) {L};
-					\node (bc1) at (0,0) {$\mu$};
-					\node (bs1) at (0,-0.8) {$\sigma$};
-					\draw (bt1) -- (bc1) -- (bs1);
-					\draw (bt2) -- (bc1);
-				\end{tikzpicture}
-				\vspace{-0.5em}
-                \subcaption{}
-			        \end{subfigure}} 
+The result shows:
+\section{Representations, Garmmar, and Learning}
+\subsection{String vs Autosegmental Representation}
+\subsection{Gradient vs Categorical Grammar}
+\section{Experiment}
+To test the tonotactic learnability over different representations and 
+models, we conducted a computational experiment using the same Hausa data 
+over two representational choices: string (features) vs. AR. For string 
+representation, we ran two learning models: BUFIA and MaxEnt. Even though a 
+two-by-two comparision will more comprehensive to see the results, the current
+MaxEnt model is mainly based on linear representation and not readily opertaional for ARs, thgat beging said we ran the same experiment over a version of BUFIA. 
 
-			\scalebox{0.7}{			\begin{subfigure}[t]{1.5cm}
-				\centering 
-				\begin{tikzpicture}
-					\node (bt1) at (-.4,0.8) {L};
-					\node (bt2) at (.4,0.8) {H};
-					\node (bc1) at (-.4,0) {$\mu$};
-					\node (bc2) at (.4,0) {$\mu$};
-					\node (bs1) at (0,-0.8) {$\sigma$};
-					\draw (bt1) -- (bc1) -- (bs1);
-					\draw (bt2) -- (bc2) -- (bs1);
-				\end{tikzpicture}
-				\vspace{-0.5em}
-				\subcaption{}
-			\end{subfigure}} 
-%				\hspace{-1.3em}
-			\scalebox{0.7}{			\begin{subfigure}[t]{1.6cm}
-				\vspace{-4em}
-				\centering				
-				\begin{tikzpicture}
-					\node (bc1) at (-.4,0) {$\mu$};
-					\node (bc2) at (0,0) {$\mu$};
-					\node (bc3) at (.4,0) {$\mu$};
-					\node (bs1) at (0,-0.8) {$\sigma$};
-					\draw (bc1) -- (bs1);
-					\draw (bc2) -- (bs1);
-					\draw (bc3) -- (bs1);
-				\end{tikzpicture}
-				\vspace{0.2em}
-				\subcaption{}
-			\end{subfigure}} 
-		
-				\scalebox{0.7}{	\begin{subfigure}[t]{1.6cm}
-				\centering
-				\begin{tikzpicture}
-					\node (bt1) at (0,0.8) {L};
-					% \node (bt2) at (.4,0.8) {L};
-					\node (bc1) at (-.4,0) {$\mu$};
-					\node (bc2) at (.4,0) {$\mu$};
-					\node (bs1) at (-.4,-0.8) {$\sigma$};
-                    \node (bs2) at (0.4,-0.8) {$\sigma$};
-					\draw (bt1) -- (bc1) -- (bs1);
-					\draw (bt1) -- (bc2) -- (bs2);
-				\end{tikzpicture}
-				\vspace{-0.5em}
-				\subcaption{}
-			\end{subfigure}} 
-			
-			\scalebox{0.7}{			\begin{subfigure}[t]{2cm}
-				\centering
-				\begin{tikzpicture}
-					\node (bt1) at (-.4,0.8) {H};
-					\node (bt2) at (.4,0.8) {L};
-					\node (bc1) at (-.4,0) {$\mu$};
-					\node (bc3) at (1,0) {$\mu$};
-					\node (bc2) at (.4,0) {$\mu$};
-					\node (bs1) at (0,-0.8) {$\sigma$};
-					\node (bs2) at (1,-0.8) {$\sigma$};
-					\draw (bt1) -- (bc1) -- (bs1);
-					\draw (bt2) -- (bc2) -- (bs1);
-					\draw (bc3) -- (bs2);
-				\end{tikzpicture}				\vspace{-.5em}
-				\subcaption{}
-			\end{subfigure}} \\ \hline
-        \end{tabular} \caption{}
-        \label{rules}
-\end{table}
-The analysis is restricted to non-derived, native Hausa words to ensure the learned grammar are comparable to the previous literature analysis
+In this section, we will detail the experiemental setup, incvluding the two  
+types of models and two tyrpes of representations, the testing and trianing data.
 
 \subsection{Data}
+In this case study, we adopted a small corpus of Hausa \citep{wold-4}, a tonal language spoken in West Africa, and evaluated the model by comparing the constraints it identified with previously established linguistic generalizations. Hausa has two basic tones, H and L, which can combine to form a falling contour (HL) when they occur on a single heavy syllable. However, monosyllabic LH contours and three-tone contours are not permitted. Previous research on Hausa tones has established the generalizations and rules summarized in Table \ref{rules} \citep{Newmanbook,Leben,zoll2003optimal}.
 
-The dataset is a curated corpus derived from the Hausa entries in the \textit{World Loanword Database}. We restrict attention to monomorphemic, non-borrowed forms.
- After filtering, the dataset contains 621 lexical iterms (64 unique tonal types), transcribed in standard orthography and stored in a CSV format. Each word was converted into both a string-based tonal representation and an autosegmental representation encoding tone–mora–syllable associations.
+\input{constraints.table.tex}
+
+A curated corpus was created from the Hausa entries in the \textit{World Loanword Database}. The corpus contains 621 monomorphemic, non-borrowed words
+from the core vocabulary, transcribed in standard orthography. These forms are converted into both a string-based tonal representation and an autosegmental representation encoding tone–mora–syllable associations, which yield 61 unqie ones. Table 2 gives a two examples of such two representations. For example, the word \textit{kòò.gíí} `river' can be represented as a \textbf{\textit{string}} \textit{LL.HH}, which indicates the word has two bimoraic syllables: the first associated with L and the second with H. Contours will be decomposed into level tones, hence the falling tone in \textit{mù.tǔm} `person' becomes \textit{HL}. Under the string representation scheme, the alphabet contains $\{H, L, .\}$, and these symbols are ordered with a successor relation \citep{rogers2013}. The \textbf{\textit{graph representation}} of ARs abstracts the linguistic units and their relationships into \textit{nodes} and \textit{edges} \citep{jardine2017LocalNature}. In this case, the alphabet contains $\{H, L, \sigma, \mu\}$, where elements within each tier are in a successor relation, while elements across tiers stand in an association relation.
+
+\input{reps.examples.tex}
+
 \subsection{Models}
+As mentioned above, we use two learning models: BUFIA and MaxEnt. Both models take as input a set of positive data and return a grammar. The two models differ in their learning mechanisms. BUFIA is a categorical learning model and has been implemented to operate over both autosegmental representations (ARs) and strings. MaxEnt, by contrast, is a statistical model that extracts constraints and assigns weights to them, evaluating forms based on their harmonic scores under a maximum entropy framework.
 
-\subsection{Evaluation}
+We performed four-fold cross-validation over the set of attested types. In each fold, the training set consists of 48 positive forms. The evaluation involves two test sets.
 
-We performed four-fold cross-validation over the set of attested AR types. In 
-each fold, grammars were trained on positive data only and evaluated on three 
-types of test sets:
-\begin{table*}
+The first test set includes the remaining held-out positive data. To evaluate overgeneration, we constructed a matching set of negative forms. The sixteen negative forms each violate one or two pre-established constraints listed in Tables 1 and 2. As with the training data, the constructed negative forms are represented both as strings and as ARs (see Table X). Test Set 1 therefore contains 32 types in total (16 positive and 16 negative). Performance is evaluated by measuring whether the learned grammar correctly recognizes the well-formed positive data and rejects the negative forms.
+
+The second test set builds on the first by adding four exceptional positive types, along with four matched negative forms, resulting in a total of 40 types. The exceptional forms are drawn from Hausa data reported by Newman and violate both *Clash and *Nonfinal-Fall. Newman notes that there are eight such examples in the corpus and suggests that they may have historical explanations, though the exact source of these exceptions remains unclear.
+
+It should be noted that MaxEnt model gives a gradient grammar where constraints are all violable were assigned different weights. Howvever, to get a comparable 
+results, we treat the Maxent retured constraints are all invoilatable. If any test form is considered to be well-formed by the Maxent if it does not violate any of the constraints. 
+
+
+
+\section{Results}
+The averaged results across folds are shown in Tables 4 and 5. For both test sets, all models under both representational formats achieved perfect precision (1.000). This indicates that, regardless of the learning mechanism, both string and AR representations successfully reject the constructed ill-formed structures.
+
+By contrast, recall and F1 scores show greater variation. Across both test sets, the same performance pattern emerges: BUFIA-AR > BUFIA-string > baseline-string > MaxEnt-string. This ranking is consistent across held-out data and the extended test set including rare forms.
+\begin{table}[t]
 	\centering
-	\renewcommand{\arraystretch}{1.2}
-	\begin{tabular}{p{2.8cm} p{5.2cm} p{7.5cm}}
+	\begin{tabular}{l|ccc|ccc}
 		\hline
-		\textbf{Test set} & \textbf{Meaning} & \textbf{Examples} \\
+		& \multicolumn{3}{|c|}{\textbf{Test Set 1}} & \multicolumn{3}{c}{\textbf{Test Set 2}} \\
 		\hline
-		
-		Positive 
-		& Held-out well-formed items from the observed data
-		& (held-out attested forms) \\
-		
-		Negative 
-		& Constructed forms that violate hard phonotactic constraints
-		& \textit{bâ, bǎ, bǎs, bàa.bàa, bàaa, báaa} \\
-		
-		Exception 
-		& exceptional items not present in the training data
-		&
-		\begin{tabular}[t]{@{}l@{}}
-			\textit{b\^am.m\'\i i} `palm wine' \\
-			\textit{t\`a.f\`a.s\'aa} `a senna plant' (LLH) \\
-			\textit{k\`u.z\`u}  `tin' (LL) \\
-			\textit{t\'am.b\`u.l\`an}  `drinking glass' (L.LL) \\
-			\textit{y\^am.m\'aa}  `cheek' (LL) \\
-			\textit{d\^ul.l\'uu}  `tin' (LL) \\
-			\textit{m\^an.y\'aa}  `tin' (LL)
-		\end{tabular}
-		\\
-		
+		\textbf{Model} 
+		& \textbf{Recall} & \textbf{Prec.} & \textbf{F1}
+		& \textbf{Recall} & \textbf{Prec.} & \textbf{F1} \\
+		\hline
+		baseline & 0.813 & 1.000 & 0.894 & 0.650 & 1.000 & 0.786 \\
+		bufia-str    & 0.906 & 1.000 & 0.950 & 0.825 & 1.000 & 0.903 \\
+		MaxEnt-str   & 0.641 & 1.000 & 0.774 & 0.525 & 1.000 & 0.680 \\
+		bufia-ar     & 0.984 & 1.000 & 0.992 & 0.938 & 1.000 & 0.968 \\
 		\hline
 	\end{tabular}
-	\caption{Composition of evaluation test sets used in learning experiments.}
-\end{table*}
+	\caption{Averaged performance across four folds on Test Set 1 (16 held-out positives + 16 negatives) and Test Set 2 (20 positives, including rare forms, + 20 negatives). All models achieve perfect precision; differences reflect recall and F1.}
+	\label{tab:results-merged}
+\end{table}
 
 
-\subsection{Results}
-
-The averaged results across folds are shown below (mean $\pm$ standard deviation):
 
 
-BUFIA achieves substantially higher recall on attested forms, while the Newman grammar is more conservative and rejects a larger portion of exceptional or marginal patterns. This tradeoff reflects differences in inductive bias: the positive-only learner prioritizes coverage of observed structures, whereas the hand-specified grammar encodes strong a priori restrictions that reduce overgeneration.
 
-\section{Result}
-\begin{table*}
-  \centering
-  \begin{tabular}{llll}
-    \hline
-    \textbf{Model/Rep}           & \textbf{Held-out} & \textbf{Illegal} & \textbf{Exception} \\
-    \hline
-    BUFIA-AR       &       0.906      &        0.143  &          0.857       \\
-    Baseline-AR    &        0.891    &         0 &    0.286 \\ \hline
-    BUFIA-Str     &         0.906 &         0.107 & 0.857                   \\
-    MaxEnt-Str       &           &                           \\   
-    Baseline-Str    &     0.812       &        0         & 0          \\ \hline
+\section{Discussion}
+From the result, it can be seen that both models and representations play a role in tonotactic learning. 
 
-    \hline
-  \end{tabular}
-  \caption{\label{citation-guide}
-  }
-\end{table*}
+For a static grammar, baseline-ar and basline string trun out to be idencal. This is because we can convert one to another, and at least in hausa there is not a case where two distinct forms from one system collopqse into the same in 
+the other system. 
 
+As for BUFIA-str/ar, there is a improvament when changing string into AR. On eht
+
+
+One might question the result obtained by MaxEnt model since it is really low. One possible reason is the limited size of the data. The whole dataset is less than 70, and it wmight throw the model off. However, there are two things to mention. First, under a string representation, the complete alphabet and its all poisble combinations stringset under a fixed length is far smaller than a feature systems of segmental phonology. Secondly, we use types as the data, rather than tokens. But this should not be a big issue since the tonal patterns in Hausa is hightly skewed and falls into a zifps distribution: mroe than 60\% of the data have the same tonal structures. Given the a bigger dataset of with frequency, it will not do much help.
+\section{Conclusion}
 
 
 
