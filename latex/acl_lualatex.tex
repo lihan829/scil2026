@@ -39,7 +39,7 @@
 %%%%%
 
 
-\title{Learning Bias in Tonotactic Learning: Representations or Models}
+\title{Does Representation Matter in Tonotactic Learning: Comparing String and Autosegmental Models}
 
 % Author information can be set in various styles:
 % For several authors from the same institution:
@@ -71,7 +71,17 @@
 \begin{document}
 \maketitle
 \begin{abstract}
-This paper investigates whether phonological learning primarily arises from the data representation (string vs. autosegmental representations) or from the learning model (probabilistic vs. categorical). We compare two learning frameworks: a Maximum Entropy (MaxEnt) model and BUFIA, a categorical learner adapted to operate over ARs. Using the same training and testing datasets across conditions, we systematically evaluate four combinations: MaxEnt-Ftr, BUFIA-Ftr, and BUFIA-AR. The results show that learning performance is strongest when grammars are induced over ARs, particularly when paired with a categorical learner. These findings suggest that representational structure plays a role in learning success than probabilistic weighting, and that categorical structure-sensitive learners benefit most from autosegmental representations.
+This paper investigates whether phonological learning primarily arises from the data 
+representation (string vs. autosegmental representations) or from the learning model 
+(probabilistic vs. categorical). We compare two learning frameworks: a Maximum 
+Entropy (MaxEnt) model and BUFIA, a categorical learner adapted to operate over ARs. 
+Using the same training and testing datasets across conditions, we systematically 
+evaluate four combinations: MaxEnt-Ftr, BUFIA-Ftr, and BUFIA-AR. The results show 
+that learning performance is strongest when grammars are induced over ARs, 
+particularly when paired with a categorical learner. These findings suggest that 
+representational structure plays a role in learning success than probabilistic 
+weighting, and that categorical structure-sensitive learners benefit most from 
+autosegmental representations.
 \end{abstract}
 
 \section{Introduction}
@@ -89,8 +99,6 @@ The results show three main findings. First, tonotactics can be learned efficien
 This work calls for greater attention to the use of linguistically meaningful representations in computational models of phonological learning.
 
 \section{Backgrounds}
-This section provides background on two related topics. First, it outlines the mathematical and computational preliminaries of linear and non-linear representations. Second, it introduces the workings of the Bottom-Up Factorial Inference Algorithm (BUFIA) and compares it with the Maximum Entropy (MaxEnt) framework.
-
 \subsection{Linear vs Nonlinear Representation}
 We begin by introducing two representations of tonal forms. In this work, 
 segmental material is abstracted away, and tonal structure is represented 
@@ -130,27 +138,68 @@ denoted as $\alpha$.
 \input{AR.model.tex}
 
 \subsection{Phonotactic Learning Models}
-There are many string-based models that have been shown to be successful in 
-phonotactic learning [cite]. One representative example is the Maximum 
-Entropy (MaxEnt) phonotactic learner developed by [cite]. MaxEnt takes a 
-set of positive data as input and returns a set of constraints assigned 
-weights according to the principle of maximum entropy. It evaluates the 
-well-formedness of words based on the sum of their weighted constraint 
-violations. The higher the sum of constraint violateion, the less likely 
-the candidate is considered as wellformed. 
 
-Another approach, developed within formal language research, is categorical 
-learning. Chandlee et al. \cite{chandleeLearningPartiallyOrdered2019} propose 
-the Bottom-Up Factor Inference Algorithm (BUFIA), which discovers the most 
-general forbidden subfactors represented in model-theoretic form and guarantees 
-full coverage of the data space. BUFIA works by traversing a space of logically 
-possible structures, moving from the most general (typically the empty 
-structure) to more specific ones, and checking their presence in the positive 
-data. If a structure is absent, BUFIA identifies it as a constraint of the 
-language and prunes all of its superfactors, that is, structures that contain 
-it. This procedure guarantees that the resulting grammar is the most general 
-grammar consistent with the observed data.
+The main model used in this paper is based on two versions of the Bottom-Up 
+Factor Inference Algorithm (BUFIA; \citet{chandleeBufia2019}). BUFIA is a 
+categorical phonotactic learner that traverses a hypothesis space organized as 
+a partially ordered set: all logically possible structures over a given 
+alphabet are ordered by the containment (or sub/superfactor) relation. As 
+illustrated in Figure [maybe???] for strings over the alphabet ${a,b}$, more 
+general structures (e.g., the empty string or singletons) occupy lower 
+positions in the space, while more specific structures appear higher. For any 
+given structure, those that properly contain it are its \textit{superfactors} 
+(positioned above), and those that it properly contains are its 
+\textit{subfactors} (positioned below). For all its superfactors, only those 
+one level above the current candidates are referred to as their ``next 
+superfactors''
 
+Two core operations of BUFIA determine its upward search or pruning: 
+containment and the sub/superfactor relation. The learner is provided with a 
+set of positive data and a user-defined complexity bound $k$. The search begins 
+from an initial structure (typically the empty structure). For each candidate, 
+BUFIA checks whether it is contained in the positive dataset. If it is 
+attested, the learner generates its next superfactors and continues searching 
+upward. Otherwise, the structure is identified as a forbidden factor (i.e., a 
+constraint), and prune off its superfactors from space for not checking. In 
+this way, BUFIA identifies the most general unattested structures and prunes 
+all more specific structures that would necessarily also be forbidden. The 
+resulting grammar guarantees full coverage of the observed data while remaining 
+maximally general.
+
+A key advantage of BUFIA is its representational flexibility. The algorithm 
+operates over can be implemented with different representational choices, 
+provided they are defined model-theoretically. Therefore, there are
+representation-specific implementations of the same learning procedure. For 
+example, \citet{Swanson+2025} applied a string-based version of BUFIA to 
+Quechua phonotactics and showed that it captures the relevant empirical 
+generalizations. \citet{li2025learning} introduced a version of BUFIA that 
+operates directly over ARs for tonotactic learning. This flexibility allows 
+comparisons of representations of the same data under the same learning scheme.
+
+As noted above, BUFIA is a categorical learner: a candidate structure is either 
+well-formed or ill-formed, depending on whether it contains any forbidden 
+subfactor. In contrast, probabilistic models assign gradient well-formedness 
+values. A representative is the Maximum Entropy phonotactic learner 
+\citep[MaxEnt;][]{hayes2008maximum}. MaxEnt interprets well-formedness 
+as probability rather than a binary value, and treats constraints as violable 
+but with different ``penalty weight''. The well-formedness of a candidate 
+constraint is computed from the sum of its weighted constraint violations. This 
+evaluation is cumulative: the more constraints a candidate violates, and the 
+higher the weights of those constraints, the lower its predicted probability of 
+well-formedness.
+
+MaxEnt has been widely used in string-based phonotactic learning, and more
+recent implementations are able to induce phonological tiers 
+to learn non-local patterns \citep{wilson2018accidental,GouskovaGallagher2020}.
+\citet{lee2025representing} proposed a version of MaxEnt-based learner for stress 
+patterns that reflect metrical structure. These work suggesting that 
+probabilistic string-based approaches can learn the structures hidden from the
+surface data. However, such tier-based models differ from ARs in that they do 
+not encode the associations between elements from two separate tiers. 
+
+The central question of this paper is whether tonotactics, which have long been 
+argued to require multiple asynchronous tiers, can be successfully learned from 
+linear strings, or whether adopting alternative AR will imporve the learning outcome. A related question is whether the learning outcome is influenced by the type of learners. In the following section, we present an experiment designed to test these questions by running the same data over different representational encoding and learning schemes.
 
 \section{Experiment}
 To test tonotactic learnability across representations and learning models, 
