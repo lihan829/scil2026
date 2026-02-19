@@ -346,24 +346,44 @@ Finally, we evaluated MaxEnt-string. Its learning performance is lower than that
 	\label{tab:results-merged}
 \end{table*}
 
-
-
-
-
 \section{Discussion}
-From the result, it can be seen that both models and representations play a role in tonotactic learning. 
+Recall the questions posed earlier: first, can tonotactics be learned directly over ARs? 
+If so, what differences in learning outcomes emerge between AR and string representations?
 
-For a static grammar, baseline-ar and basline string trun out to be idencal. This is because we can convert one to another, and at least in hausa there is not a case where two distinct forms from one system collopqse into the same in 
-the other system. 
+The results show that the two representations do not differ in the baseline grammar, 
+indicating that representational format alone does not change the behavior of a fixed 
+grammar. Two points should be noted. First, the two representations are in bijective 
+correspondence: each string representation has a unique AR counterpart. Under this 
+one-to-one mapping, no learning differences arise at the baseline level. However, 
+achieving this mapping requires the string representation to adopt a larger alphabet to 
+encode combinations that are structurally explicit in ARs. In languages with monosyllabic 
+contours or more complex tonal configurations, this requirement would further expand the 
+alphabet. Second, this study focuses on surface phonotactics, but learning tonal 
+processes more generally depends on changes in association rather than feature values. 
+While these differences may be masked at the surface level, such structural changes are 
+more naturally captured in ARs.
 
-As for BUFIA-str/ar, there is a improvament when changing string into AR. On eht
+In contrast, when examining the computationally learned grammars, clear differences 
+emerge across representational choices and learning models. Comparing the two BUFIA 
+learners shows that learning over ARs achieves higher accuracy on attested forms without 
+increased overgeneralization. This pattern remains robust even when the dataset includes 
+rare forms that violate previously established constraints, suggesting that learning 
+benefits from structurally informed representations.
 
-
-One might question the result obtained by MaxEnt model since it is really low. One possible reason is the limited size of the data. The whole dataset is less than 70, and it wmight throw the model off. However, there are two things to mention. First, under a string representation, the complete alphabet and its all poisble combinations stringset under a fixed length is far smaller than a feature systems of segmental phonology. Secondly, we use types as the data, rather than tokens. But this should not be a big issue since the tonal patterns in Hausa is hightly skewed and falls into a zifps distribution: mroe than 60\% of the data have the same tonal structures. Given the a bigger dataset of with frequency, it will not do much help.
+The relatively low performance of the MaxEnt model may raise questions. One possible explanation is the limited dataset size, which contains fewer than 70 unique types. However, two considerations are relevant. First, under a string representation, the complete alphabet and its combinatorial space remain substantially smaller than the feature spaces typical of segmental phonology. Second, we use type-based rather than token-based data. This is unlikely to be a major limitation because Hausa tonal patterns are highly skewed and approximately Zipfian: a majority of forms share the same tonal structures. Even with larger datasets including frequency information, the impact on MaxEnt performance may be limited, particularly when constraints behave effectively as categorical restrictions.
 
 \section{Conclusion}
-This paper compares the tonotactic learning outcomes over string and ARs by examining the outputs of two versions of BUFIA on the same Hausa data. Results show that learning over ARs captures tonal generalizations more efficiently than strings, which fails to capture structural information at the sub-syllabic level. Future research will more precisely study the effects of the learner's traversal of the space, different `feature' specifications for string representations, and the role of word boundaries. More generally, this paper advocates for the use of interpretable learning models to help distinguish between different theories of linguistic representation.
+This paper compares the tonotactic learning outcomes over string and ARs by examining the 
+outputs of two versions of BUFIA on the same Hausa data. Results show that learning over 
+ARs captures tonal generalizations more efficiently than strings, which fails to capture 
+structural information at the sub-syllabic level. Future research will more precisely 
+study the effects of the learner's traversal of the space, different `feature' 
+specifications for string representations, and the role of word boundaries. More 
+generally, this paper advocates for the use of interpretable learning models to help 
+distinguish between different theories of linguistic representation.
+
 
 \bibliography{refs.bib}
+
 
 \end{document}
