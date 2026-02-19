@@ -72,60 +72,115 @@
 \begin{document}
 \maketitle
 \begin{abstract}
-This paper investigates whether phonological learning primarily arises from the data 
-representation (string vs. autosegmental representations) or from the learning model 
-(probabilistic vs. categorical). We compare two learning frameworks: a Maximum 
-Entropy (MaxEnt) model and BUFIA, a categorical learner adapted to operate over ARs. 
-Using the same training and testing datasets across conditions, we systematically 
-evaluate four combinations: MaxEnt-Ftr, BUFIA-Ftr, and BUFIA-AR. The results show 
-that learning performance is strongest when grammars are induced over ARs, 
-particularly when paired with a categorical learner. These findings suggest that 
-representational structure plays a role in learning success than probabilistic 
-weighting, and that categorical structure-sensitive learners benefit most from 
-autosegmental representations.
+
+This paper investigates whether tonotactic learnability differs across 
+representational choices. We conduct an experiment by using the same 
+dataset but over two different representations: string and autosegmental 
+representations (ARs). Two learning models are used: Maximum Entropy 
+(MaxEnt) model and the Bottom-Up Factor Inference Algorithm (BUFIA), 
+allowing us to examine whether differences in learning outcomes arise from 
+the learning model as well as from the representation. Using identical 
+training and testing datasets across conditions, we evaluate five 
+implemented combinations: Baseline-Str, Baseline-AR, MaxEnt-Str, BUFIA-Str, 
+and BUFIA-AR. The results show that (1) for the baseline grammar, which is 
+static and surface-based, representational choice does not affect learning 
+outcomes; and (2) for computationally learned grammars, performance is 
+strongest when grammars are induced over ARs under a graph-based 
+categorical learner. These findings suggest that representation plays an 
+important role in tonotactics learning than probabilistic weighting 
+mechanisms.
 \end{abstract}
 
 \section{Introduction}
 
-This paper focuses on the learning of tonal phonotactics, or tonotactics, which address the question of how tones and syllables (or other tone-bearing units, TBUs) are organized in a linguistically well-formed way in tonal languages. Despite the widespread distribution of tones in the world’s languages [cite], tonal phonotactics, as a core component of many languages, has not yet received the same level of attention as segmental phonology.
+This paper focuses on the learning of tonal phonotactics, or tonotactics, 
+which address the question of the well-formedness of how tones and 
+tone-bearing units (TBUs, such as syllable or mora) are organized in tonal 
+languages. 
 
-One possible reason for this gap may lie in representational differences. Segmental phonotactics is typically modeled using linear representations such as strings, which makes them readily applicable to a wide range of existing learning models. Tonotactics, on the other hand, has long been analyzed as depending on non-linear structures, such as autosegmental representations. This representational challenge has led to a relative scarcity of computational modeling of tones directly over non-linear structures, with many approaches instead flatten tonal forms into strings or features. Although there has been a great deal of work arguing for the inadequacy of linear representations in both the linguistic literature (for masking structural relations) and computational learning (where ARs may be more computationally efficient), the relevant works are still relatively limited. 
+For a long time, tonotactics has not received the same level of research 
+attention as segmental phonology, despite the widespread distribution of 
+tone across the world’s languages \citep{yip2002tone}. One possible reason 
+for this gap lies in representational differences. Segmental phonotactics is 
+typically modeled using linear representations such as strings, which makes 
+it readily compatible with a wide range of existing learning models. 
+Tonotactics, by contrast, has long been analyzed over non-linear 
+structures, most widely used autosegmental representations 
+\citep{goldsmith1976autosegmental}. This representational challenge has 
+contributed to a dearth of computational models that operate directly over 
+non-linear tonal structure, with many approaches instead flattening tonal 
+patterns into strings to accommodate linear learning frameworks. Although a 
+substantial body of work has argued for the inadequacy of linear 
+representations for capturing tonal generalizations 
+\citep{clements2010autosegmental,oddenintroducing2013} and for 
+computational learning 
+\citep{jardine2016locality}, studies demonstrating clear advantages of 
+non-linear representations over strings in tonotactics remain relatively 
+limited.
 
-In this paper, we ask two questions: (1) how well tonotactics can be learned over ARs, and (2) how important representational differences are for learning compared with alternative string-based formats. To address this question, we adopt a recent version of the Bottom-Up Factorial Inference Algorithm (BUFIA) [cite], a categorical grammar induction algorithm that operates directly over ARs. We evaluate model performance and compare AR-based learning against alternative representations using the same algorithm as well as a Maximum Entropy (MaxEnt) learning algorithm [cite].
+In this paper, we address two questions: (1) how effectively tonotactics can 
+be learned over ARs, and (2) whether ARs influence learning outcomes 
+compared with alternative string-based representations. To address these 
+questions, we encoded the same dataset in both string and AR formats to two 
+versions of the Bottom-Up Factorial Inference Algorithm (BUFIA) 
+\citep{chandleeBufia2019}: one operating over strings and the other directly 
+over ARs \citep{li2025learning}. As a reference, a set of linguistically 
+motivated grammars, also encoded over both string and AR, serves as a 
+baseline for comparison. Additionally, we include a probabilistic learner, 
+Maximum Entropy model \citep{hayes2008maximum}, to examine whether the 
+absence of AR structure can be compensated for by probabilistic modeling. 
+A cross-fold validation is conducted for comparing performance of models 
+over varying representation. In two constructed test set, in addition to the 
+positive data from the held-out set, matching size of negative forms 
+are also added into the test sets to see if models overgeneralize. 
 
-Specifically, we evaluate three conditions: string-based learning and AR-based learning, each learned by BUFIA-AR, or a probabilistic MaxEnt learner operating over strings. To ensure comparability, we convert the same Hausa dataset into two representations and use them as input to the models. We then compare model performance on held-out test data and constructed negative data. Admittedly, a complete study should also include MaxEnt operating over ARs. However, the current implementation of MaxEnt does not support learning directly from graphs. Despite this limitation, this comparison still allows us to assess whether a structural representation will contribute to learning.
+Admittedly, a more complete study should also include MaxEnt operating over 
+ARs. However, the current implementation of MaxEnt does not support learning 
+directly from graphs. Despite this limitation, this comparison still allows 
+us to assess whether a structural representation will contribute to learning.
 
-The results show three main findings. First, tonotactics can be learned efficiently and effectively using BUFIA-AR, which deterministically returns a set of constraints consistent with the positive data. Some of the constraints learned by BUFIA align with previously established generalizations in the linguistic literature, while others reflect more specific conditions on the arrangement of tones and syllables. Second, we observe a learning difference between string-based and AR-based representations. When converted to ARs, the same BUFIA algorithm yields better recall and F1 scores, suggesting improved performance in recognizing positive data. Lastly, across models, categorical learning achieves better results than the probabilistic implementation in this task.
+The results yield three main findings. First, representational choice does 
+not affect outcomes when the grammar is a fixed, static set of constraints, 
+provided that the two representations stand in a one-to-one correspondence. 
+For computationally learned grammars, when the representation is changed, 
+model performance improves, with BUFIA-AR emerging as the most robust model 
+across conditions. This advantage is not compensated for by probabilistic 
+modeling, which in fact has a below baseline performance.
 
-This work calls for greater attention to the use of linguistically meaningful representations in computational models of phonological learning.
+Overall, this work highlights the importance of incorporating linguistically 
+meaningful representations into computational models of phonological 
+learning.
 
 \section{Backgrounds}
-\subsection{Linear vs Nonlinear Representation}
-We use Model Theory and view both representations as 
-different mathematical objects. Different forms have distinct 
-\textit{model signatures} that use formal logic to represent the 
-relations of consisting units. 
 
-A string can also be represented \textit{model-theoretically} 
-with two components: the domain $D$ and a model signature of a finite 
-set of relations $\mathcal{R}$. One can view $\mathcal{R}$ as a set of 
-labeled nodes drawn from the alphabet, and a set of relations that capture 
-the internal connections or ordering among those nodes. For example, a 
-string model of \textit{L.HL} is shown in Figure~\ref{sec2.fig.string}.
-Here, $D = \{1, 2, 3, 4\}$ indicates that there are four positions, 
-among which $\{1, 4\}$ are labeled with $L$, $\{2\}$ with the boundary 
-symbol $.$, and $\{3\}$ with $H$. These elements are connected via a 
-binary successor relation, denoted by $\lhd$ in the signature, which 
-specifies the linear order in which the symbols are pronounced.
+This section outlines the theoretical background and computational methods 
+for two representational choices: string and ARs. We adopt a model-theoretic 
+perspective to describe these representations which treats them as distinct 
+types of relational structures \citep{rogers2013,
+	chandleeBufia2019, rogers.lambert2019mol}. From a modeling perspective, the difficulty 
+of formally characterizing ARs is central to understanding the learning 
+process.
 
-\input{string,.mode.tex}
-As one can observe, in a linear string model, the nodes are arranged along 
-a single axis or tier, following a temporal order. Different than string 
-models, we propose an AR model as follows the alphabet contains $\{H, L, 
-\sigma, \mu\}$, where elements within each tier are in a successor 
-relation, while elements across tiers stand in an association relation, 
-denoted as $\alpha$. 
+\subsection{Linear vs.\ Non-linear Representations}
+
+We define a phonological representation as relational structures of the 
+form $\langle D, \mathcal{R} \rangle$, where $D$ is a finite domain of 
+positions, and $\mathcal{R}$ is a set of relations that connects the 
+composing units of the phonological representation. 
+
+In a string representation, structure is single-tiered. The signature typically includes unary labeling relations indicating segmental or tonal identity and a single binary successor relation $\lhd$ defining linear order. For example, a string model of \textit{L.HL} is shown in Figure~\ref{sec2.fig.string}. The domain $D=\{1,2,3,4\}$ specifies four positions, labeled by tone and boundary symbols, and the successor relation encodes temporal sequencing. Structural dependencies must therefore be expressed indirectly through symbol combinations or longer contexts.
+
+\input{string.model.tex}
+
+ARs, in contrast, correspond to multi-tier relational structures. The signature includes multiple successor relations, each defined over a tier (e.g., tone, mora, syllable), as well as an association relation $\alpha$ linking elements across tiers. In this representation, structural dependencies such as tone spreading or contour formation are encoded directly as relations rather than inferred from symbol sequences.
+
 \input{AR.model.tex}
+
+From a learning perspective, this distinction has important consequences. 
+For strring representation, the 
+encode cross-tier dependencies implicitly through alphabet expansion or increased contextual complexity, whereas ARs encode these dependencies explicitly in the relational structure. As a result, equivalent phonological generalizations may require more complex constraints in string models while remaining locally expressible in ARs. We therefore treat representational format not as a notational choice but as a factor shaping inductive bias.
+
+This view leads to a concrete prediction: if structural information is directly available to the learner, grammars induced over ARs should achieve comparable or improved generalization using constraints of equal or lower complexity.
 
 \subsection{Phonotactic Learning Models}
 

@@ -1,6 +1,6 @@
 \begin{figure}[ht]
 	\centering
-		\begin{minipage}{\linewidth}
+		\begin{minipage}{0.6\linewidth}
 	\begin{tikzpicture} [->, >=stealth, node distance=0.5cm,
 		circleNode/.style={draw, circle, minimum size=0.2cm}]
 		% Nodes
@@ -13,9 +13,8 @@
 		\draw[->] (3) -- (4);
 	\end{tikzpicture}
 \end{minipage}
-
-		\begin{minipage}{\linewidth}
-			\footnotesize
+		\begin{minipage}{0.3\linewidth}
+			\small
 			\begin{align*}
 				D &= \{1, 2, 3, 4\} \\
 				L &= \{1,4\}\\
@@ -26,6 +25,6 @@
 			\end{align*}
 		\end{minipage}
 	
-	\caption{String model when $\Sigma = \{H,L\}$ for \textit{HLH}}
+	\caption{String model when $\Sigma = \{H,L, .\}$ for \textit{HLH}}
 	\label{sec2.fig.string} 
 \end{figure}
