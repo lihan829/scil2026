@@ -113,7 +113,7 @@ substantial body of work has argued for the inadequacy of linear
 representations for capturing tonal generalizations 
 \citep{clements2010autosegmental,oddenintroducing2013} and for 
 computational learning 
-\citep{jardine2016locality}, studies demonstrating clear advantages of 
+\citep{bird1990phonological,coleman1991no,kornai2007mathematical,jardine2015concatenation,jardine2016locality,jardine2017LocalNature,jardine2019expressivity}, studies demonstrating clear advantages of 
 non-linear representations over strings in tonotactics remain relatively 
 limited.
 
@@ -157,7 +157,7 @@ This section outlines the theoretical background and computational
 methods for two representational choices: strings and ARs. We adopt a 
 model-theoretic perspective that treats both representations as 
 mathematical objects which differ in their relational structure 
-\citep{rogers2013,rogers.lambert2019mol}. This 
+\citep{rogers2013,chandleeBufia2019,rogers.lambert2019mol}. This 
 formalization makes it possible to represent ARs and provides the 
 foundation for the learning models, that is, two versions of BUFIA, 
 used in this study. It should be noted that the tonal representations 
@@ -365,20 +365,18 @@ baseline grammar targets disyllabic patterns, the BUFIA-Str learner is constrain
 complexity threshold of $k=5$ (e.g., XX.XX), corresponding to the form of a disyllabic 
 form.
 
-For the AR representation, the data are provided to BUFIA-AR. In this setting, 
-complexity is bounded by three parameters corresponding to the three tiers: $t$ 
+For the AR representation, the data are provided to BUFIA-AR which 
+requires three complexity parameters to the three tiers: $t$ 
 (maximum tone units), $m$ (maximum mora units), and $s$ (maximum syllable units). To 
-approximate the same disyllabic form used in the string condition, these parameters are 
-set to values that capture the maximal tonal, moraic, and syllabic configurations 
-observed in the dataset.
-
-We note that the two complexity settings cannot be made fully equivalent, since AR 
-complexity is distributed across multiple tiers rather than captured by a single linear 
-bound. Nonetheless, aligning these thresholds allows for a controlled comparison of 
-learning outcomes across representational formats.
+approximate the same disyllabic form used in the string condition, we chose
+$t=2, s = 2, m =4$. We are aware that the two complexity settings cannot 
+be made fully equivalent, since AR complexity is distributed across 
+multiple tiers rather than captured by a single linear bound. 
+Nonetheless, this attempt to align the thresholds aims to control the 
+learning conditions across representational formats as closely as possible.
 
 \begin{figure}
-	\hspace{-1.4em}
+\centering
 	\includegraphics[width=1.05\linewidth]{"../Concept map"}
 	\caption{Flowchart of the experimental pipeline}
 	\label{fig:concept-map}
@@ -424,8 +422,6 @@ in the grammar.
 
 
 \section{Results}
-
-
 \begin{table*}
 	\centering
 	\begin{tabular}{l|ccc|ccc}
@@ -440,17 +436,17 @@ in the grammar.
 		baseline-AR & 0.813 & 1.000 & 0.894 & 0.650 & 1.000 & 0.786 \\
 		BUFIA-Str    & 0.906 & 1.000 & 0.950 & 0.825 & 1.000 & 0.903 \\
 		MaxEnt-Str   & 0.641 & 1.000 & 0.774 & 0.525 & 1.000 & 0.680 \\
-		BUFIA-AR     & 0.984 & 1.000 & 0.992 & 0.938 & 1.000 & 0.968 \\
+		BUFIA-AR     & 0.984 & 1.000 & 0.992 & 0.988 & 1.000 & 0.994 \\
 		\hline
 	\end{tabular}
 	\caption{Averaged performance across four folds on two tests}
 	\label{tab:results-merged}
 \end{table*}
-
 The averaged results across folds are shown in Table~\ref{tab:results-merged}. For both test sets, all 
 models under both representations achieved perfect precision (1.000). This indicates 
 that, regardless of the learning mechanism, both string and AR representations 
 successfully reject the constructed ill-formed structures.
+
 
 First, a comparison between baseline-Str and baseline-AR shows that their results are 
 identical. When the same grammar is applied to the two representations, it produces 
@@ -470,24 +466,21 @@ show greater variation. Across both test sets, the same performance pattern emer
 Comparing the two versions of the BUFIA learner, the choice of representation clearly 
 affects learning outcomes. Specifically, BUFIA-Str achieves an F1 score of 0.950 on 
 the regular test set and 0.903 on the extended test set. When switching to ARs, 
-the F1 score increases to 0.984 on the regular set and 0.968 on the 
+the F1 score increases to 0.992 on the regular set and 0.994 on the 
 extended set. With the learning algorithm held constant, this improvement indicates 
-that AR representations yield more accurate predictions for unseen attested forms.
+that AR representations yield more accurate predictions for unseen attested forms. 
 
 Finally, we evaluated MaxEnt-Str. Its learning performance is lower than that of all 
 other models, including the baseline grammar.
 
 
 \section{Discussion}
-Recall the questions posed earlier: first, can tonotactics be learned directly over 
-ARs, and what differences in learning outcomes between different representations?
 
 We see from the results that as for a surface-based phonotactics, different 
-representations can have equal generalization capacity if the representations 
+representations can have equal generalization capacity if the they 
 are equivalent. \citet{oakdenNotationalEquivalenceTonal2020} argues that different
 representations are notationally equivalent if there exists a set of bijective 
-transduction from one system to the other. [Danis] further argues the equivalent also 
-need require that one system to persevere all possible nature classes that 
+transduction from one system to the other. \citet{danis2025logical} further argues notational equivalence further requires that one system to persevere all possible nature classes that 
 other predicts, and vice versa. Here, we do not claim that the two representations are 
 equivalent. Rather, we propose that computational models with representational 
 flexibility, such as BUFIA, can be used as practical comparison tool 
@@ -503,16 +496,20 @@ achieves higher accuracy on attested forms without increased overgeneralization.
 pattern remains robust even when the dataset includes rare forms.
 
 The relatively low performance of the MaxEnt model may raise questions. One possible 
-explanation is the limited dataset size, which contains fewer than 70 unique types. 
-This is because we use type-based rather than token-based data. Hausa tonal patterns 
-are highly skewed and approximately Zipfian: a majority of forms share the same tonal 
-structures. Even with larger datasets including frequency information, the impact on 
-MaxEnt performance may be limited, particularly when constraints behave effectively as 
-categorical restrictions.
+explanation is the limited dataset size. This
+study used type-based rather than token-based data. 
+Without large dataset or frequency information, the 
+MaxEnt performance may be limited. In addition, we 
+interpret all MaxEnt constraints categorically: any 
+non-zero weighted violation sum, even if very 
+small, is treated as a violation. Future work could 
+explore how to determine well-formedness thresholds 
+more systematically.
+
 
 \section{Conclusion}
 This paper examined whether tonotactic learning can be facilitated by structural  
-information by the choice of learning model. Using a factorial comparison across 
+information by the choice of learning model. Using a comparison across 
 string and AR, and categorical versus probabilistic learners, we showed that ARs can be helpful in tonal learning outcomes. While baseline grammars behave equivalently under a one-to-one mapping between representations, computational learning reveals a consistent advantage for AR-based grammars, particularly under a categorical learner. These results suggest that structurally explicit representations facilitate more accurate generalization in tonal phonotactics and highlight the importance of incorporating linguistically grounded representations into computational models of phonological learning.
 
 \bibliography{refs.bib}
