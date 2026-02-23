@@ -86,7 +86,7 @@ static and surface-based, representational choice does not affect learning
 outcomes; and (2) for computationally learned grammars, performance is 
 strongest when grammars are induced over ARs under a graph-based 
 categorical learner. These findings suggest that representation plays an 
-important role in tonotactics learning than probabilistic weighting 
+important role in tonotactic learning than probabilistic weighting 
 mechanisms.
 \end{abstract}
 
@@ -157,7 +157,7 @@ This section outlines the theoretical background and computational
 methods for two representational choices: strings and ARs. We adopt a 
 model-theoretic perspective that treats both representations as 
 mathematical objects which differ in their relational structure 
-\citep{rogers2013,chandleeBufia2019,rogers.lambert2019mol}. This 
+\citep{rogers2013,rogers.lambert2019mol}. This 
 formalization makes it possible to represent ARs and provides the 
 foundation for the learning models, that is, two versions of BUFIA, 
 used in this study. It should be noted that the tonal representations 
@@ -350,12 +350,35 @@ boundaries are naturally encoded in the AR structure, no separate boundary marke
 required. In the implementation, each AR is encoded as a pair of adjacency matrices, 
 which we do not discuss further here.
 
-In total, the experiment compares the grammar learned by conditions, BUFIA-AR, 
-BUFIA-Str, and MaxEnt-Str, against the baseline grammars, Baseline-AR and 
-Baseline-Str. A flowchart illustrating the experimental setup is shown in Figure~\ref{fig:concept-map}.
+\subsection{Procedure}
+
+The experiment compares grammars learned under three conditions (BUFIA-AR, BUFIA-Str, 
+and MaxEnt-Str) and evaluates them against baseline grammars defined over the 
+corresponding representations (Baseline-AR and Baseline-Str). A flowchart illustrating 
+the experimental setup is shown in Figure~\ref{fig:concept-map}.
+
+The positive data are converted into two representational formats. For the string 
+representation, the data are used as input to MaxEnt-Str and BUFIA-Str. In both cases, 
+the input strings are encoded as feature-based sequences using a reduced tonal 
+inventory consisting of H, L, R, F, and a syllable boundary marker. Because the 
+baseline grammar targets disyllabic patterns, the BUFIA-Str learner is constrained by a 
+complexity threshold of $k=5$ (e.g., XX.XX), corresponding to the form of a disyllabic 
+form.
+
+For the AR representation, the data are provided to BUFIA-AR. In this setting, 
+complexity is bounded by three parameters corresponding to the three tiers: $t$ 
+(maximum tone units), $m$ (maximum mora units), and $s$ (maximum syllable units). To 
+approximate the same disyllabic form used in the string condition, these parameters are 
+set to values that capture the maximal tonal, moraic, and syllabic configurations 
+observed in the dataset.
+
+We note that the two complexity settings cannot be made fully equivalent, since AR 
+complexity is distributed across multiple tiers rather than captured by a single linear 
+bound. Nonetheless, aligning these thresholds allows for a controlled comparison of 
+learning outcomes across representational formats.
 
 \begin{figure}
-	\hspace{-1em}
+	\hspace{-1.4em}
 	\includegraphics[width=1.05\linewidth]{"../Concept map"}
 	\caption{Flowchart of the experimental pipeline}
 	\label{fig:concept-map}
@@ -439,9 +462,10 @@ one-to-one mapping between string and AR, the alphabets of the two system are
 made different. The string alphabet includes R, F, and syllable boundary markers, 
 whereas the AR representation includes mora and syllable.
 
+
 In contrast to the baseline grammar, recall and F1 scores for the learned grammars 
 show greater variation. Across both test sets, the same performance pattern emerges:
-BUFIA-AR > BUFIA-Str > Baseline > MaxEnt-Str. 
+\textbf{BUFIA-AR > BUFIA-Str > Baseline > MaxEnt-Str}.
 
 Comparing the two versions of the BUFIA learner, the choice of representation clearly 
 affects learning outcomes. Specifically, BUFIA-Str achieves an F1 score of 0.950 on 
