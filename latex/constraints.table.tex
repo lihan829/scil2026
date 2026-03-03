@@ -11,70 +11,70 @@
 		\caption{Phonological Generalizations in Hausa}
 		\label{rules}
 	\end{table}
-
-\begin{table}[hbt]
-	\centering
-	\begin{tabular}{ccc}
-		\hline
-		\textbf{\textsc{*LH}} &
-		\textbf{\textsc{*R, *F}} &
-		\textbf{\textsc{*XXX}} \\
-		\hline
-		\begin{tikzpicture}
-			\node (bt1) at (-.4,0.8) {L};
-			\node (bt2) at (.4,0.8) {H};
-			\node (bc1) at (-.4,0) {$\mu$};
-			\node (bc2) at (0.4,0) {$\mu$};
-			\node (bs1) at (0,-0.8) {$\sigma$};
-			\node (1) at (0,-1.2) {(1)};
-			\draw (bt1) -- (bc1) -- (bs1);
-			\draw (bt2) -- (bc2) -- (bs1);
-		\end{tikzpicture} &
-		\begin{tikzpicture}
-			\node (bt1) at (-.4,0.8) {X};
-			\node (bt2) at (.4,0.8) {X};
-			\node (bc1) at (0,0) {$\mu$};
-			\node (bs1) at (0,-0.8) {$\sigma$};
-						\node (1) at (0,-1.2) {(2)};
-			\draw (bt1) -- (bc1) -- (bs1);
-			\draw (bt2) -- (bc1) -- (bs1);
-		\end{tikzpicture} &
-		\begin{tikzpicture}
-			\node (bt1) at (-.4,0.4) {$\mu$};
-			\node (bt2) at (.0,0.4) {$\mu$};
-			\node (bt3) at (.4,0.4) {$\mu$};
-			\node (bs1) at (0,-0.4) {$\sigma$};
-									\node (1) at (0,-1.2) {(3)};
-			\draw (bt1)  -- (bs1);
-			\draw (bt2) -- (bs1);
-			\draw (bt3) -- (bs1);
-		\end{tikzpicture} \\ \hline
-				\textbf{\textsc{*HL.}} &
-		\textbf{\textsc{*L.L}}& \\ \hline
-		\begin{tikzpicture}
-			\node (bt1) at (-.6,0.8) {H};
-			\node (bt2) at (0,0.8) {L};
-			\node (bc1) at (-.6,0) {$\mu$};
-			\node (bc2) at (0,0) {$\mu$};
-			\node (bs1) at (-.3,-0.8) {$\sigma$};
-			\node (bc3) at (0.6,0) {$\mu$};
-			\node (bs2) at (0.6,-0.8) {$\sigma$};
-			\node (1) at (0,-1.3) {(4)};
-			\draw (bt1) -- (bc1) -- (bs1);
-			\draw (bt2) -- (bc2) -- (bs1);
-			\draw (bc3) -- (bs2);    
-		\end{tikzpicture} &
-		\begin{tikzpicture}
-			\node (bt1) at (0,0.8) {L};
-			\node (bc1) at (-.4,0) {$\mu$};
-			\node (bc2) at (.4,0) {$\mu$};
-			\node (bs1) at (-.4,-0.8) {$\sigma$};
-			\node (bs2) at (.4,-0.8) {$\sigma$};
-						\node (1) at (0,-1.3) {(5)};
-			\draw (bt1) -- (bc1) -- (bs1);
-			\draw (bt1) -- (bc2) -- (bs2);
-		\end{tikzpicture} \\ \hline
-	\end{tabular}
-	\caption{Phonological Generalizations Translated into forbidden ARs}
-	\label{tab.rule.constraints}
-\end{table}
+%
+%\begin{table}[hbt]
+%	\centering
+%	\begin{tabular}{ccc}
+%		\hline
+%		\textbf{\textsc{*LH}} &
+%		\textbf{\textsc{*R, *F}} &
+%		\textbf{\textsc{*XXX}} \\
+%		\hline
+%		\begin{tikzpicture}
+%			\node (bt1) at (-.4,0.8) {L};
+%			\node (bt2) at (.4,0.8) {H};
+%			\node (bc1) at (-.4,0) {$\mu$};
+%			\node (bc2) at (0.4,0) {$\mu$};
+%			\node (bs1) at (0,-0.8) {$\sigma$};
+%			\node (1) at (0,-1.2) {(1)};
+%			\draw (bt1) -- (bc1) -- (bs1);
+%			\draw (bt2) -- (bc2) -- (bs1);
+%		\end{tikzpicture} &
+%		\begin{tikzpicture}
+%			\node (bt1) at (-.4,0.8) {X};
+%			\node (bt2) at (.4,0.8) {X};
+%			\node (bc1) at (0,0) {$\mu$};
+%			\node (bs1) at (0,-0.8) {$\sigma$};
+%						\node (1) at (0,-1.2) {(2)};
+%			\draw (bt1) -- (bc1) -- (bs1);
+%			\draw (bt2) -- (bc1) -- (bs1);
+%		\end{tikzpicture} &
+%		\begin{tikzpicture}
+%			\node (bt1) at (-.4,0.4) {$\mu$};
+%			\node (bt2) at (.0,0.4) {$\mu$};
+%			\node (bt3) at (.4,0.4) {$\mu$};
+%			\node (bs1) at (0,-0.4) {$\sigma$};
+%									\node (1) at (0,-1.2) {(3)};
+%			\draw (bt1)  -- (bs1);
+%			\draw (bt2) -- (bs1);
+%			\draw (bt3) -- (bs1);
+%		\end{tikzpicture} \\ \hline
+%				\textbf{\textsc{*HL.}} &
+%		\textbf{\textsc{*L.L}}& \\ \hline
+%		\begin{tikzpicture}
+%			\node (bt1) at (-.6,0.8) {H};
+%			\node (bt2) at (0,0.8) {L};
+%			\node (bc1) at (-.6,0) {$\mu$};
+%			\node (bc2) at (0,0) {$\mu$};
+%			\node (bs1) at (-.3,-0.8) {$\sigma$};
+%			\node (bc3) at (0.6,0) {$\mu$};
+%			\node (bs2) at (0.6,-0.8) {$\sigma$};
+%			\node (1) at (0,-1.3) {(4)};
+%			\draw (bt1) -- (bc1) -- (bs1);
+%			\draw (bt2) -- (bc2) -- (bs1);
+%			\draw (bc3) -- (bs2);    
+%		\end{tikzpicture} &
+%		\begin{tikzpicture}
+%			\node (bt1) at (0,0.8) {L};
+%			\node (bc1) at (-.4,0) {$\mu$};
+%			\node (bc2) at (.4,0) {$\mu$};
+%			\node (bs1) at (-.4,-0.8) {$\sigma$};
+%			\node (bs2) at (.4,-0.8) {$\sigma$};
+%						\node (1) at (0,-1.3) {(5)};
+%			\draw (bt1) -- (bc1) -- (bs1);
+%			\draw (bt1) -- (bc2) -- (bs2);
+%		\end{tikzpicture} \\ \hline
+%	\end{tabular}
+%	\caption{Phonological Generalizations Translated into forbidden ARs}
+%	\label{tab.rule.constraints}
+%\end{table}

@@ -10,7 +10,7 @@
 % and will typically save some space.
 % \usepackage{microtype}
 
-% If the title and author information does not fit in the area allocated, uncomment the following
+% If the title and author information does not fit in the area allocated,uncomment the following
 %
 %\setlength\titlebox{<dim>}
 %
@@ -20,12 +20,6 @@
 % LuaLaTeX and XeLaTeX, but not pdfLaTeX.
 \usepackage[english,bidi=default]{babel} % English as the main language.
 \babelfont{rm}{TeXGyreTermesX} % similar to Times
-%%% include whatever languages you need below this line
-
-
-%\usepackage{polyglossia}
-%\setdefaultlanguage{english}
-%\setotherlanguages{arabic,russian,thai,hindi,kannada}
 \usepackage{subcaption}
 \usepackage{tikz}
 \usepackage{multicol}
@@ -35,9 +29,9 @@
 %%%%%
 
 
-\title{Does Representation Matter in Tonotactic Learning: Comparing String and Autosegmental Representations}
+\title{Representation Matters: Tonotactic Learning across Representations}
 
-% Author information can be set in various styles:
+% Author information can be set in various styles:5
 % For several authors from the same institution:
 % \author{Author 1 \and ... \and Author n \\
 %         Address line \\ ... \\ Address line}
@@ -91,35 +85,44 @@ mechanisms.
 This paper focuses on the learning of tonal phonotactics, or tonotactics, 
 which addresses the question of the well-formedness of how tones and 
 tone-bearing units (TBUs, such as syllable or mora) are organized in tonal 
-languages, and explores how tonal representations
-can influence the learning outcomes. For a long time, tonotactics has received less attention in computational learning than segmental phonotactics, despite the widespread distribution of tonal languages across the world \citep{yip2002tone}. One possible reason 
-for this gap lies in representational differences. Segmental phonotactics is 
-typically modeled using linear representations such as strings, which makes 
-it readily compatible with a wide range of existing learning models. 
-Tonotactics, by contrast, has long been analyzed over non-linear 
-structures, most widely used autosegmental representations 
+languages, and explores how tonal representations can influence the learning 
+outcomes. For a long time, tonotactics has received less attention in 
+computational learning than segmental phonotactics, despite the widespread 
+distribution of tonal languages across the world \citep{yip2002tone}. One 
+possible reason for this gap lies in representational differences. Segmental 
+phonotactics is typically modeled using linear representations such as 
+strings, which makes it readily compatible with a wide range of existing 
+learning models. Tonotactics, by contrast, has long been analyzed over 
+non-linear structures, most widely used autosegmental representations 
 \citep[ARs,][]{goldsmith1976autosegmental}. This representational challenge  
 has led to a dearth of computational models that operate directly over 
 non-linear structures, with many approaches instead flattening tonal 
-patterns into strings to fit linear learning frameworks. Although a substantial body of work has argued that linear representations are inadequate for capturing tonal generalizations \citep{clements2010autosegmental,oddenintroducing2013}, and other studies have examined the computational properties of ARs \citep{bird1990phonological,coleman1991no,kornai2007mathematical,jardine2015concatenation,jardine2016locality,jardine2017LocalNature,jardine2019expressivity}, empirical demonstrations of clear advantages for non-linear representations over strings in tonotactic learning remain relatively limited.
+patterns into strings to fit linear learning frameworks. Although a substantial
+body of work has argued that linear representations are inadequate for
+capturing tonal generalizations \citep{clements2010autosegmental,
+oddenintroducing2013}, and other studies have examined the computational 
+properties of ARs \citep{bird1990phonological,coleman1991no,
+	kornai2007mathematical,jardine2015concatenation,jardine2016locality,
+	jardine2017LocalNature,jardine2019expressivity}, empirical 
+demonstrations of clear advantages for non-linear representations over strings 
+in tonotactic learning remain relatively limited.
 
 In this paper, we address two questions: (1) how effectively tonotactics can 
 be learned over ARs, and (2) whether ARs improve learning outcomes 
 compared with alternative string-based representations. To address these 
-questions, we encoded the same dataset in both string and AR formats, and applied two 
-versions of the Bottom-Up Factorial Inference Algorithm (BUFIA) 
-\citep{chandleeBufia2019}: one operating over strings (BUFIA-Str) and the other directly 
-over ARs (BUFIA-AR). As a reference, a set of linguistically 
+questions, we encoded the same dataset in both string and AR formats, and
+applied two versions of the Bottom-Up Factorial Inference Algorithm (BUFIA) 
+\citep{chandleeBufia2019}: one operating over strings (BUFIA-Str) and the other
+directly over ARs (BUFIA-AR). As a reference, a set of linguistically 
 motivated grammars, also encoded over both string and AR, serves as a 
 baseline for comparison. Additionally, we include a probabilistic learner, 
 the Maximum Entropy model \citep{hayes2008maximum}, applied to string 
 representations (MaxEnt-Str), to examine whether the absence of AR structure 
 can be compensated for by probabilistic modeling. A more comprehensive study 
-should also include the version of 
-MaxEnt operating over ARs. However, the current implementation of MaxEnt 
-does not support such representations. Despite this limitation, 
-this comparison still allows us to assess whether a structural 
-representation will contribute to learning.
+should also include the version of MaxEnt operating over ARs. However, the 
+current implementation of MaxEnt does not support such representations. 
+Despite this limitation, this comparison still allows us to assess whether a 
+structural representation will contribute to learning.
 
 A cross-fold validation is conducted for comparing performance of models 
 over varying representation. In two constructed test set, in addition to the 
@@ -128,8 +131,10 @@ are also added into the test sets to see if models overgeneralize.
 The results yield three main findings. First, representational choice does 
 not affect outcomes when the grammar is a fixed, static set of constraints, 
 provided that the two representations stand in a one-to-one correspondence. 
-For computationally learned grammars, the use of ARs improves learning outcomes,
-with BUFIA-AR being the most robust model across conditions. This advantage is not offset by probabilistic modeling, which performs below the baseline.
+For computationally learned grammars, the use of ARs improves learning
+outcomes,with BUFIA-AR being the most robust model across conditions. This 
+advantage is not offset by probabilistic modeling, which performs below the 
+baseline.
 
 Overall, this work highlights the importance of incorporating linguistically 
 meaningful representations into computational models of phonological 
@@ -140,14 +145,15 @@ learning.
 This section outlines the theoretical background and computational 
 methods for two representational choices: strings and ARs. We adopt a 
 model-theoretic perspective that treats both representations as 
-two types of mathematical objects \citep{enderton2001mathematical}, or more specifically, relational structures 
+two types of mathematical objects \citep{enderton2001mathematical}, or more
+specifically, relational structures 
 \citep{rogers2013,chandleeBufia2019,rogers.lambert2019mol}. This 
 formalization makes it possible to represent ARs and provides the 
 foundation for the learning models, that is, two versions of BUFIA, 
 used in this study. It should be noted that the tonal representations 
 studied here abstract away from segmental content and retain only tonal and 
-TBU information. For example, the Hausa word \textit{mù.tûm} (``person'') can be 
-represented linearly as L.HL, or as an AR in which each L, H, and L occupies 
+TBU information. For example, the Hausa word \textit{mù.tûm} (``person'')  
+is represented linearly as L.HL, or as an AR in which each L, H, and L occupies 
 one mora, with the first mora associated with the first syllable and the 
 final two moras associated with the second syllable, respectively, as
 we show later in Table 3.
@@ -158,7 +164,8 @@ We define a phonological representation as relational structures of the
 form $\langle D, \mathcal{R} \rangle$, where $D$ is a finite domain of 
 positions, and $\mathcal{R}$ is a set of relations (also known as the
 model \textit{signature}) that connects the composing units of the 
-phonological representation \citep{strother2017using, jardine2016locality}. Relations may be unary, 
+phonological representation \citep{strother2017using, jardine2016locality}.
+Relations may be unary, 
 indicating the identity of an element, or binary, specifying the 
 relationship between pairs of elements. 
 
@@ -281,177 +288,220 @@ different representations and two learning schemes.
 
 To test tonotactic learnability across representations and models, 
 we conducted a controlled computational experiment on the same dataset. 
-In this section, we detail the experimental setup, 
-including the dataset over two formats, the construction of test data, and 
+In this section, we detail the experimental setup, including the 
+dataset over two formats, the construction of test data, and 
 the evaluation metrics used to compare model performance.
 
-\subsection{Hausa Tonology}
+\subsection{Hausa Data}
 
-The language data used in this study come from Hausa, a major tonal language spoken in 
-West Africa. Hausa has three surface tones in orthography: H, L, and HL (a falling 
-tone, which occurs only in heavy syllables).  Previous generalizations about Hausa
-tonotactics are listed in Table~\ref{rules} \citep{Newmanbook, leben1996tonal, zoll2003optimal}.
+The language data used in this study come from Hausa, a major tonal 
+language spoken in West Africa. We use a curated corpus from 
+\citet{li2025learning}, constructed from the Hausa database 
+\citep{wold-4} in the \textit{World Loanword Database}. The corpus 
+contains 621 monomorphemic, non-borrowed words (64 types) from the 
+core vocabulary, transcribed in orthography.
+
+As background, Hausa has three surface tones in orthography: H, L,
+and HL (a falling tone, which occurs only in heavy syllables). 
+Previously proposed generalizations about Hausa tonotactics are listed 
+in Table~\ref{rules} \citep{Newmanbook,leben1996tonal,zoll2003optimal}.
+
 
 \input{constraints.table.tex}
 
-Among the constraints listed in Table~\ref{rules}, the first three constraints, 
-\textsc{*Rise$_\sigma$},\textsc{*Contour$_{\mu}$},\textsc{*3T}, are hard constraints 
-that define the basic phonology of tones and syllable structures of Hausa. 
-Constraint \textsc{*NonFinHL} applies to the non-derived Hausa words where the falling
-contour (HL) can only occur word finally. The constraint \textsc{*Lapse} is proposed 
-by \citet{zoll2003optimal} that explain the rarity of L tone spreading. 
-\citet{Newmanbook} points out that there are exceptional words that violate 
-the last two constraints. 
+Among the constraints in Table~\ref{rules}, the first three constraints,
+\textsc{*Rise$_\sigma$},\textsc{*Contour$_{\mu}$},\textsc{*3T}, are hard
+constraints that define the basic phonology of tones and syllable structures 
+of Hausa. Constraint \textsc{*NonFinHL} applies to the non-derived Hausa words 
+where the falling contour (HL) can only occur word finally. The constraint 
+\textsc{*Lapse} is proposed by \citet{zoll2003optimal} that explain the rarity 
+of L tone spreading. \citet{Newmanbook} points out that there are exceptional 
+words that violate the last two constraints. 
 
-These constraints are formalized over two representations as shown in 
-Table~\ref{tab.rule.constraints}, and will serve as the \textit{baseline grammar} as 
-a reference to which the learned grammar are compared.
-
-\subsection{Data}
-A curated corpus was constructed from the Hausa database \citep{wold-4} in the 
-\textit{World Loanword Database} (WOLD, \citet{wold}). 
-The curated corpus contains 621 monomorphemic, non-borrowed words from the core 
-vocabulary, transcribed in orthography. We chose these forms to make sure learning 
-results are in the comparable morphological categories as the previously established 
-generalizations. The 621 forms are converted into two representations, yielding 64 
-unique types with a one-to-one AR-string correspondence. Table~\ref{sec4.tab.conversion} provides two examples of these 
-representations. 
-
+We classify the data into two groups. Positive items are drawn directly 
+from the corpus and are therefore attested. Negative items consist of 
+self-constructed forms that are unattested and each violates at least 
+one hard constraint listed in Table \ref{rules}. All data converted into three 
+systems of representations: string, feature, and ARs. One positive and one
+nonce form are given in the Table \ref{tab.threereps}.
 \input{reps.examples.tex}
 
-For example, the string representation of word \textit{kòò.gíí} `river' is represented as \textit{LL.HH}.
-The double L or H indicate the syllable is heavy. The syllable boundary is indicated 
-by a period. Contour tones are decomposed into level tones; thus, the falling tone in 
-\textit{mù.tûm} `person' is represented as \textit{HL}. Without assuming any prior 
-tonal knowledge, we additionally introduce \textit{R} and \textit{F} into 
-the alphabet to represent monosyllabic LH and monosyllabic HL tones, respectively.
+The string and feature representations are based on the orthographic form, 
+where each TBU is represented by a single symbol or a feature bundle. When 
+multiple tones map onto a single TBU, such as monomoraic LH or monomoraic 
+HL, these are represented as distinct symbols in the string alphabet (R and F, 
+respectively). For the feature system, we adopt a two-feature specification: \{L, 
+Contour\}. Level tones are specified as either [+L] or [−L], while contour tones 
+are specified as [+Contour] in addition to their initial tone value. For example, 
+in Table \ref{tab.threereps}, the Hausa word \textit{mù.tûm} ‘person’ is 
+represented as \textit{L.HL} in the string format, and its feature 
+representation is [+L].[−L][+Contour]. A nonce word such as \textit{R.H} 
+would be represented in the feature system as [+L, +Contour].[−L, −Contour].
 
-Unlike the string representation, AR does not require expanding the tonal inventory 
-to include symbols such as R and F, but needs to incorporate 
-mora and syllables ($\mu,\sigma$), since contours are represented as multiple tones 
-associating with a TBU. Consequently, syllable 
-boundaries are naturally encoded in the AR structure. In the implementation, each AR is encoded as a pair of adjacency matrices, which we do not discuss further here.
+Unlike the string representation, AR does not require expanding the tonal
+inventory to include symbols such as R and F. Instead, mora and syllables ($
+\mu,\sigma$) are included in the alphabet. Consequently, syllable boundaries 
+are naturally encoded. In the implementation, each AR is 
+encoded as a pair of adjacency matrices, which we do not discuss further here.
 
 \subsection{Procedure}
 
-The experiment compares grammars learned under three conditions (BUFIA-AR, BUFIA-Str, 
-and MaxEnt-Str) and evaluates them against baseline grammars defined over the 
-corresponding representations (Baseline-AR and Baseline-Str). A flowchart illustrating 
-the experimental setup is shown in Figure~\ref{fig:concept-map}.
+The experiment compares grammars learned under multiple conditions, varying both 
+learning model (BUFIA vs.\ MaxEnt) and representation (Segment, Feature, AR). 
+These learned grammars are evaluated against baseline grammars defined over the 
+corresponding representations (Baseline-AR/Seg/Ftr). Because MaxEnt is a 
+statistical model, we also test versions trained with and without frequency 
+information. Table~\ref{tab.all.models} summarizes all model conditions.
 
-The positive data are converted into two representational formats. For the string 
-representation, the data are used as input to MaxEnt-Str and BUFIA-Str. In both cases, 
-the input strings are encoded as feature-based sequences using a reduced tonal 
-inventory consisting of H, L, R, F, and a syllable boundary marker. Because the 
-baseline grammar targets disyllabic patterns, the BUFIA-Str learner is constrained by a 
-complexity threshold of $k=5$ (e.g., XX.XX), corresponding to the form of a disyllabic 
-form.
+All computational models require a stopping threshold that limits the maximum 
+length or structural complexity of learned constraints. For MaxEnt, the maximum 
+constraint length is set to 4, and we therefore report results for both 3 and 4. 
+Although BUFIA does not inherently require such a bound, we impose stopping 
+conditions of 3 and 4 to ensure comparability across models.
 
-For the AR representation, the data are provided to BUFIA-AR which 
-requires three complexity parameters to the three tiers: $t$ 
-(maximum tone units), $m$ (maximum mora units), and $s$ (maximum syllable units). To 
-approximate the same disyllabic form used in the string condition, we chose
-$t=2, s = 2, m =4$. We are aware that the two complexity settings cannot 
-be made fully equivalent, since AR complexity is distributed across 
-multiple tiers rather than captured by a single linear bound. 
-Nonetheless, this attempt to align the thresholds aims to control the 
-learning conditions across representational formats as closely as possible.
+For AR representations, matching complexity is less straightforward, since the 
+threshold consists of three parameters: $t$ (maximum number of tonal units), $s$ 
+(maximum number of syllables), and $m$ (maximum number of moras). To facilitate 
+cross-representation and cross-model comparison, we align the AR thresholds with 
+the size of the baseline constraints, setting $t=2$, $s=2$, and $m=3$. A 
+comprehensive table of parameter settings is provided in the Appendix. 
 
-\begin{figure}
+
+\begin{table}[t]
 \centering
-	\includegraphics[width=1.05\linewidth]{"Concept map"}
-	\caption{Flowchart of the experimental pipeline}
-	\label{fig:concept-map}
-\end{figure}
+\begin{tabular}{lccc}
+\hline
+Model & Rep & length  \\
+\hline
+MaxEnt-Str        & Segment & 3, 4\\
+MaxEnt-Str-Freq   & Segment & 3, 4\\
+MaxEnt-Ftr        & Feature & 3, 4\\
+MaxEnt-Ftr-Freq   & Feature & 3, 4\\
+BUFIA-Str         & Segment & 3, 4\\
+BUFIA-Ftr         & Feature & 3, 4\\
+BUFIA-AR          & AR & [fix later]\\
+Baseline-AR          & AR& t = 2, s = 2, m=3 \\
+Baseline-Str         & Seg & 3 \\
+Baseline-Ftr         & Ftr  & 3\\
+\hline
+\end{tabular}
+\caption{Models * Representations compared in the experiment.}
+\label{tab.all.models}
+\end{table}
+
+%\begin{figure}
+%\centering
+%	\includegraphics[width=1.05\linewidth]{"Concept map"}
+%	\caption{Flowchart of the experimental pipeline}
+%	\label{fig:concept-map}
+%\end{figure}
 
 \subsection{Evaluation}
-We conducted a $4$-fold cross-validation procedure, partitioning the dataset 
-into four equally sized folds. In each iteration, three folds are used for 
-training and the remaining fold serves as part of the test sets. This process 
-is repeated four times, with each fold acting as the test set once.
+We conducted a 4-fold cross-validation procedure, partitioning the dataset into 
+four equally sized folds. In each iteration, three folds were used for training 
+and the remaining fold served as the test set. This process was repeated four 
+times, with each fold acting as the test set once.
 
+For the frequency-free models, evaluation was conducted on held-out positive types 
+from the corpus together with self-constructed negative forms. The number of 
+negative forms matched the size of the held-out positive set (16 types), yielding a 
+total of 32 test types per fold. For the frequency-sensitive models, evaluation was 
+conducted over token data. Each fold contained 159 tokens, and the corresponding 
+test fold was augmented with an equal number of negative tokens, resulting in 318 
+tokens per test set.
 
-During evaluation, we do not test only on the held-out positive data but also construct two types of test sets: the \textit{regular set} and 
-the \textit{extended set}. The \textit{regular set} consists of the 
-held-out positive forms (16 types) 
-together with an equal number of manually constructed negative forms (32 types
-in total). Each constructed negative form violates at least one of the baseline 
-constraints. For each condition, the test items are encoded in the 
-corresponding representation and evaluated together with 
-the positive data. This design allows us to assess whether the learned 
-grammar over generates beyond the attested patterns.
-The \textit{extended set} builds on the regular set by adding four 
-exceptional positive types and four matched negative forms (40 types in total). 
-The exceptional forms are drawn from Hausa data 
-reported by Newman and violate both \textsc{*Lapse} and 
-\textsc{*NonFinHL}. 
+To evaluate model performance, we computed classification outcomes relative to the 
+gold standard. A prediction was counted as correct if the model accepted attested 
+forms (true positives) and rejected constructed negative forms (true negatives). 
+Performance was measured using averaged recall, precision, and F1 score across 
+folds.
 
-In model evaluation, a well-formedness judgment is counted as correct if the 
-model accepts attested examples and rejects the negative examples. 
-Performance is measured in terms of recall, precision, and F1 score over these 
-classifications.
+It should be noted that the MaxEnt model produces a gradient grammar in which 
+constraints are violable and associated with weights. To evaluate the accuracy and 
+error patterns of MaxEnt, we use two well-formedness criteria against the gold 
+standard: (1) Above-zero: a 
+form is treated as ill-formed if its total weighted violation score is greater than 
+zero. This practice follows \citet{wilson2018accidental}; (2) Above-average: a form 
+is treated as ill-formed if its total weighted violation score exceeds the average 
+violation score across all candidate forms.
 
-It should be noted that the \text{MaxEnt} model returns a gradient 
-grammar in which all constraints are violable and assigned weights. 
-However, for comparability with the categorical models, we 
-convert the learned  MaxEnt grammar into a categorical 
-interpretation: candidate forms whose total weighted violation score 
-is zero are treated as well-formed, whereas those with a non-zero 
-weighted sum are treated as ill-formed. In other words, a test candidate 
-is classified as well-formed only if it does not violate any constraint 
-in the grammar.
-
-
+These two criteria allow us to examine how different thresholding strategies affect the categorical interpretation of a probabilistic grammar.
 \section{Results}
-\begin{table*}
-	\centering
-	\begin{tabular}{l|ccc|ccc}
-		\hline
-		& \multicolumn{3}{|c|}{\textbf{Regular Set }} & \multicolumn{3}{c}{\textbf{Extended Set}} \\
-		\hline
-		\textbf{Model} 
-		& \textbf{Recall} & \textbf{Prec.} & \textbf{F1}
-		& \textbf{Recall} & \textbf{Prec.} & \textbf{F1} \\
-		\hline
-		baseline-Str & 0.813 & 1.000 & 0.894 & 0.650 & 1.000 & 0.786 \\
-		baseline-AR & 0.813 & 1.000 & 0.894 & 0.650 & 1.000 & 0.786 \\
-		BUFIA-Str    & 0.906 & 1.000 & 0.950 & 0.825 & 1.000 & 0.903 \\
-		MaxEnt-Str   & 0.641 & 1.000 & 0.774 & 0.525 & 1.000 & 0.680 \\
-		BUFIA-AR     & 0.984 & 1.000 & 0.992 & 0.988 & 1.000 & 0.994 \\
-		\hline
-	\end{tabular}
-	\caption{Averaged performance across four folds on two tests}
-	\label{tab:results-merged}
+\begin{table*}[t]
+\centering
+\small
+\begin{tabular}{lcccccc}
+\hline 
+Feature & $k$ & Freq & Eval & Recall & Precision & F1 \\
+\hline 
+Ftr1 & 3 & --   & over average & 0.922 & 0.827 & 0.871 \\
+Ftr2 & 3 & --   & over average & 0.906 & 0.773 & 0.832 \\
+Ftr2 & 4 & --   & over average & 0.816 & 0.844 & 0.829 \\
+Ftr1 & 4 & --   & over average & 0.644 & 0.866 & 0.651 \\
+Ftr2 & 3 & --   & over 0       & 0.547 & 1.000 & 0.650 \\
+Ftr2 & 4 & --   & over 0       & 0.540 & 1.000 & 0.636 \\
+Ftr1 & 4 & --   & over 0       & 0.484 & 1.000 & 0.581 \\
+Ftr1 & 3 & --   & over 0       & 0.219 & 1.000 & 0.466 \\
+\hline 
+Ftr1 & 4 & freq & over average & 1.000 & 0.994 & 0.997 \\
+Ftr1 & 3 & freq & over average & 1.000 & 0.981 & 0.990 \\
+Ftr2 & 3 & freq & over average & 1.000 & 0.981 & 0.990 \\
+Ftr2 & 4 & freq & over average & 1.000 & 0.980 & 0.990 \\
+Ftr2 & 3 & freq & over 0       & 0.290 & 1.000 & 0.449 \\
+Ftr1 & 3 & freq & over 0       & 0.258 & 1.000 & 0.407 \\
+Ftr1 & 4 & freq & over 0       & 0.248 & 1.000 & 0.397 \\
+Ftr2 & 4 & freq & over 0       & 0.246 & 1.000 & 0.395 \\
+\hline 
+\end{tabular}
+\caption{Performance of MaxEnt feature-based models under varying complexity ($k$), frequency settings, and evaluation criteria.}
+\label{tab:maxent_feature_results}
 \end{table*}
-The averaged results across folds are shown in Table~\ref{tab:results-merged}. For both test sets, all 
-models under both representations achieved perfect precision (1.000). This indicates 
+
+The averaged results across folds are shown in Table~\ref{tab:results-merged}.
+For both test sets, all 
+models under both representations achieved perfect precision (1.000). This
+indicates 
 that, regardless of the learning mechanism, both string and AR representations 
 successfully reject the constructed ill-formed structures.
 
 
-First, a comparison between baseline-Str and baseline-AR shows that their results are 
-identical. When the same grammar is applied to the two representations, it produces 
+First, a comparison between baseline-Str and baseline-AR shows that their
+results are 
+identical. When the same grammar is applied to the two representations, it
+produces 
 exactly the same predictions on the dataset. A closer inspection of the errors 
-confirms that they are identical as well. It shows that, when there is a one-to-one 
-correspondence between representations, the difference in representation alone does 
-not affect the behavior of a fixed grammar over surface forms. However, to ensure a 
+confirms that they are identical as well. It shows that, when there is a
+one-to-one 
+correspondence between representations, the difference in representation alone
+does 
+not affect the behavior of a fixed grammar over surface forms. However, to
+ensure a 
 one-to-one mapping between string and AR, the alphabets of the two system are 
-made different. The string alphabet includes R, F, and syllable boundary markers, 
+made different. The string alphabet includes R, F, and syllable boundary
+markers, 
 whereas the AR representation includes mora and syllable.
 
 
-In contrast to the baseline grammar, recall and F1 scores for the learned grammars 
-show greater variation. Across both test sets, the same performance pattern emerges:
+In contrast to the baseline grammar, recall and F1 scores for the learned
+grammars 
+show greater variation. Across both test sets, the same performance pattern
+emerges:
 \textbf{BUFIA-AR > BUFIA-Str > Baseline > MaxEnt-Str}.
 
-Comparing the two versions of the BUFIA learner, the choice of representation clearly 
-affects learning outcomes. Specifically, BUFIA-Str achieves an F1 score of 0.950 on 
-the regular test set and 0.903 on the extended test set. When switching to ARs, 
-the F1 score increases to 0.992 on the regular set and 0.994 on the 
-extended set. With the learning algorithm held constant, this improvement indicates 
-that AR representations yield more accurate predictions for unseen attested forms. 
+Comparing the two versions of the BUFIA learner, the choice of representation
+clearly 
+affects learning outcomes. Specifically, BUFIA-Str achieves an F1 score of
+0.950 on 
+the regular test set and 0.903 on the extended test set. When switching to ARs,
 
-Finally, we evaluated MaxEnt-Str. Its learning performance is lower than that of all 
+the F1 score increases to 0.992 on the regular set and 0.994 on the 
+extended set. With the learning algorithm held constant, this improvement
+indicates 
+that AR representations yield more accurate predictions for unseen attested
+forms. 
+
+Finally, we evaluated MaxEnt-Str. Its learning performance is lower than that
+of all 
 other models, including the baseline grammar.
 
 
@@ -459,24 +509,36 @@ other models, including the baseline grammar.
 
 We see from the results that as for a surface-based phonotactics, different 
 representations can have equal generalization capacity if the they 
-are equivalent. \citet{oakdenNotationalEquivalenceTonal2020} argues that different
+are equivalent. \citet{oakdenNotationalEquivalenceTonal2020} argues that
+different
 representations are notationally equivalent if there exists a set of bijective 
-transduction from one system to the other. \citet{danis2025logical} further argues notational equivalence further requires that one system to persevere all possible nature classes that 
-other predicts, and vice versa. Here, we do not claim that the two representations are 
+transduction from one system to the other. \citet{danis2025logical} further
+argues notational equivalence further requires that one system to persevere all
+possible nature classes that 
+other predicts, and vice versa. Here, we do not claim that the two
+representations are 
 equivalent. Rather, we propose that computational models with representational 
 flexibility, such as BUFIA, can be used as practical comparison tool 
-for evaluating representational equivalence by examining whether learning outcomes 
-remain consistent across representations. Besides, as mentioned earlier, the two 
-systems rely on different alphabets, that is, different basic units of phonological 
-representation. One could ask how these units are determined and whether they can be 
+for evaluating representational equivalence by examining whether learning
+outcomes 
+remain consistent across representations. Besides, as mentioned earlier, the
+two 
+systems rely on different alphabets, that is, different basic units of
+phonological 
+representation. One could ask how these units are determined and whether they
+can be 
 supported by computational learning or by psycholinguistic evidence.
 
-Beyond the baseline grammar, comparisons among computationally learned, dynamic 
-grammars show that the two BUFIA learners differ in performance. Learning over ARs 
-achieves higher accuracy on attested forms without increased overgeneralization. This 
+Beyond the baseline grammar, comparisons among computationally learned, dynamic
+
+grammars show that the two BUFIA learners differ in performance. Learning over
+ARs 
+achieves higher accuracy on attested forms without increased
+overgeneralization. This 
 pattern remains robust even when the dataset includes rare forms.
 
-The relatively low performance of the MaxEnt model may raise questions. One possible 
+The relatively low performance of the MaxEnt model may raise questions. One
+possible 
 explanation is the limited dataset size. This
 study used type-based rather than token-based data. 
 Without large dataset or frequency information, the 
@@ -487,8 +549,15 @@ small, is treated as a violation. Future work could
 explore how to determine well-formedness thresholds 
 more systematically.
 
-In conclusion, we show that tonotactics can be learned effectively and efficiently over ARs using BUFIA-AR, even without frequency information. This highlights a future direction for grammar inference in tonal languages. For example, many tonal processes (input–output mappings) involve changes in association relations rather than changes in symbols, which makes learning over multi-tier structures more necessary. More generally, adopting linguistically interpretable learning models  
-or representations will also help distinguish among competing theories of linguistic representation and generalization.
+In conclusion, we show that tonotactics can be learned effectively and
+efficiently over ARs using BUFIA-AR, even without frequency information. This
+highlights a future direction for grammar inference in tonal languages. For
+example, many tonal processes (input–output mappings) involve changes in
+association relations rather than changes in symbols, which makes learning over
+multi-tier structures more necessary. More generally, adopting linguistically
+interpretable learning models  
+or representations will also help distinguish among competing theories of
+linguistic representation and generalization.
 
 \bibliography{refs.bib}
 
