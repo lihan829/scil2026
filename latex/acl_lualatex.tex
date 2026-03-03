@@ -486,7 +486,8 @@ To address this, we set the maximum constraint length in MaxEnt to 4 (the highes
 value permitted by the current implementation) and compare results across different 
 complexity bounds within this limit. For BUFIA, we conduct a comprehensive evaluation 
 across multiple values of $k$. ALl results are listed in Table \ref{tab:all_models} 
-except for BUFIA-AR, which is listed in Table \ref{tab:ar_grid} for convenience. 
+except for BUFIA-AR, which is listed in Table \ref{tab:ar_grid} for better
+presentation. 
 
 \begin{table}[t]
 \centering
@@ -525,9 +526,18 @@ BUFIA-AR & see Table x && \\
 \end{tabular}
 \caption{Model performance across learning models, complexity bounds, and evaluation thresholds.}
 \label{tab:all_models}
-
 \end{table}
 
+From Table~\ref{tab:all_models}, we see that the inclusion of frequency information substantially improves MaxEnt performance, with F1 scores reaching 0.990 for both segment and feature representations. This suggests that frequency information can help capture phonological patterns in MaxEnt.
+
+As for the stopping threshold, increasing the maximum constraint length from 3 to 4 does not significantly affect MaxEnt performance, indicating that the model is robust to this parameter within the tested range. 
+
+For BUFIA, as the complexity bound increases, performance gradually decreases. This usually due to overfitting or overgeneralization but even at higher complexity bounds, BUFIA maintains high precision, suggesting that it effectively captures the core phonotactic constraints without overgeneralizing. A significant drop in recall occurs at $k=6$ and $k=7$, indicating that the model is starting to overfit the training data. 
+
+When looking at the AR-based BUFIA, we see that across parameter settings,
+the recall rate is consistently high, and precision increase when the mora 
+count is over 3, or when the tone count is greater than 1.  Epscially,
+when the t = {2,3}, s ={1,2} , m =3; the model achieves perfect precision and high recall, leading to an F1 score of 1.000. This suggests that the AR representation allows BUFIA to effectively capture the relevant phonotactic constraints without overfitting, even as the complexity threshold increases.
 
 
 \begin{table}[t]
