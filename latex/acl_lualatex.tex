@@ -382,17 +382,18 @@ the size of the maximal baseline AR constraints, setting $t=2$, $s=2$, and $m=3$
 
 \begin{table}[t]
 \centering
+\small
 \begin{tabular}{lccc}
 \hline
-Model & Rep & length  \\
+Model & Representation & length  \\
 \hline
-MaxEnt-Str        & Segment & 3\\
-MaxEnt-Ftr        & Feature & 3\\
-BUFIA-Str         & Segment & 3\\
-BUFIA-Ftr         & Feature & 3\\
+MaxEnt-Seg        & Segment & $ k =3 $\\
+MaxEnt-Ftr        & Feature & $ k =3 $\\
+BUFIA-Seg         & Segment & $ k =3 $\\
+BUFIA-Ftr         & Feature & $ k =3 $\\
 BUFIA-AR             & AR & $t = 2, s = 2, m=3$ \\
-Baseline-Str         & Seg & 3 \\
-Baseline-Ftr         & Ftr  & 3\\
+Baseline-Seg         & Segment &$ k =3 $ \\
+Baseline-Ftr         & Feature  & $ k =3 $\\
 Baseline-AR          & AR& $t = 2, s = 2, m=3$ \\
 \hline
 \end{tabular}
@@ -430,9 +431,9 @@ measured using averaged recall, precision, and F1 score across folds.
 It should be noted that the MaxEnt model produces a gradient grammar in which 
 constraints are violable and associated with weights. To evaluate the accuracy 
 and error patterns of MaxEnt, we use two well-formedness criteria against 
-the gold standard: (1) Above-zero: a form is classified as ill-formed if 
+the gold standard: (1) over-zero: a form is classified as ill-formed if 
 its total weighted violation score is greater than zero. This practice follows 
-\citet{wilson2018accidental}; (2) Above-average: a form is treated as ill-formed 
+\citet{wilson2018accidental}; (2) over-average: a form is treated as ill-formed 
 if its total weighted violation score exceeds the average violation score 
 across all candidate forms. These two criteria affect the categorical 
 interpretation of a probabilistic grammar. We report the metrics under 
@@ -489,45 +490,89 @@ should be paid to how well-formedness is defined when evaluating
 probabilistic phonotactic learners.
 
 \subsection{Beyond Baseline: varying complexity}
-We next ask a further question: beyond representational format, 
+We next ask a further question: beyond representations, 
 what factors contribute to tonotactic learning performance to 
 gradient or categorical learners?
 
 One factor that may influence gradient learners is frequency 
-information. The weights that MaxEnt assigns to candidate 
-constraints depend heavily on the frequency of attested forms. 
-In the previous experiments, the model was trained on types 
-rather than tokens; therefore, frequency information was not 
-available during learning. 
+information, which the weights that MaxEnt assigns to candidate 
+constraints depend heavily on. In the previous experiments, 
+the model was trained on types rather than tokens; therefore, 
+frequency information was not available during learning.
+In a follow-up experiment, we reintroduced frequency 
+to MaxEnt by training the model on token data rather 
+than type data. As in the previous setup, evaluation includes 
+both held-out positive tokens (156 or 155 per fold, 621 in total) 
+and an equal number of constructed negative forms in the test set. 
+The same two evaluation criteria are applied, and recall, precision, 
+and F1 scores are recomputed under these conditions.
 
-In a follow-up experiment, we reintroduced frequency information 
-to MaxEnt, and used token data rather than type data. As in the 
-previous setup, the evaluation includes both held-out positive forms 
-and an equal number of constructed negative forms in the test set, 
-allowing recall, precision, and F1 scores to be computed.
+Another factor concerns the stopping threshold. An important 
+issue in grammar induction is how to determine an appropriate 
+complexity bound that accounts for the data without leading to 
+overgeneralization. Different stopping conditions may substantially 
+influence the constraints learned and the resulting generalization 
+patterns. To address this, we set the maximum constraint length in 
+MaxEnt to 4 (the highest value permitted by the current 
+implementation) and compare results across different complexity 
+bounds within this limit. For BUFIA-Seg/Ftr, we conduct a 
+comprehensive evaluation across multiple values of $k$. 
+For BUFIA-AR, we explore parameter settings for $t,m,s$ up to $3$.
 
-Another factor concerns the stopping threshold. An important issue in grammar induction 
-is how to determine an appropriate complexity bound that accounts for the data without 
-leading to overgeneralization. Different stopping conditions may substantially 
-influence the constraints learned and the resulting generalization patterns. 
-To address this, we set the maximum constraint length in MaxEnt to 4 (the highest 
-value permitted by the current implementation) and compare results across different 
-complexity bounds within this limit. For BUFIA, we conduct a comprehensive evaluation 
-across multiple values of $k$. ALl results are listed in Table \ref{tab:all_models} 
-except for BUFIA-AR, which is listed in Table \ref{tab:ar_grid} for better
-presentation. 
+All results are summarized in Table~\ref{tab.results2}, 
+except for the BUFIA-AR of varying parameters, which is 
+presented separately in Table~\ref{tab:ar_grid} for clarity.
 
 \input{results2.tex}
-From Table~\ref{tab:all_models}, we see that the inclusion of frequency information substantially improves MaxEnt performance, with F1 scores reaching 0.990 for both segment and feature representations. This suggests that frequency information can help capture phonological patterns in MaxEnt.
 
-As for the stopping threshold, increasing the maximum constraint length from 3 to 4 does not significantly affect MaxEnt performance, indicating that the model is robust to this parameter within the tested range. 
+Table~\ref{tab.results2} shows that incorporating frequency 
+information does not consistently improve F1 scores, and 
+only leads to improvement under the \textit{over-mean} criterion. 
 
-For BUFIA, as the complexity bound increases, performance gradually decreases. This usually due to overfitting or overgeneralization but even at higher complexity bounds, BUFIA maintains high precision, suggesting that it effectively captures the core phonotactic constraints without overgeneralizing. A significant drop in recall occurs at $k=6$ and $k=7$, indicating that the model is starting to overfit the training data. 
+Under the \textit{over-zero} criterion, performance generally 
+decreases when frequency is introduced. For example, MaxEnt-Seg 
+achieves an F1 score of 0.466 at $k=3$ and 0.581 at $k=4$ without 
+frequency information, but both scores decrease once frequency is 
+incorporated. A similar pattern is observed for MaxEnt-Ftr: the F1 
+score drops from 0.650 to 0.449 at $k=3$, and from 0.636 to 0.395 
+at $k=4$ when frequency information is added.
 
-When looking at the AR-based BUFIA, we see that across parameter settings,
-the recall rate is consistently high, and precision increase when the mora 
-count is over 3, or when the tone count is greater than 1.  Epscially,
-when the t = {2,3}, s ={1,2} , m =3; the model achieves perfect precision and high recall, leading to an F1 score of 1.000. This suggests that the AR representation allows BUFIA to effectively capture the relevant phonotactic constraints without overfitting, even as the complexity threshold increases.
+Under the \textit{over-mean} criterion, frequency consistently 
+improves the learning outcomes. Across all model pairs that 
+differ only in the presence of frequency information with the 
+same complexity and representations), the F1 scores increase 
+to around 0.990. In particular, the best-performing model is 
+MaxEnt-Seg-freq, which achieves an F1 score of 0.997.
+
+These comparisons suggest an interaction between the evaluation
+criterion and frequency information. Frequency information 
+improves learning outcomes under a more lenient evaluation 
+criterion, but can hurt performance under a stricter one. 
+Moreover, like the previous experiment, the comparison between 
+segmental and feature representations does not yield consistent 
+results, and therefore does not support a clear advantage for 
+either representation.
+
+As for the stopping threshold, increasing the maximum constraint
+length from 3 to 4 does not necessarily improve MaxEnt performance.
+For example, under the \textit{over-mean} criterion, 
+MaxEnt-Seg-freq shows a small improvement when $k$ increases 
+from 3 to 4, whereas MaxEnt-Ftr-freq shows no change.
+
+For BUFIA-Seg/Ftr, as the complexity bound increases, recall 
+gradually decreases, which lowers the F1 score. However, for 
+constraint lengths between $k=3$ and $k=5$, performance remains
+relatively robust. A more substantial drop occurs at $k=6$, 
+indicating that overly complex constraints begin to 
+over-restrict the attested data.
+
+When examining BUFIA over AR, we observe that recall remains 
+consistently high across parameter settings up to 3. The 
+precision, however, varies with the complexity levels, and
+becomes robust when the mora bound exceeds 2 or when
+the tonal bound exceeds 1. In particular, when
+$t = \{2,3\} $, $s \in \{1,2\}$, and $m = 3$, the model achieves
+perfect or near perfect F1 score of 1.000.
 
 
 \begin{table}[t]
