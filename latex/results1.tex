@@ -1,22 +1,22 @@
-\begin{table*}[t]
+\begin{table}[t]
 \centering
 \small
 \begin{tabular}{lccccc}
 \toprule
-Model  & Complexity & Criteria & Recall & Precision & F1 \\
+Model   & Criteria & Recall & Precision & F1 \\
 \midrule
-MaxEnt-Seg & $k=3$ & over zero & 0.219 & 1.000 & 0.466 \\
-MaxEnt-Seg & $k=3$ & over mean & 0.922 & 0.827 & 0.871 \\
-MaxEnt-Ftr & $k=3$ & over zero & 0.547 & 1.000 & 0.650 \\
-MaxEnt-Ftr & $k=3$ & over mean & 0.906 & 0.773 & 0.832 \\
+MaxEnt-Seg & over zero & 0.219 & 1.000 & 0.466 \\
+MaxEnt-Seg   & over mean & 0.922 & 0.827 & 0.871 \\
+MaxEnt-Ftr   & over zero & 0.547 & 1.000 & 0.650 \\
+MaxEnt-Ftr   & over mean & 0.906 & 0.773 & 0.832 \\
 \midrule
-BUFIA-Seg/Ftr & $k=3$ & -- & 0.984 & 1.000 & 0.992 \\
-BUFIA-AR & $t=s=2,m=3$ & -- & 1.000 & 1.000 & 1.000 \\
+BUFIA-Seg/Ftr &  -- & 0.984 & 1.000 & 0.992 \\
+BUFIA-AR   & -- & 1.000 & 1.000 & 1.000 \\
 \midrule
-Baseline-Str/Ftr & $k=3$ & -- & 0.812 & 1.000 & 0.894 \\
-Baseline-AR &$t=s=2,m=3$ & -- & 0.812 & 1.000 & 0.894 \\
+Baseline-Seg/Ftr  & -- & 0.812 & 1.000 & 0.894 \\
+Baseline-AR  & -- & 0.812 & 1.000 & 0.894 \\
 \bottomrule
 \end{tabular}
 \caption{Model performance across learning models and representations.}
 \label{tab:model_comparison}
-\end{table*}
+\end{table}
