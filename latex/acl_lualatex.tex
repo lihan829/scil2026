@@ -257,12 +257,12 @@ are not directly visible in surface sequences. However, these tier-based
 representations differ from ARs in that they typically do not encode 
 association relations between individual elements on separate tiers.
 
-The central question of this paper is whether tonotactics can be successfully 
-learned from linear strings, or whether adopting ARs improves learning 
-outcomes. A related question is whether learning outcomes are influenced by 
-the type of learner. In the following section, we present an experiment 
-designed to test these questions by applying the same dataset across 
-different representations and two learning schemes.
+%The central question of this paper is whether tonotactics can be successfully 
+%learned from linear strings, or whether adopting ARs improves learning 
+%outcomes. A related question is whether learning outcomes are influenced by 
+%the type of learner. In the following section, we present an experiment 
+%designed to test these questions by applying the same dataset across 
+%different representations and two learning schemes.
 
 \section{Experiment: Hausa Tonotactics}
 
@@ -306,7 +306,7 @@ systems of representations: string, feature, and ARs. One positive and one
 nonce form are given in the Table \ref{tab.threereps}.
 \input{reps.examples.tex}
 
-The string and feature representations are based on the orthographic form, 
+The segment and feature representations are based on the orthographic form, 
 where each TBU is represented by a single symbol or a feature bundle. When 
 multiple tones map onto a single TBU, such as monomoraic LH or monomoraic 
 HL, these are represented as distinct symbols in the string alphabet (R and F, 
@@ -329,11 +329,10 @@ encoded as a pair of adjacency matrices, which we do not discuss further here.
 The experiment compares grammars learned under multiple conditions, varying both 
 learning model (BUFIA vs.\ MaxEnt) and representation (Segment, Feature, AR). 
 These learned grammars are evaluated against baseline grammars defined over the 
-corresponding representations (Baseline-AR/Seg/Ftr). Because MaxEnt is a 
-statistical model, we also test versions trained with and without frequency 
-information. Table~\ref{tab.all.models} summarizes all model conditions.
+corresponding representations (Baseline-Seg/Ftr/AR). 
+Table~\ref{tab.all.models} summarizes all model conditions.
 
-We impose a stopping threshold that limits the maximum length or structural complexity 
+We set a stopping threshold that limits the maximum length or structural complexity 
 of learned constraints for two reasons. First, all computational models require such 
 a bound as a stopping condition; for MaxEnt, this limit cannot exceed 4. Second, 
 to ensure comparability with the baseline grammar, we aim to match the size of 
@@ -345,10 +344,10 @@ threshold consists of three parameters: $t$ (maximum number of tonal units),
 $s$ (maximum number of syllables), and $m$ (maximum number of moras). To facilitate
 cross-representation and cross-model comparison, we align the AR thresholds with 
 the size of the maximal baseline AR constraints, setting $t=2$, $s=2$, and $m=3$.
-
-In addition, we also report results for $k=4$ for all string-based representations 
-to examine whether increasing the complexity bound affects performance. A 
-comprehensive table of AR parameter settings is provided in the Appendix.
+%
+%In addition, we also report results for $k=4$ for all string-based representations 
+%to examine whether increasing the complexity bound affects performance. A 
+%comprehensive table of AR parameter settings is provided in the Appendix.
 
 
 \begin{table}[t]
@@ -361,13 +360,13 @@ MaxEnt-Str        & Segment & 3\\
 MaxEnt-Ftr        & Feature & 3\\
 BUFIA-Str         & Segment & 3\\
 BUFIA-Ftr         & Feature & 3\\
-BUFIA-AR             & AR & t = 2, s = 2, m=3 \\
+BUFIA-AR             & AR & $t = 2, s = 2, m=3$ \\
 Baseline-Str         & Seg & 3 \\
 Baseline-Ftr         & Ftr  & 3\\
-Baseline-AR          & AR& t = 2, s = 2, m=3 \\
+Baseline-AR          & AR& $t = 2, s = 2, m=3$ \\
 \hline
 \end{tabular}
-\caption{Models * Representations compared in the experiment.}
+\caption{Models and Representations in the experiment.}
 \label{tab.all.models}
 \end{table}
 
@@ -380,103 +379,102 @@ Baseline-AR          & AR& t = 2, s = 2, m=3 \\
 
 \subsection{Evaluation}
 We conducted a 4-fold cross-validation procedure, partitioning the dataset into 
-four equally sized folds (16 per fold, 64 in total). In each iteration, three folds were used for training 
-and the remaining fold served as the test set. This process was repeated four 
-times, with each fold acting as the test set once. Each test set also include
-self-constructed negative forms whose size matched the size of the held-out positive set
+four equally sized folds (16 per fold, 64 in total). In each iteration, 
+three folds were used for training and the remaining fold served as the 
+test set. This process was repeated four times, with each fold acting 
+as the test set once. Each test set also include self-constructed negative 
+forms whose size matched the size of the held-out positive set
 (16 types), yielding a total of 32 test types per test fold. 
+
 %?For the frequency-sensitive models, evaluation was 
 %conducted over token data. Each fold contained 159 tokens, and the corresponding 
 %test fold was augmented with an equal number of negative tokens, resulting in 318 
 %tokens per test set.
 
-To evaluate model performance, we computed classification outcomes relative to the 
-gold standard. A prediction was counted as correct if the model accepted attested 
-forms (true positives) and rejected constructed negative forms (true negatives). 
-Performance was measured using averaged recall, precision, and F1 score across 
-folds.
+To evaluate model performance, we compared learning outcomes to the gold 
+standard (the prediction by the baseline grammar). A prediction was counted 
+as correct if the model/baseline accepted attested forms (true positives) 
+and rejected constructed negative forms (true negatives). Performance was
+measured using averaged recall, precision, and F1 score across folds.
 
 It should be noted that the MaxEnt model produces a gradient grammar in which 
-constraints are violable and associated with weights. To evaluate the accuracy and 
-error patterns of MaxEnt, we use two well-formedness criteria against the gold 
-standard: (1) Above-zero: a 
-form is treated as ill-formed if its total weighted violation score is greater than 
-zero. This practice follows \citet{wilson2018accidental}; (2) Above-average: a form 
-is treated as ill-formed if its total weighted violation score exceeds the average 
-violation score across all candidate forms. These two criteria affect the categorical 
-interpretation of a probabilistic grammar.
+constraints are violable and associated with weights. To evaluate the accuracy 
+and error patterns of MaxEnt, we use two well-formedness criteria against 
+the gold standard: (1) Above-zero: a form is classified as ill-formed if 
+its total weighted violation score is greater than zero. This practice follows 
+\citet{wilson2018accidental}; (2) Above-average: a form is treated as ill-formed 
+if its total weighted violation score exceeds the average violation score 
+across all candidate forms. These two criteria affect the categorical 
+interpretation of a probabilistic grammar. We report the metrics under 
+both evaluation criteria to choose the better assessment.
 
 \section{Results}
 
-\begin{table}[t]
-\small
-\begin{tabular}{lllll}
-\hline 
-Model & Criteria & Recall & Precision & F1 \\
-\hline 
+\input{results1.tex}
+First, a comparison among Baseline-Seg, Baseline-Ftr, and Baseline-AR
+shows that their results are identical. When the same grammar is 
+applied across the three representations, it produces the same result 
+on the dataset. A closer inspection of the errors confirms that they 
+coincide. This indicates that, given a one-to-one correspondence 
+between representations, representational differences alone do not 
+affect the behavior of a fixed grammar over surface forms. However, 
+this equivalence depends on constructing the alphabets of the three 
+systems to ensure a bijective mapping.
 
-\multicolumn{5}{l}{\textbf{MaxEnt}} \\
+For the learned grammars, performance varies depending on both the 
+representation and the learning model. Under the over-zero evaluation 
+criterion, the MaxEnt models show better performance with the feature 
+representation: MaxEnt-Ftr achieves an F1 score of 0.650, whereas 
+MaxEnt-Seg reaches 0.466. This suggests that learning is more 
+effective under the feature representation in this condition.
+However, under the over-average evaluation criterion, performance is 
+higher overall and shows an opposite representational choice: 
+MaxEnt-Ftr achieves an F1 score of 0.832, while MaxEnt-Seg reaches 
+0.871, with the segment representation performing slightly better 
+in this case. 
 
-MaxEnt-Ftr & over 0        & 0.547 & 1.000 & 0.650 \\
-MaxEnt-Seg & over 0        & 0.219 & 1.000 & 0.466 \\
+Among the BUFIA grammars, no difference is observed between segment 
+and feature representations; both achieve an F1 score of 0.992, 
+outperforming both MaxEnt and the baseline. When BUFIA is applied 
+to AR representations, performance reaches the ceiling (F1 = 1.000). 
 
-MaxEnt-Ftr  & over mean  & 0.906 & 0.773 & 0.832 \\
-MaxEnt-Seg  & over mean  & 0.922 & 0.827 & 0.871 \\
+In a summary, the current experiment shows the learning outcome 
+ranking as BUFIA-AR > BUFIA-Str/Ftr > MaxEnt-Seg (over 
+average) > MaxEnt-Ftr (over average) > Baseline-Seg/Ftr/Ar >
+MaxEnt-Ftr (over zero) > MaxEnt-Seg (over zero). 
 
+One finding is AR provide a learning advantage over segmental or 
+feature-based representations. With respect to the difference 
+between segments and features, the present results do not reveal 
+a clear advantage for either representation: under BUFIA, two 
+representations yield identical performance while in MaxEnt the
+results are inconsistent across evaluation criteria.
 
-\hline 
-\multicolumn{5}{l}{\textbf{Categorical Models}} \\
+This raises another question: how should the well-formedness 
+threshold be determined for gradient learners? The evaluation 
+criterion substantially affects MaxEnt’s performance. A 
+stricter threshold (e.g., the “over-zero” criterion) yields 
+poorer results than a more lenient threshold. A greater attention 
+should be paid to how well-formedness is defined when evaluating 
+probabilistic phonotactic learners.
 
-BUFIA-Seg &  -- & 0.984 & 1.000 & 0.992 \\
-BUFIA-Ftr &  -- & 0.984 & 1.000 & 0.992 \\
-BUFIA-AR  & -- & 1.000 & 1.000 & 1.000 \\
-\hline 
-\multicolumn{5}{l}{\textbf{Baseline}} \\
-Baseline-Str/Ftr & -- & 0.812 & 1.000 & 0.894 \\
-Baseline-AR  & -- & 0.812 & 1.000 & 0.894 \\
-\hline 
-\end{tabular}
-\caption{Model performance across learning models, complexity bounds ($k = 3$ for string models, and $t = s = 2, m =3$)}
-\label{tab:all_models}
-\end{table}
+\subsection{Beyond Baseline: varying complexity}
+We next ask a further question: beyond representational format, 
+what factors contribute to tonotactic learning performance to 
+gradient or categorical learners?
 
+One factor that may influence gradient learners is frequency 
+information. The weights that MaxEnt assigns to candidate 
+constraints depend heavily on the frequency of attested forms. 
+In the previous experiments, the model was trained on types 
+rather than tokens; therefore, frequency information was not 
+available during learning. 
 
-First, a comparison among Baseline-Seg, Baseline-Ftr, and Baseline-AR shows that their 
-results are identical. When the same grammar is applied across the three 
-representations, it produces the same result on the dataset. A closer inspection 
-of the errors confirms that they coincide. This indicates that, given a one-to-one 
-correspondence between representations, representational differences alone do 
-not affect the behavior of a fixed grammar over surface forms. However, this 
-equivalence depends on constructing the alphabets of the three systems to 
-ensure a bijective mapping.
-
-For learned grammars, differences induced by representation emerge across learners. 
-In the MaxEnt models, performance under the “over-zero” criterion is poor; therefore, 
-we focus on the “over-mean” threshold. In this setting, segment-based representations 
-outperform feature-based representations in tonotactics. Specifically, MaxEnt-Ftr 
-achieves an F1 score of 0.832, whereas MaxEnt-Seg reaches 0.871. But this pattern
-is flipped when the criteria is over 0. So we cant draw any conlcusion based on this.
-
-Among the BUFIA grammars, no difference is observed between segment and feature
- representations; both achieve an F1 score of 0.992, outperforming both MaxEnt 
- and the baseline. When BUFIA is applied to AR representations, performance 
- reaches the ceiling (F1 = 1.000). 
-
-In a summary, the current experiment shows the learning outcome ranking as 
-\textbf{BUFIA-AR > BUFIA-Str/Ftr > MaxEnt-Seg (over average) > MaxEnt-Ftr
- (over average) > Baseline-Seg/Ftr/Ar}.
-
-\subsection{Beyond Baseline}
-We next ask a further question: beyond representational format, what factors 
-contribute to tonotactic learning performance relative to the baseline?
-
-One factor is frequency information. Because MaxEnt leverages token frequency 
-to assign weights to constraints, it might better capture distributional 
-tendencies and thereby improve performance by fine-tuning the weights assigned 
-to constraints. To address this question, we reintroduce frequency information 
-by training MaxEnt on token data rather than types. Likewise previously,
-a matching size of constructed negative data were added in to the test sets to 
-get recall, precision and F1. 
+In a follow-up experiment, we reintroduced frequency information 
+to MaxEnt, and used token data rather than type data. As in the 
+previous setup, the evaluation includes both held-out positive forms 
+and an equal number of constructed negative forms in the test set, 
+allowing recall, precision, and F1 scores to be computed.
 
 Another factor concerns the stopping threshold. An important issue in grammar induction 
 is how to determine an appropriate complexity bound that accounts for the data without 
@@ -489,45 +487,7 @@ across multiple values of $k$. ALl results are listed in Table \ref{tab:all_mode
 except for BUFIA-AR, which is listed in Table \ref{tab:ar_grid} for better
 presentation. 
 
-\begin{table}[t]
-\centering
-\small
-\setlength{\tabcolsep}{6pt}
-\begin{tabular}{ccccc}
-\hline 
-Model & k  & Recall & Precision & F1 \\
-\hline 
-
-\multicolumn{5}{l}{\textbf{MaxEnt (no frequency)}} \\
-
-MaxEnt-Ftr & 4  & 0.816 & 0.844 & 0.829 \\
-MaxEnt-Seg & 4  & 0.644 & 0.866 & 0.651 \\
-
-\hline 
-\multicolumn{5}{l}{\textbf{MaxEnt (with frequency)}} \\
-
-MaxEnt-Ftr & 3  & 1.000 & 0.980 & 0.990 \\
-MaxEnt-Ftr  & 4  & 1.000 & 0.981 & 0.990 \\
-MaxEnt-Seg & 3  & 1.000 & 0.994 & 0.997 \\
-MaxEnt-Seg  & 4  & 1.000 & 0.981 & 0.990 \\
-
-\hline 
-\multicolumn{5}{l}{\textbf{Categorical Models}} \\
-
-BUFIA-Seg/Ftr & 1	&1		&	0.615 &	0.762\\
-BUFIA-Seg/Ftr & 2	&1 		&	0.727	&	0.842\\
-BUFIA-Seg/Ftr & 3	&0.985	&1	&	0.992\\
-BUFIA-Seg/Ftr & 4	&0.969	&1	&	0.984\\
-BUFIA-Seg/Ftr & 5	&0.907	&1	&	0.95\\
-BUFIA-Seg/Ftr & 6	&0.782 	&1	&	0.873\\
-BUFIA-Seg/Ftr & 7	&0.656	& 1	&	0.782\\
-BUFIA-AR & see Table x && \\
-\hline 
-\end{tabular}
-\caption{Model performance across learning models, complexity bounds, and evaluation thresholds.}
-\label{tab:all_models}
-\end{table}
-
+\input{results2.tex}
 From Table~\ref{tab:all_models}, we see that the inclusion of frequency information substantially improves MaxEnt performance, with F1 scores reaching 0.990 for both segment and feature representations. This suggests that frequency information can help capture phonological patterns in MaxEnt.
 
 As for the stopping threshold, increasing the maximum constraint length from 3 to 4 does not significantly affect MaxEnt performance, indicating that the model is robust to this parameter within the tested range. 
@@ -584,7 +544,8 @@ $t$ & $s$ & $m$ & Recall & Precision & F1 \\
 \end{table}
 
 \section{Discussion and Conclusion}
-\todo{what matters in tonotactics learning, or what will improve the learning: representation, complexity threshold, learning algo w or w.o freq}
+\todo{what matters in tonotactics learning, or what will improve the learning: 
+representation, complexity threshold, learning algo w or w.o freq}
 We see from the results that as for a surface-based phonotactics, different 
 representations can have equal generalization capacity if the they 
 are equivalent. \citet{oakdenNotationalEquivalenceTonal2020} argues that
