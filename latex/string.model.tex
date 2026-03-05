@@ -4,11 +4,15 @@
 	\begin{tikzpicture} [->, >=stealth, node distance=0.5cm,
 		circleNode/.style={draw, circle, minimum size=0.2cm}]
 		% Nodes
-		\node[circleNode] (1) {\footnotesize{1$_L$}};
-		\node[circleNode, right=0.3cm of 1] (2) {\footnotesize{2$_.$}};
-		\node[circleNode, right=0.3cm of 2] (3) {\footnotesize{3$_H$}};
-		\node[circleNode, right=.3cm of 3] (4) {\footnotesize{4$_L$}};
-		\draw[->] (1) -- (2);
+		\node[circleNode] (1) {1};
+		\node[circleNode, right=0.3cm of 1] (2) {2};
+		\node[circleNode, right=0.3cm of 2] (3) {3};
+		\node[circleNode, right=.3cm of 3] (4) {4};
+                \node[align=center,node distance=6mm] (l1) [above of = 1] {L};
+                \node[align=center,node distance=6mm] (l2) [above of = 2] {.};
+                \node[align=center,node distance=6mm] (l3) [above of = 3] {H};
+                \node[align=center,node distance=6mm] (l4) [above of = 4] {L};
+                \draw[->] (1) -- (2);
 		\draw[->] (2) -- (3);
 		\draw[->] (3) -- (4);
 	\end{tikzpicture}
