@@ -128,7 +128,7 @@ representation will contribute to learning.
 A cross-fold validation is conducted for comparing performance of models 
 over varying representation. In two constructed test set, in addition to the 
 positive data from the held-out set, negative forms of matched sizes
-are also added into the test sets to see if models overgeneralize. 
+are also added into the test sets to see if models generalizes beyond the data without overgeneralizing.
 The results yield three main findings. First, representational choice does 
 not affect outcomes when the grammar is a fixed, static set of constraints, 
 provided that the two representations stand in a one-to-one correspondence. 
@@ -162,7 +162,7 @@ We define a phonological representation as relational structures of the
 form $\langle D, \mathcal{R} \rangle$, where $D$ is a finite domain of 
 positions, and $\mathcal{R}$ is a set of relations (also known as the
 model \textit{signature}) that connects the composing units of the 
-phonological representation \citep{heinzdcp}. Relations may be unary, 
+phonological representation \citep{strother-garciaUsingModelTheory}\todo{jardine, hossep}. Relations may be unary, 
 indicating the identity of an element, or binary, specifying the 
 relationship between pairs of elements. 
 
@@ -312,7 +312,7 @@ Table~\ref{tab.rule.constraints}, and will serve as the \textit{baseline grammar
 a reference to which the learned grammar are compared.
 
 \subsection{Data}
-A curated corpus was constructed from the Hausa database \citep{wold-4} in the 
+We used a curated corpus was constructed from the Hausa database \citep{wold-4} in the 
 \textit{World Loanword Database} (WOLD, \citet{wold}). 
 The curated corpus contains 621 monomorphemic, non-borrowed words from the core 
 vocabulary, transcribed in orthography. We chose these forms to make sure learning 
@@ -489,7 +489,8 @@ interpret all MaxEnt constraints categorically: any
 non-zero weighted violation sum, even if very 
 small, is treated as a violation. Future work could 
 explore how to determine well-formedness thresholds 
-more systematically.
+more systematically. [followed by \citep{wilson2018accidental}]
+
 
 In conclusion, we show that tonotactics can be learned effectively and efficiently over ARs using BUFIA-AR, even without frequency information. This highlights a future direction for grammar inference in tonal languages. For example, many tonal processes (input–output mappings) involve changes in association relations rather than changes in symbols, which makes learning over multi-tier structures more necessary. More generally, adopting linguistically interpretable learning models  
 or representations will also help distinguish among competing theories of linguistic representation and generalization.
