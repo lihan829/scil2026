@@ -388,22 +388,21 @@ we set $t=2$, $s=2$, and $m=3$.
 \small
 \begin{tabular}{lccc}
 \toprule
-Model & Representation & length  \\
+Model        & length              \\
 \midrule
-Baseline-Seg      & Segment &$ k =3 $ \\
-Baseline-Ftr      & Feature  & $ k =3 $\\
-Baseline-AR       & AR& $t = 2, s = 2, m=3$ \\
+Baseline-Seg & $ k =3 $            \\
+Baseline-Ftr & $ k =3 $            \\
+Baseline-AR  & $t = 2, s = 2, m=3$ \\
 \midrule
-BUFIA-Seg         & Segment & $ k =3 $\\
-BUFIA-Ftr         & Feature & $ k =3 $\\
-BUFIA-AR          & AR & $t = 2,s = 2, m=3$ \\
+BUFIA-Seg    & $ k =3 $            \\
+BUFIA-Ftr    & $ k =3 $            \\
+BUFIA-AR     & $t = 2,s = 2, m=3$  \\
 \midrule
-MaxEnt-Seg        & Segment & $ k =3 $\\
-MaxEnt-Ftr        & Feature & $ k =3 $\\
-\midrule
-\hline
+MaxEnt-Seg   & $ k =3 $            \\
+MaxEnt-Ftr   & $ k =3 $            \\
+\bottomrule
 \end{tabular}
-\caption{Models and Representations in the experiment.}
+\caption{Learning models in the experiment}
 \label{tab.all.models}
 \end{table}
 
@@ -492,62 +491,65 @@ exceeds the median score across all candidate forms.
 These three criteria are different ways to categorically interpret the gradient grammar.
 
 In all of our experiments, the over-average intepretation performed the best.
-The over-zero interpretation was the worst, and tended to reject over half the positive forms.
+The over-zero interpretation was the worst, and tended to reject more than half of the positive forms.
 This is likely because constraints with small non-zero weights were learned.
 Generally, the over-median approach performed similarly to over-average, but had lower scores.
 Consequently, in what follows, the MaxEnt results are reported with the over-average threshold.
 
 \section{Results}
 
+Results of the experiments are shown in Table~\ref{tab:model_comparison}.
+Several aspects are worth noting.
+First, the baseline grammars have identical results.
+A closer inspection of the errors confirms that they also coincide.
+This indicates a one-to-one correspondence between representations,
+and the forms that violate these constraints.
+It follows that representational differences do not affect
+how a fixed grammar classifies forms.
+
 \input{results1.tex}
-First, a comparison among Baseline-Seg, Baseline-Ftr, and Baseline-AR
-shows that their results are identical. When the same grammar is
-applied across the three representations, it produces the same result
-on the dataset. A closer inspection of the errors confirms that they
-coincide. This indicates that, given a one-to-one correspondence
-between representations, representational differences alone do not
-affect the behavior of a fixed grammar over surface forms. However,
-this equivalence depends on constructing the alphabets of the three
-systems to ensure a bijective mapping.
 
-For the learned grammars, performance varies depending on both the
-representation and the learning model. Under the over-zero evaluation
-criterion, the MaxEnt models show better performance with the feature
-representation: MaxEnt-Ftr achieves an F1 score of 0.650, whereas
-MaxEnt-Seg reaches 0.466. This suggests that learning is more
-effective under the feature representation in this condition.
-However, under the over-average evaluation criterion, performance is
-higher overall and shows an opposite representational choice:
+On the other hand, for the BUFIA and MaxEnt models, which learn constraints,
+performance does vary depending on both the representation and the learning model.
+Among the BUFIA models, while there is no difference between BUFIA-Seg and BUFIA-Ftr,
+both achieve an F1 score of 0.992. BUFIA-AR, however performs perfectly (F1 = 1.000).
+Although it is true that BUFIA-AR outperforms BUFIA-Seg and BUFIA-Ftr,
+all the BUFIA models are exhibiting ceiling levels of performance,
+or are extremely close to it.
+
+Choice of representation also impact the MaxEnt models.
 MaxEnt-Ftr achieves an F1 score of 0.832, while MaxEnt-Seg reaches
-0.871, with the segment representation performing slightly better
-in this case.
+0.871. The better performance on segmental representations over featural ones
+contrasts with earlier studies with MaxEnt on segmental phonotactics, which
+foun that learned constraints over features were more effective
+than learned constraints over segments \citep{hayes2008maximum,
+  wilson2018accidental}.
 
-Among the BUFIA grammars, no difference is observed between segment
-and feature representations; both achieve an F1 score of 0.992,
-outperforming both MaxEnt and the baseline. When BUFIA is applied
-to AR representations, performance reaches the ceiling (F1 = 1.000).
+Finally, the results show that BUFIA-Seg and BUFIA-Ftr outperform
+MaxEnt-Seg and MaxEnt-Ftr. We were surprised by this result and
+conducted follow-up experiments to see if we could improve the
+MaxEnt models performance.
 
-In a summary, the current experiment shows the learning outcome
-ranking as BUFIA-AR > BUFIA-Str/Ftr > MaxEnt-Seg (over
-average) > MaxEnt-Ftr (over average) > Baseline-Seg/Ftr/Ar >
-MaxEnt-Ftr (over zero) > MaxEnt-Seg (over zero).
 
 One finding is AR provide a learning advantage over segmental or
-feature-based representations. With respect to the difference
-between segments and features, the present results do not reveal
-a clear advantage for either representation: under BUFIA, two
-representations yield identical performance while in MaxEnt the
-results are inconsistent across evaluation criteria.
+feature-based representations.
+However, the improvement is marginal as all the BUFIA models performed at,
+or close to, ceiling.
+We therefore conclude that while there is some evidence that
+AR representations improve tonotactic learnability,
+we believe it is premature to draw firm conclusions.
+The tonotactics of Hausa may simply be too simple to see
+any significant difference in BUFIA's learning capacity
+Therefore, we think that similar experiments ought to be conducted
+on languages with more complex tonotactics as that may allow for
+clearer distinctions to emerge when learning over
+segmental, featural, or autosegmental representations.
 
-This raises another question: how should the well-formedness
-threshold be determined for gradient learners? The evaluation
-criterion substantially affects MaxEnt’s performance. A
-stricter threshold (e.g., the “over-zero” criterion) yields
-poorer results than a more lenient threshold. A greater attention
-should be paid to how well-formedness is defined when evaluating
-probabilistic phonotactic learners.
+\section{Follow up experiments}
 
-\subsection{Beyond Baseline: varying complexity}
+The results provided
+
+We were curious what hindered the performance of the Mac
 We next ask a further question: beyond representations,
 what factors contribute to tonotactic learning performance to
 gradient or categorical learners?

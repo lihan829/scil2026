@@ -4,20 +4,23 @@
 \small
 \begin{tabular}{lccccc}
 \toprule
-Model   & Criteria & Recall & Precision & F1 \\
+Model       & Recall & Precision & F1    \\
 \midrule
-MaxEnt-Seg & over zero & 0.219 & 1.000 & 0.466 \\
-MaxEnt-Seg   & over mean & 0.922 & 0.827 & 0.871 \\
-MaxEnt-Ftr   & over zero & 0.547 & 1.000 & 0.650 \\
-MaxEnt-Ftr   & over mean & 0.906 & 0.773 & 0.832 \\
+Base-Seg    & 0.812  & 1.000     & 0.894 \\
+Base-Ftr    & 0.812  & 1.000     & 0.894 \\
+Base-AR     & 0.812  & 1.000     & 0.894 \\
 \midrule
-BUFIA-Seg/Ftr &  -- & 0.984 & 1.000 & 0.992 \\
-BUFIA-AR   & -- & 1.000 & 1.000 & 1.000 \\
+BUFIA-Seg   & 0.984  & 1.000     & 0.992 \\
+BUFIA-Ftr   & 0.984  & 1.000     & 0.992 \\
+BUFIA-AR    & 1.000  & 1.000     & 1.000 \\
 \midrule
-Base-Seg/Ftr  & -- & 0.812 & 1.000 & 0.894 \\
-Base-AR  & -- & 0.812 & 1.000 & 0.894 \\
+% MaxEnt-Seg & 0.219  & 1.000     & 0.466 \\
+MaxEnt-Seg  & 0.922  & 0.827     & 0.871 \\
+%MaxEnt-Ftr & 0.547  & 1.000     & 0.650 \\
+MaxEnt-Ftr  & 0.906  & 0.773     & 0.832 \\
+
 \bottomrule
 \end{tabular}
-\caption{Model performance across learning models and representations.}
+\caption{Average model performance}
 \label{tab:model_comparison}
 \end{table}
