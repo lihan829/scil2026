@@ -545,106 +545,70 @@ on languages with more complex tonotactics as that may allow for
 clearer distinctions to emerge when learning over
 segmental, featural, or autosegmental representations.
 
-\section{Follow-Up Experiments}
-Based on the results, we find that MaxEnt does not consistently
-provide better performance. This raises the question of what
-factors may hinder the performance of the MaxEnt learner in
-this task. Furthermore, beyond representational
-choices, what other factors may influence tonotactic learning
-performance for gradient and categorical learners? 
-To address these questions, we carried out follow-up experiments
-to examine how changes to these settings affect model performance.
+\section{Follow up experiments}
 
-One factor that may influence gradient learners is frequency
-information, which the weights that MaxEnt assigns to candidate
-constraints depend heavily on. In the previous experiments,
+We were curious what hindered the performance of the MaxEnt model.
+In the previous experiments,
 the model was trained on types rather than tokens; therefore,
 frequency information was not available during learning.
-In the follow-up experiment, we reintroduced frequency
+Since MaxEnt determines weights for the constraints it learns
+partially based on frequencies,
+we hypothesized their absence may have been hindrance.
+
+Therefore, in a follow-up experiment, we introduced frequency
 to MaxEnt by training the model on token data rather
-than type data. As in the previous setup, a 4-fold 
-cross-validation procedure was conducted on the same 
-dataset, but using 621 tokens. Each fold contains 156 
-or 155 positive tokens, and the test
-set includes an equal number of constructed negative forms.
+than type data (621 tokens in total).
+As in the previous setup, we conducted cross-fold validation over four
+folds (each fold contained 156 or 155 tokens per fold).
+As before, an equal number of negative forms were included in the test set.
 Since the \textit{over-zero} criterion does not give satisfactory
-result in the previous experiment, here we use and report ``over-mean" criterion to calculate recall, precision, and F1 scores.
+result in the previous experiment, here we use and report ``over-mean" 
+criterion to calculate recall, precision, and F1 scores.
+We find the inclusion of frequency information makes a substantial difference.
+The average F1 scores for both MaxEnt-Seg and MaxEnt-Ftr was 0.990.
+
 
 Another question is how to determine an appropriate
 complexity bound that accounts for the data without leading to
-overgeneralization. To address this, we set the maximum constraint length in
-MaxEnt to 4 (the highest value permitted by the current
-implementation) and compare results across different complexity
-bounds within this limit. For BUFIA-Seg/Ftr, we conduct a
-comprehensive evaluation across multiple values of $k$ up to 7.
-For BUFIA-AR, we explore parameter settings for $t,m,s$ up to $3$.
+overgeneralization. To examine this, we also ran experiments with 
+MaxEnt models where the maximum constraint length was set to 4.
+This is the highest value permitted by the implementation we used.
+We conducted experiments where these MaxEnt models had access to 
+frequency information, and where they did not.
 
-All results are summarized in Table~\ref{tab.results2},
-except for the BUFIA-AR of varying parameters, which is
-presented separately in Table~\ref{tab:ar_grid} for clarity.
+The results reinforced the importance of frequency information for the MaxEnt models.
+When frequency information was included, the Maxent models performed close to ceiling with
+F1 scores greater than or equal to 0.990.
+When frequency information was excluded, the F1 scores were lower than 0.850.
+There appears to be no appreciable difference among the F1 scores on the
+grammrs obtained by MaxEnt models with frequency information between the constraint lengths 3 and 4,
+as these results are effectiveley at ceiling.
+
+For the sake of comparison, we also examined the grammars returned by
+the BUFIA models when we varied the maximum sizes of the constraints.
+For BUFIA-Seg and BUFIA-Ftr, we examined constraint lengths from 3 to 7.
+For BUFIA-AR, we explore parameter settings for $t,m,s$ up to $3$.
 
 \input{results2.tex}
 
-% Table~\ref{tab.results2} shows that incorporating frequency
-% information does not consistently improve F1 scores, and
-% only leads to improvement under the \textit{over-mean} criterion.
+For BUFIA-Seg and BUFIA-Ftr, the highest F1 score is 0.992 when \(k=3\).
+For \(k=4\), the F1 is still close to ceiling at 0.984.
+As \(k\) increases, the F1 continues to drop for these models,
+indicating overfitting.
 
-% Under the \textit{over-zero} criterion, performance generally
-% decreases when frequency is introduced. For example, MaxEnt-Seg
-% achieves an F1 score of 0.466 at $k=3$ and 0.581 at $k=4$ without
-% frequency information, but both scores decrease once frequency is
-% incorporated. A similar pattern is observed for MaxEnt-Ftr: the F1
-% score drops from 0.650 to 0.449 at $k=3$, and from 0.636 to 0.395
-% at $k=4$ when frequency information is added.
+For BUFIA-AR, when \(m<3\) the highest F1 score was 0.842.
+When the search for constraints cannot consider structures with three moras,
+BUFIA-AR will not find the constraint against trimoraic contours.
+Similarly, when \(t=1\), the hard constraints against monosyllabic rises
+and monomoraic contours cannot be learned which significantly brought down performance.
+On the other hand, F1 scores were at 1.000 in the following three settings:
+\([m=3, s=1, t=2], [m=3, s=1, t=3], [m=3, s=2, t=2]\).
+In the maximum setting when \(m=3, s=1, t=3\), the F1 scored dropped to 0.967,
+indicating the beginning of the cline towards overfitting.
 
-Table~\ref{tab.results2} shows that frequency consistently 
-improves the learning outcomes. Across all model pairs that
-differ only in the presence of frequency, the F1 scores increase
-to at least 0.990. In particular, the best-performing model is 
-MaxEnt-Seg-freq (at $k=4$), which achieves an F1 score of 0.997. 
-This is slightly higher than the other MaxEnt models, including 
-MaxEnt-Seg-freq and MaxEnt-Ftr-freq (at $k=3$), as well as MaxEnt-Ftr-freq (at $k=4$).
-
-% \todo{I commented out the ``over zero" eval but I feel maybe we should add them back in???}
-% These comparisons suggest an interaction between the evaluation
-% criterion and frequency information. Frequency information
-% improves learning outcomes under a more lenient evaluation
-% criterion, but can hurt performance under a stricter one.
-% Moreover, like the previous experiment, the comparison between
-% segmental and feature representations does not yield consistent
-% results, and therefore does not support a clear advantage for
-% either representation.
-
-As for the stopping threshold, increasing the maximum constraint
-length from $k=3$ to $k=4$ does not necessarily improve the
-performance of MaxEnt models that incorporate frequency
-information. MaxEnt-Seg-freq shows only a slight improvement
-when $k$ increases from 3 to 4, whereas MaxEnt-Ftr-freq shows
-virtually no change. 
-
-In contrast, models trained on type data show the opposite
-trend. When $k$ increases, precision improves slightly,
-but recall decreases more substantially, leading to an overall
-drop in F1 score. For example, MaxEnt-Seg achieves an F1 score
-of 0.871 at $k=3$, which drops to 0.651 when $k=4$.
-
-This decline in recall is also observed for BUFIA-Seg/Ftr as $k$
-increases. However, precision remains at 1.000 even when $k$
-increases to 7, resulting in a more gradual decline in overall
-performance. For constraint lengths between $k=3$ and $k=5$, the 
-model remains relatively robust and comparable to MaxEnt 
-frequency models. A more substantial drop occurs at $k=6$, which 
-signals the point where overly complex constraints begin to 
-over-restrict the attested data.
-
-When examining BUFIA over AR, we keep the mora count fixed but vary the  observe that recall remains
-consistently high across parameter settings up to 3. The
-precision, however, varies with the complexity levels, and
-becomes robust when the mora bound exceeds 2 or when
-the tonal bound exceeds 1. In particular, when
-$t = \{2,3\} $, $s \in \{1,2\}$, and $m = 3$, the model achieves
-perfect or near perfect F1 score of 1.000.
-
+All the aforementioned results are summarized in
+Table~\ref{tab.results2}, except for the BUFIA-AR model, which is
+presented separately in Table~\ref{tab:ar_grid} for clarity.
 
 \begin{table}[t]
 \centering
