@@ -27,7 +27,7 @@
 \usepackage{multicol}
 \usepackage{amsmath, amssymb,stackengine,scalerel}
 \usetikzlibrary{positioning}
-
+\sloppy 
 %%%%%
 
 
@@ -490,7 +490,7 @@ Third, over-median: a form is rejected if its total weighted violation score
 exceeds the median score across all candidate forms.
 These three criteria are different ways to categorically interpret the gradient grammar.
 
-In all of our experiments, the over-average intepretation performed the best.
+In all of our experiments, the over-average interpretation performed the best.
 The over-zero interpretation was the worst, and tended to reject more than half of the positive forms.
 This is likely because constraints with small non-zero weights were learned.
 Generally, the over-median approach performed similarly to over-average, but had lower scores.
@@ -545,7 +545,7 @@ on languages with more complex tonotactics as that may allow for
 clearer distinctions to emerge when learning over
 segmental, featural, or autosegmental representations.
 
-\section{Follow up experiments}
+\section{Follow-Up Experiments}
 
 We were curious what hindered the performance of the MaxEnt model.
 In the previous experiments,
@@ -570,19 +570,21 @@ The average F1 scores for both MaxEnt-Seg and MaxEnt-Ftr was 0.990.
 
 Another question is how to determine an appropriate
 complexity bound that accounts for the data without leading to
-overgeneralization. To examine this, we also ran experiments with 
+over-generalization. To examine this, we also ran experiments with 
 MaxEnt models where the maximum constraint length was set to 4.
 This is the highest value permitted by the implementation we used.
 We conducted experiments where these MaxEnt models had access to 
 frequency information, and where they did not.
 
-The results reinforced the importance of frequency information for the MaxEnt models.
-When frequency information was included, the Maxent models performed close to ceiling with
-F1 scores greater than or equal to 0.990.
-When frequency information was excluded, the F1 scores were lower than 0.850.
-There appears to be no appreciable difference among the F1 scores on the
-grammrs obtained by MaxEnt models with frequency information between the constraint lengths 3 and 4,
-as these results are effectiveley at ceiling.
+The results reinforced the importance of frequency information 
+for the MaxEnt models. When frequency information was included, 
+the MaxEnt models performed close to ceiling with F1 scores 
+greater than or equal to 0.990. When frequency information was 
+excluded, the F1 scores were lower than 0.850.
+There appears to be no appreciable difference among the F1 scores 
+on the grammars obtained by MaxEnt models with frequency information 
+between the constraint lengths 3 and 4, as these results are effectively 
+at ceiling.
 
 For the sake of comparison, we also examined the grammars returned by
 the BUFIA models when we varied the maximum sizes of the constraints.
@@ -594,7 +596,7 @@ For BUFIA-AR, we explore parameter settings for $t,m,s$ up to $3$.
 For BUFIA-Seg and BUFIA-Ftr, the highest F1 score is 0.992 when \(k=3\).
 For \(k=4\), the F1 is still close to ceiling at 0.984.
 As \(k\) increases, the F1 continues to drop for these models,
-indicating overfitting.
+indicating over-fitting.
 
 For BUFIA-AR, when \(m<3\) the highest F1 score was 0.842.
 When the search for constraints cannot consider structures with three moras,
@@ -603,8 +605,8 @@ Similarly, when \(t=1\), the hard constraints against monosyllabic rises
 and monomoraic contours cannot be learned which significantly brought down performance.
 On the other hand, F1 scores were at 1.000 in the following three settings:
 \([m=3, s=1, t=2], [m=3, s=1, t=3], [m=3, s=2, t=2]\).
-In the maximum setting when \(m=3, s=1, t=3\), the F1 scored dropped to 0.967,
-indicating the beginning of the cline towards overfitting.
+In the maximum setting when \([m=3, s=1, t=3]\), the F1 scored dropped to 0.967,
+indicating the beginning of the cline towards over-fitting.
 
 All the aforementioned results are summarized in
 Table~\ref{tab.results2}, except for the BUFIA-AR model, which is
@@ -617,25 +619,26 @@ presented separately in Table~\ref{tab:ar_grid} for clarity.
 \begin{tabular}{cccccc}
 \toprule
  $m$ & $s$ & $t$ & Recall & Precision & F1    \\
- % 1   & 1   & 1   & 1.000  & 0.500     & 0.667 \\
- % 1   & 1   & 2   & 1.000  & 0.615     & 0.762 \\
- % 1   & 1   & 3   & 1.000  & 0.615     & 0.762 \\
- % 1   & 2   & 1   & 1.000  & 0.500     & 0.667 \\
- % 1   & 2   & 2   & 1.000  & 0.615     & 0.762 \\
- % 1   & 2   & 3   & 1.000  & 0.615     & 0.762 \\
- % 1   & 3   & 1   & 1.000  & 0.500     & 0.667 \\
- % 1   & 3   & 2   & 1.000  & 0.615     & 0.762 \\
- % 1   & 3   & 3   & 1.000  & 0.615     & 0.762 \\
- % \midrule
- % 2   & 1   & 1   & 1.000  & 0.500     & 0.667 \\
- % 2   & 1   & 2   & 1.000  & 0.727     & 0.842 \\
- % 2   & 1   & 3   & 1.000  & 0.727     & 0.842 \\
- % 2   & 2   & 1   & 1.000  & 0.500     & 0.667 \\
- % 2   & 2   & 2   & 1.000  & 0.727     & 0.842 \\
- % 2   & 2   & 3   & 0.969  & 0.721     & 0.826 \\
- % 2   & 3   & 1   & 1.000  & 0.500     & 0.667 \\
- % 2   & 3   & 2   & 1.000  & 0.727     & 0.842 \\
- % 2   & 3   & 3   & 0.969  & 0.721     & 0.826 \\
+ \midrule 
+  1   & 1   & 1   & 1.000  & 0.500     & 0.667 \\
+  1   & 1   & 2   & 1.000  & 0.615     & 0.762 \\
+  1   & 1   & 3   & 1.000  & 0.615     & 0.762 \\
+  1   & 2   & 1   & 1.000  & 0.500     & 0.667 \\
+  1   & 2   & 2   & 1.000  & 0.615     & 0.762 \\
+  1   & 2   & 3   & 1.000  & 0.615     & 0.762 \\
+  1   & 3   & 1   & 1.000  & 0.500     & 0.667 \\
+  1   & 3   & 2   & 1.000  & 0.615     & 0.762 \\
+  1   & 3   & 3   & 1.000  & 0.615     & 0.762 \\
+  \midrule
+  2   & 1   & 1   & 1.000  & 0.500     & 0.667 \\
+  2   & 1   & 2   & 1.000  & 0.727     & 0.842 \\
+  2   & 1   & 3   & 1.000  & 0.727     & 0.842 \\
+  2   & 2   & 1   & 1.000  & 0.500     & 0.667 \\
+  2   & 2   & 2   & 1.000  & 0.727     & 0.842 \\
+  2   & 2   & 3   & 0.969  & 0.721     & 0.826 \\
+  2   & 3   & 1   & 1.000  & 0.500     & 0.667 \\
+  2   & 3   & 2   & 1.000  & 0.727     & 0.842 \\
+  2   & 3   & 3   & 0.969  & 0.721     & 0.826 \\
  \midrule
  3   & 1   & 1   & 1.000  & 0.615     & 0.762 \\
  3   & 1   & 2   & 1.000  & 1.000     & 1.000 \\
@@ -653,60 +656,63 @@ presented separately in Table~\ref{tab:ar_grid} for clarity.
 \end{table}
 
 \section{Discussion and Conclusion}
+We observe from the results that several factors influence learning
+outcomes in surface-based tonotactics.
 
+First, \citet{wilson2018accidental} show that for segmental
+phonotactics, learning tends to be more successful over
+feature-based representations than over segments. Our results
+in tonal phonology, however, do not show a consistent difference
+between feature and segment representations. Under the BUFIA
+model, the two representations yield identical performance,
+while under MaxEnt the difference is marginal and inconsistent.
+One possible explanation is that string-based tonal representations
+are relatively simple, involving a much smaller inventory of tonal
+symbols (typically two to four tonemes and three to six
+features) compared with the richer feature systems used in
+segmental phonology.
 
-We see from the results that as for a surface-based phonotactics, different
-representations can have equal generalization capacity if the they
-are equivalent. \citet{oakdenNotationalEquivalenceTonal2020} argues that
-different
-representations are notationally equivalent if there exists a set of bijective
-transduction from one system to the other. \citet{danis2025logical} further
-argues notational equivalence further requires that one system to persevere all
-possible nature classes that
-other predicts, and vice versa. Here, we do not claim that the two
-representations are
-equivalent. Rather, we propose that computational models with representational
-flexibility, such as BUFIA, can be used as practical comparison tool
-for evaluating representational equivalence by examining whether learning
-outcomes
-remain consistent across representations. Besides, as mentioned earlier, the
-two
-systems rely on different alphabets, that is, different basic units of
-phonological
-representation. One could ask how these units are determined and whether they
-can be
-supported by computational learning or by psycholinguistic evidence.
+In contrast, ARs can be used effectively for learning and 
+show a clear advantage over string-based representations. 
+This advantage is particularly evident when compared with 
+MaxEnt models without frequency, and the performance is 
+comparable to MaxEnt models trained with frequency.
 
-Beyond the baseline grammar, comparisons among computationally learned, dynamic
+In addition, for gradient learners, frequency information in the
+dataset is crucial for achieving strong performance; however,
+this is not required for BUFIA, which achieves competitive
+results even without frequency information. Furthermore, for
+a dataset such as Hausa, which exhibits a relatively small
+set of surface tonal constraints, the optimal complexity
+threshold appears to lie between $k=3$ and $k=5$ for string
+representations, or under AR settings where $\mu \geq 3$
+and $t \geq 1$. For more complex tonal systems, learners
+as BUFIA-AR are advantageous to control complexity at 
+multiple tiers which search the hypothesis space more precisely 
+and to capture complexity interaction between tiers. 
 
-grammars show that the two BUFIA learners differ in performance. Learning over
-ARs
-achieves higher accuracy on attested forms without increased
-overgeneralization. This
-pattern remains robust even when the dataset includes rare forms.
+We aim to draw attention to the use of computational methods
+for evaluating competing representational choices and theories
+in linguistics. For example, one discussion concerns whether
+different representations are genuinely distinct, or whether
+they merely differ superficially but notationally equivalent
+\citep{oakdenNotationalEquivalenceTonal2020,danis2025logical}.
+Models such as BUFIA, which allow flexible representations,
+can serve as practical tools for facilitating such comparisons.
+More broadly, computational approaches also allow us to explore
+how grammar inference can be improved through interactions
+among representations, token or type data, complexity bounds,
+and evaluation criteria.
 
-The relatively low performance of the MaxEnt model may raise questions. One
-possible
-explanation is the limited dataset size. This
-study used type-based rather than token-based data.
-Without large dataset or frequency information, the
-MaxEnt performance may be limited. In addition, we
-interpret all MaxEnt constraints categorically: any
-non-zero weighted violation sum, even if very
-small, is treated as a violation. Future work could
-explore how to determine well-formedness thresholds
-more systematically.
-
-In conclusion, we show that tonotactics can be learned effectively and
-efficiently over ARs using BUFIA-AR, even without frequency information. This
-highlights a future direction for grammar inference in tonal languages. For
-example, many tonal processes (input–output mappings) involve changes in
-association relations rather than changes in symbols, which makes learning over
-multi-tier structures more necessary. More generally, adopting linguistically
-interpretable learning models
-or representations will also help distinguish among competing theories of
-linguistic representation and generalization.
-
+In conclusion, we show that tonotactics can be learned
+effectively and efficiently over autosegmental representations
+using BUFIA-AR with sparse and limited data. The model
+achieves a comparable learning outcome to gradient models
+that rely heavily on distributional information. 
+The results suggest that AR-based learning is a promising
+direction for modeling tonal grammars and tonal processes,
+where phonological changes often involve modifications of
+associations between tiers rather than individual symbols.
 \bibliography{refs.bib}
 
 
