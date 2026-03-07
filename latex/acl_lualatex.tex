@@ -27,7 +27,6 @@
 \usepackage{booktabs}
 \usepackage{todonotes}
 \usepackage{makecell}
-\sloppy 
 %%%%%
 \title{Representation Matters: Tonotactic Learning across Representations}
 % Author information can be set in various styles:5
@@ -78,9 +77,9 @@ learning gives the strongest overall performance; and
 frequency information is introduced and is comparable 
 to BUFIA-AR. These findings suggest that tonotactic 
 learning benefits from structurally explicit 
-representations. More broadly, this work highlights 
-the importance of using computational tools to evaluate 
-competing linguistic representations and hypothesis.
+representations. Overall this work highlights 
+the importance of using linguistically meaningful
+representations into learning.
 
 \end{abstract}
 
@@ -156,10 +155,9 @@ This corpus was divided into four partitions (folds).
 Each fold was converted into the three representational schemes.
 The tonal representations studied here abstract away from segmental content and
 retain only tonal and TBU information.
-For example, the Hausa word \textit{mù.tûm} (``person'') is represented in one
-of the three ways as shown in Table~\ref{fig:reps}. Representations are
-discussed in detail in \S\ref{sec:background}.
-
+%For example, the Hausa word \textit{mù.tûm} (``person'') is represented in one of the three ways as shown in Table~\ref{tab.threereps}. 
+%Representations are discussed in detail in \S\ref{sec:background},
+%and examples are provided in \S\ref{sec:experiment}.
 For each representation and model, cross-fold validation was conducted and
 their model performance examined.
 In every case, the evaluation set was augmented to include word-forms of
@@ -205,7 +203,7 @@ specifying the relationship between pairs of elements.
 
 The string representation arranges symbols along a single axis.
 The signature of a string model includes unary labeling relations indicating
-the symbols, and a single binary successor relation $\lhd$ defining linear
+the symbols, and a single binary successor relation  \todo{can we change $\lhd$ to $\rightarrow$ which is already in the graph} $\lhd$ defining linear
 order.
 For example, the string representation of the tonal structure of the Hausa word
 \textit{mù.tûm} (``person'') is L.HL.
@@ -225,18 +223,15 @@ The featural representation also arranges symbols along a single axis.
 Like the string model, the signature of the feature model
 includes single binary successor relation $\lhd$ defining linear order.
 Unlike the string models, there are five unary relations:
-\{ \(+\) Low, \(-\) Low, \(+\) Contour, \(-\) Contour, \(+\) Boundary\}.
-In the string model, each position is true of exactly one unary relation.
+\todo{is -B also supposed to be in? Or many just B}\texttt{\{+Low, -Low, +Contour, -Contour, +Boundary\}}. In the string model, each position is true of exactly one unary relation.
 However, in the feature model, positions may be true of more than one unary
 relation.
 \citet{strother2017using} and \citet{vu2018statistical} refer to such models as
-unconventional because they are not the standard way to model strings in
+\textit{unconventional} because they are not the standard way to model strings in
 theoretical computer science (though it is standard in phonology).
-Note in this representation [\(+\)Contour] is only used to indicate monomoraic
+Note in this representation \texttt{[$\pm$Contour]} is only used to indicate monomoraic
 contour tones.
-Figure~\ref{sec2.fig.feature} shows the feature representation of the tonal
-structure for the Hausa word \textit{mù.tûm} (``person'') is L.HL.
-
+Figure~\ref{sec2.fig.feature} shows the feature representation of same tonal strcuture of the word in Figure~\ref{sec2.fig.feature}
 \input{feature.model.tex}
 
 ARs, in contrast, correspond to multi-linear (tiered) relational structures.
@@ -265,14 +260,12 @@ relations are represented in autosegmental phonology
 have been argued to be computationally simpler over ARs than over strings,
 because cross-tier dependencies are represented directly as relations. This
 allows processes to be modeled by modifying associations rather than
-altering feature values or the alphabet, and can describe long-distance
+altering feature values or symbols, and can describe long-distance
 processes locally \citep{goldsmith1976autosegmental,jardine2017LocalNature}.
 
 \subsection{Phonotactic Learning Models}
 
-One learning system used in this paper is the Bottom-Up
-Factor Inference Algorithm (BUFIA; \citet{chandleeBufia2019}).
-BUFIA learns constraints expressed as relational structures under an arbitrary
+One learning system used in this paper is the BUFIA \citep{chandleeBufia2019} which learns constraints expressed as relational structures under an arbitrary
 model-theoretic signature.
 This means the general form of the algorithm can be flexibily applied to very
 many specific linguistic representations.
@@ -287,31 +280,30 @@ beginning from the simplest (smallest) relational structures,
 and considering increasing complex ones as needed.
 The notions `simpler' and `more complex' are made concrete by the
 \textit{containment
-relation}: some pairs of structures stand in a containment relation (one
-containing the other), while others are not comparable.
+relation}: some pairs of structures stand in a containment relation (one containing the other, where the more complex structure is referred to as the \textit{superfactor} and the contained structure is the \textit{subfactor}), while others are not comparable.
 Each logically possible structure, which serve as candidate constraints, are
 partially ordered by the containment relation.
-
-As illustrated in
-Figure [maybe??] for strings over the alphabet ${a,b}$, more general
-structures (e.g., the empty string or singletons) occupy lower positions in
-the space, whereas more specific structures appear higher. For any given
-structure, those that properly contain it are its \textit{superfactors}
-(positioned above), and those that it properly contains are its
-\textit{subfactors} (positioned below). Among the superfactors, only those
-that are one level above the current candidate are referred to as its
-\textit{next superfactors}.
+%
+%As illustrated in
+%Figure [maybe??] for strings over the alphabet ${a,b}$, more general
+%structures (e.g., the empty string or singletons) occupy lower positions in
+%the space, whereas more specific structures appear higher. For any given
+%structure, those that properly contain it are its \textit{superfactors}
+%(positioned above), and those that it properly contains are its
+%\textit{subfactors} (positioned below). Among the superfactors, only those
+%that are one level above the current candidate are referred to as its
+%\textit{next superfactors}.
 
 Two core operations of BUFIA determine its search:
 containment and the sub/superfactor relation.
 The learner is provided with a set of positive data and a complexity bound.
-The search begins a from an initial structure (typically the empty structure).
+The search begins a from an initial structure at the bottom of hypothesis space (typically the empty structure).
 For each candidate, BUFIA checks whether it is contained in the positive
-dataset.
-If it is attested, the learner generates its next superfactors and
-continues searching upward.
+dataset. If it is attested, the learner generates its \textit{next 
+	superfactors} (i.e., minimally more complex superfactors) and 
+	continues searching upward.
 Otherwise, the structure is identified as a forbidden factor (i.e., a
-constraint), and its superfactors are pruned from the rest of the space.
+\textit{constraint}), and its superfactors are pruned from the rest of the space.
 \citet{chandleeBufia2019} prove that, in this way,
 BUFIA identifies the most general constraints within the complexity bounds that
 are consistent with the data.
@@ -320,12 +312,11 @@ remaining maximally general.
 
 As said before, a key merit of BUFIA is its representational flexibility.
 The algorithm can operate over any representational choices,
-provided they  are defined model-theoretically.
-Recent work has demonstrated the success of  BUFIA in phonotactic learning.
+provided they are defined model-theoretically.
+Recent work has demonstrated the success of BUFIA in phonotactic learning.
 \citet{Swanson+2025} implemented a string-based version of BUFIA
 for learning Quechua phonotactics and showed that it performed
-as well as the Maximum Entropy phonotactic
-learner \citep[MaxEnt;][]{hayes2008maximum, wilson2018accidental}.
+as well as the MaxEnt \citep{hayes2008maximum, wilson2018accidental}.
 \citet{li2025learning} introduced a version of BUFIA that
 operates directly over ARs for tonotactic learning and
 showed that it could learn tonotactic constraints.
@@ -334,16 +325,13 @@ different representations of the same data under a shared learning framework.
 
 BUFIA is a categorical learner: a candidate structure is
 either well-formed or ill-formed,
-depending on whether it contains any  forbidden subfactor.
-In contrast, probabilistic models assign gradient well-formedness values.
-A representative of such models is
-the aforementioned MaxEnt learning system \citep{hayes2008maximum}.
-MaxEnt interprets well-formedness as probability rather than a binary value and
-treats constraints as violable, each associated with a penalty weight.
-The well-formedness of a candidate is computed from the weighted sum of its
-constraint violations.
-This evaluation is cumulative: the more constraints a candidate violates,
-and the higher the weights of those constraints,
+depending on whether it contains any forbidden subfactor.
+In contrast, probabilistic models, such as MaxEnt 
+\citep{hayes2008maximum}, assign gradient well-formedness values
+to candidate forms. Well-formedness is interpreted as a probability 
+rather than a binary value; consequently, constraints are treated as violable, each associated with a penalty weight.
+This evaluation is cumulative: the more constraints a candidate 
+violates, and the higher the weights of those constraints,
 the lower its predicted probability of well-formedness.
 
 MaxEnt has been widely used in string-based phonotactic learning, and more
@@ -351,7 +339,7 @@ recent implementations induce phonological tiers to capture long-distance
 patterns \citep{GouskovaGallagher2020} and
 metrical structure \citet{lee2025representing}.
 These studies suggest that probabilistic string-based approaches can
-learn structural regularities that are not directly visible in surface
+learn structural information that are not directly visible in surface
 sequences.
 However, these representations differ from ARs in that
 they typically do not encode association relations between
@@ -368,6 +356,7 @@ designed to test these questions by applying the same dataset across
 different representations and the two learning schemes.
 
 \section{Experiment: Hausa Tonotactics}
+\label{sec:experiment}
 
 To test tonotactic learnability across representations and models,
 we conducted a series of controlled computational experiments on the same
