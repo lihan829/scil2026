@@ -68,76 +68,83 @@ segments, features, and autosegmental representations (ARs).
 Two learning models are evaluated, the Maximum Entropy 
 (MaxEnt) model and the Bottom-Up Factor Inference Algorithm
 (BUFIA), to examine how learning outcomes interact with both
-model type and representations. A follow-up experiment further
-explores the roles of frequency and complexity thresholds.
-The results show that (1) there is no consistent advantage between
-segmental and feature-based representations across learning models,
-while AR-based learning gives the strongest overall performance; and
-(2) MaxEnt performance improves substantially when frequency
-information is introduced and is comparable to BUFIA-AR. 
-These findings suggest that tonotactic learning benefits
-from structurally explicit representations. More broadly, 
-this work highlights the importance of using computational 
-tools to evaluate competing linguistic representations and 
-hypothesis.
+model type and representations. A follow-up experiment 
+further explores the roles of frequency and complexity 
+thresholds. The results show that (1) there is no 
+consistent advantage between segmental and feature-based 
+representations across learning models, while AR-based 
+learning gives the strongest overall performance; and 
+(2) MaxEnt performance improves substantially when 
+frequency information is introduced and is comparable 
+to BUFIA-AR. These findings suggest that tonotactic 
+learning benefits from structurally explicit 
+representations. More broadly, this work highlights 
+the importance of using computational tools to evaluate 
+competing linguistic representations and hypothesis.
 
 \end{abstract}
 
 \section{Introduction}
 
-This paper focuses on the learning of tonal phonotactics, or tonotactics, which
-addresses the question of the well-formedness of how tones and tone-bearing
-units (TBUs, such as syllable or mora) are organized in tonal languages, and
-explores how tonal representations can influence learning outcomes.
-For a long time, tonotactics has received less attention in computational
-learning than segmental phonotactics, despite the widespread distribution of
-tonal languages across the world \citep{yip2002tone}.
-One possible reason for this gap lies in representational differences.
-Segmental phonotactics is typically modeled using linear representations such
-as strings, which makes it readily compatible with a wide range of existing
-learning models.
-Tonotactics, by contrast, has long been analyzed over non-linear structures,
-most widely used autosegmental representations
-\citep[ARs,][]{goldsmith1976autosegmental}.
-This representational challenge has led to a dearth of computational models
-that operate directly over non-linear structures, with many approaches instead
-flattening tonal patterns into strings to fit linear learning frameworks.
-Although a substantial body of work has argued that linear representations are
-inadequate for capturing tonal generalizations
-\citep{clements2010autosegmental, oddenintroducing2013}, and other studies have
-examined the computational properties of ARs
-\citep{bird1990phonological,coleman1991no,
-kornai2007mathematical,jardine2015concatenation,jardine2016locality,
-jardine2017LocalNature,jardine2019expressivity}, we are unaware of any
-empirical demonstrations of clear advantages for non-linear representations
-over strings in tonotactic learning.
+This paper focuses on the learnability of tonal phonotactics, 
+or tonotactics, which addresses the question of how tones 
+and tone-bearing units (TBUs, such as syllable or mora) are 
+organized in tonal languages. More specifically, we examine 
+how the learning outcomes are influenced by representations 
+used in learning tasks.
 
-In this paper, we address two questions: (1) how effectively tonotactics can be
-learned over ARs, and (2) whether ARs improve learning outcomes compared with
-alternative string-based representations.
-To address these questions, we encoded the same dataset in three ways (strings,
-sequences of features, ARs) and applied versions of the Bottom-Up Factor
-Inference Algorithm (BUFIA) \citep{chandleeBufia2019} and the Maximum Entropy
-phonotactic learning model \citep{hayes2008maximum} to these datasets.
-A set of linguistically motivated grammars, also encoded accroding to these
-three representations, helps serve as a baseline.
+For a long time, despite the widespread distribution of tonal
+languages across the world \citep{yip2002tone}, tonotactics 
+has received considerably less attention in computational 
+learning than segmental phonotactics. One possible reason 
+for this gap lies in representational differences.
+Segmental phonotactics is typically modeled using linear 
+representations such as strings, which makes it readily 
+compatible with a wide range of existing learning models.
+Tonotactics, by contrast, has long been analyzed over 
+non-linear structures, most widely autosegmental 
+representations \citep[ARs,][]{goldsmith1976autosegmental}.
+These more complex representations pose challenges for many
+existing computational models, which are unable to operate
+directly over non-linear structures. As a workaround, many
+approaches usually flatten tonal patterns into strings to 
+fit linear learning frameworks \citep{shih2013subsegmental}.
+Although a substantial body of work has argued that linear 
+representations are inadequate for capturing tonal 
+generalizations \citep{clements2010autosegmental, 
+	oddenintroducing2013} and examined the computational 
+properties of ARs \citep{bird1990phonological,
+	coleman1991no,kornai2007mathematical,
+	jardine2015concatenation,jardine2016locality,
+	jardine2017LocalNature,jardine2019expressivity}, 
+we are unaware of any empirical demonstrations of clear 
+advantages for non-linear representations over strings in 
+tonotactic learning.
 
-One limitation of this study is that the current implementation of MaxEnt does
-not support ARs.
-A more comprehensive study would also include a version of MaxEnt which can
-operate over ARs.
-Despite this limitation, the results presented here help assess whether ARs
-contribute to learning.
+To fill this gap, we conducted computational experiments 
+and encoded the same dataset in three ways (strings,
+sequences of features, ARs). First, as a sequence of 
+symbols representing low (L), high (H), rising (R), and 
+falling (F) tones. Second, we encoded the data as a 
+sequence of feature bundles with the features [\(\pm\) 
+high] and [\(\pm\) contour]. Third, we provided ARs 
+(see \S2). These representations are evaluated using
+two learning models: the Bottom-Up Factor Inference 
+Algorithm \citep[BUFIA;][]{chandleeBufia2019} and the 
+Maximum Entropy phonotactic learner \citep[MaxEnt;][]{hayes2008maximum}.
+BUFIA is a categorical learner that induces a set of
+inviolable constraints, whereas MaxEnt is a gradient
+learner that assigns probabilistic weights to constraints.
+In addition, a set of linguistically motivated grammars,
+encoded in the corresponding representations, serves as
+a baseline for comparison with the learned grammars.
 
-% First, as a sequence of symbols representing low (L), high (H), rising (R),
-and falling (F) tones.
-% Second, we encoded the data as a sequence of feature bundles with the
-features [\(\pm\) high] and [\(\pm\) contour].
-% Third, we provided ARs (see \S2).
-
-% and applied two versions of the Bottom-Up Factorial Inference Algorithm
-(BUFIA) \citep{chandleeBufia2019}: one operating over strings (BUFIA-Str) and
-the other directly over ARs (BUFIA-AR).
+One limitation of this study is that the current 
+implementation of MaxEnt does not support ARs.
+A more comprehensive study would also include a 
+version of MaxEnt which can operate over ARs.
+Despite this limitation, the results presented here 
+help assess whether ARs contribute to learning.
 
 The corpus in this study comes from the Hausa database in the
 \textit{World Loanword Database} \citep{wold-4}, which was curated by
@@ -160,12 +167,17 @@ matched sizes that violated the constraints in the baseline grammar in order to
 meaningfully report precision, recall, and F1 scores, which helps identify
 whether that the models generalize and not overgeneralize.
 
-The results yield three main findings.
-% First, representational choice does
-% not affect outcomes when the grammar is a fixed, static set of constraints,
-% provided that the two representations stand in a one-to-one correspondence.
-% For computationally learned grammars, the use of ARs improves learning
-% outcomes, with BUFIA-AR being the most robust model across conditions.
+The results show three main findings. First, segmental and
+feature-based representations do not show a consistent 
+difference in learning outcomes: they perform identically 
+under BUFIA and only show marginal and inconsistent differences 
+under MaxEnt. Second, BUFIA over ARs achieve the best performance. 
+with the highest accuracy even with sparse data. Third, learning 
+outcomes are influenced by other factors such as frequency 
+information, complexity thresholds, and evaluation criteria. 
+Frequency substantially improves MaxEnt performance and gives 
+comparable results to BUFIA-AR, while categorical learners such 
+as BUFIA remain stable without frequency.
 
 Overall, this work highlights the importance of incorporating linguistically
 meaningful representations into computational models of phonological
