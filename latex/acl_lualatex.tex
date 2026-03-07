@@ -1,12 +1,9 @@
 % This file compiles with both LuaLaTeX and XeLaTeX
 \documentclass[11pt]{article}
 
-% Change "review" to "final" to generate the final (sometimes called camera-ready) version.
+% Change "review" to "final" to generate the final (sometimes calledcamera-ready) version.
 % Change to "preprint" to generate a non-anonymous version with page numbers.
 \usepackage[review]{acl}
-\usepackage{makecell}
-\usepackage{booktabs}
-\usepackage{todonotes}
 % This is not strictly necessary, and may be commented out,
 % but it will improve the layout of the manuscript,
 % and will typically save some space.
@@ -24,15 +21,15 @@
 \babelfont{rm}{TeXGyreTermesX} % similar to Times
 \usepackage{subcaption}
 \usepackage{tikz}
+\usetikzlibrary{positioning}
 \usepackage{multicol}
 \usepackage{amsmath, amssymb,stackengine,scalerel}
-\usetikzlibrary{positioning}
+\usepackage{booktabs}
+\usepackage{todonotes}
+\usepackage{makecell}
 \sloppy 
 %%%%%
-
-
 \title{Representation Matters: Tonotactic Learning across Representations}
-
 % Author information can be set in various styles:5
 % For several authors from the same institution:
 % \author{Author 1 \and ... \and Author n \\
@@ -48,7 +45,6 @@
 %         \AND
 %         Author 2 \\ Address line \\ ... \\ Address line \And
 %         Author 3 \\ Address line \\ ... \\ Address line}
-
 \author{First Author \\
   Affiliation / Address line 1 \\
   Affiliation / Address line 2 \\
@@ -62,49 +58,86 @@
 
 \begin{document}
 \maketitle
-\begin{abstract}
 
-This paper investigates whether tonotactic learnability differs across
-representational choices. We conduct an experiment by using the same
-dataset but over two different representations: string and autosegmental
-representations (ARs). Two learning models are used: Maximum Entropy
-(MaxEnt) model and the Bottom-Up Factor Inference Algorithm (BUFIA),
-allowing us to examine whether differences in learning outcomes arise from
-the learning model as well as from the representation. Using identical
-training and testing datasets across conditions, we evaluate five
-implemented combinations: Baseline-Str, Baseline-AR, MaxEnt-Str, BUFIA-Str,
-and BUFIA-AR. The results show that (1) for the baseline grammar, which is
-static and surface-based, representational choice does not affect learning
-outcomes; and (2) for computationally learned grammars, performance is
-strongest when grammars are induced over ARs under a graph-based
-categorical learner. These findings suggest that representation plays an
-important role in tonotactic learning.
-mechanisms.
+\begin{abstract}
+	
+This paper investigates whether tonotactic learning differs 
+across representational choices. We conduct an experiment 
+using the same dataset encoded in three representations: 
+segments, features, and autosegmental representations (ARs). 
+Two learning models are evaluated, the Maximum Entropy 
+(MaxEnt) model and the Bottom-Up Factor Inference Algorithm
+(BUFIA), to examine how learning outcomes interact with both
+model type and representations. A follow-up experiment further
+explores the roles of frequency and complexity thresholds.
+The results show that (1) there is no consistent advantage between
+segmental and feature-based representations across learning models,
+while AR-based learning gives the strongest overall performance; and
+(2) MaxEnt performance improves substantially when frequency
+information is introduced and is comparable to BUFIA-AR. 
+These findings suggest that tonotactic learning benefits
+from structurally explicit representations. More broadly, 
+this work highlights the importance of using computational 
+tools to evaluate competing linguistic representations and 
+hypothesis.
+
 \end{abstract}
 
 \section{Introduction}
 
-This paper focuses on the learning of tonal phonotactics, or tonotactics, which addresses the question of the well-formedness of how tones and tone-bearing units (TBUs, such as syllable or mora) are organized in tonal languages, and explores how tonal representations can influence learning outcomes.
-For a long time, tonotactics has received less attention in computational learning than segmental phonotactics, despite the widespread distribution of tonal languages across the world \citep{yip2002tone}.
+This paper focuses on the learning of tonal phonotactics, or tonotactics, which
+addresses the question of the well-formedness of how tones and tone-bearing
+units (TBUs, such as syllable or mora) are organized in tonal languages, and
+explores how tonal representations can influence learning outcomes.
+For a long time, tonotactics has received less attention in computational
+learning than segmental phonotactics, despite the widespread distribution of
+tonal languages across the world \citep{yip2002tone}.
 One possible reason for this gap lies in representational differences.
-Segmental phonotactics is typically modeled using linear representations such as strings, which makes it readily compatible with a wide range of existing learning models.
-Tonotactics, by contrast, has long been analyzed over non-linear structures, most widely used autosegmental representations \citep[ARs,][]{goldsmith1976autosegmental}.
-This representational challenge has led to a dearth of computational models that operate directly over non-linear structures, with many approaches instead flattening tonal patterns into strings to fit linear learning frameworks.
-Although a substantial body of work has argued that linear representations are inadequate for capturing tonal generalizations \citep{clements2010autosegmental, oddenintroducing2013}, and other studies have examined the computational properties of ARs \citep{bird1990phonological,coleman1991no, kornai2007mathematical,jardine2015concatenation,jardine2016locality, jardine2017LocalNature,jardine2019expressivity}, we are unaware of any empirical demonstrations of clear advantages for non-linear representations over strings in tonotactic learning.
+Segmental phonotactics is typically modeled using linear representations such
+as strings, which makes it readily compatible with a wide range of existing
+learning models.
+Tonotactics, by contrast, has long been analyzed over non-linear structures,
+most widely used autosegmental representations
+\citep[ARs,][]{goldsmith1976autosegmental}.
+This representational challenge has led to a dearth of computational models
+that operate directly over non-linear structures, with many approaches instead
+flattening tonal patterns into strings to fit linear learning frameworks.
+Although a substantial body of work has argued that linear representations are
+inadequate for capturing tonal generalizations
+\citep{clements2010autosegmental, oddenintroducing2013}, and other studies have
+examined the computational properties of ARs
+\citep{bird1990phonological,coleman1991no,
+kornai2007mathematical,jardine2015concatenation,jardine2016locality,
+jardine2017LocalNature,jardine2019expressivity}, we are unaware of any
+empirical demonstrations of clear advantages for non-linear representations
+over strings in tonotactic learning.
 
-In this paper, we address two questions: (1) how effectively tonotactics can be learned over ARs, and (2) whether ARs improve learning outcomes compared with alternative string-based representations.
-To address these questions, we encoded the same dataset in three ways (strings, sequences of features, ARs) and applied versions of the Bottom-Up Factor Inference Algorithm (BUFIA) \citep{chandleeBufia2019} and the Maximum Entropy phonotactic learning model \citep{hayes2008maximum} to these datasets.
-A set of linguistically motivated grammars, also encoded accroding to these three representations, helps serve as a baseline.
+In this paper, we address two questions: (1) how effectively tonotactics can be
+learned over ARs, and (2) whether ARs improve learning outcomes compared with
+alternative string-based representations.
+To address these questions, we encoded the same dataset in three ways (strings,
+sequences of features, ARs) and applied versions of the Bottom-Up Factor
+Inference Algorithm (BUFIA) \citep{chandleeBufia2019} and the Maximum Entropy
+phonotactic learning model \citep{hayes2008maximum} to these datasets.
+A set of linguistically motivated grammars, also encoded accroding to these
+three representations, helps serve as a baseline.
 
-One limitation of this study is that the current implementation of MaxEnt does not support ARs.
-A more comprehensive study would also include a version of MaxEnt which can operate over ARs.
-Despite this limitation, the results presented here help assess whether ARs contribute to learning.
+One limitation of this study is that the current implementation of MaxEnt does
+not support ARs.
+A more comprehensive study would also include a version of MaxEnt which can
+operate over ARs.
+Despite this limitation, the results presented here help assess whether ARs
+contribute to learning.
 
-% First, as a sequence of symbols representing low (L), high (H), rising (R), and falling (F) tones.
-% Second, we encoded the data as a sequence of feature bundles with the features [\(\pm\) high] and [\(\pm\) contour].
+% First, as a sequence of symbols representing low (L), high (H), rising (R),
+and falling (F) tones.
+% Second, we encoded the data as a sequence of feature bundles with the
+features [\(\pm\) high] and [\(\pm\) contour].
 % Third, we provided ARs (see \S2).
 
-% and applied two versions of the Bottom-Up Factorial Inference Algorithm (BUFIA) \citep{chandleeBufia2019}: one operating over strings (BUFIA-Str) and the other directly over ARs (BUFIA-AR).
+% and applied two versions of the Bottom-Up Factorial Inference Algorithm
+(BUFIA) \citep{chandleeBufia2019}: one operating over strings (BUFIA-Str) and
+the other directly over ARs (BUFIA-AR).
 
 The corpus in this study comes from the Hausa database in the
 \textit{World Loanword Database} \citep{wold-4}, which was curated by
@@ -114,11 +147,18 @@ transcribed in orthography.
 
 This corpus was divided into four partitions (folds).
 Each fold was converted into the three representational schemes.
-The tonal representations studied here abstract away from segmental content and retain only tonal and TBU information.
-For example, the Hausa word \textit{mù.tûm} (``person'') is represented in one of the three ways as shown in Table~\ref{fig:reps}. Representations are discussed in detail in \S\ref{sec:background}.
+The tonal representations studied here abstract away from segmental content and
+retain only tonal and TBU information.
+For example, the Hausa word \textit{mù.tûm} (``person'') is represented in one
+of the three ways as shown in Table~\ref{fig:reps}. Representations are
+discussed in detail in \S\ref{sec:background}.
 
-For each representation and model, cross-fold validation was conducted and their model performance examined.
-In every case, the evaluation set was augmented to include word-forms of matched sizes that violated the constraints in the baseline grammar in order to  meaningfully report precision, recall, and F1 scores, which helps identify whether that the models generalize and not overgeneralize.
+For each representation and model, cross-fold validation was conducted and
+their model performance examined.
+In every case, the evaluation set was augmented to include word-forms of
+matched sizes that violated the constraints in the baseline grammar in order to
+meaningfully report precision, recall, and F1 scores, which helps identify
+whether that the models generalize and not overgeneralize.
 
 The results yield three main findings.
 % First, representational choice does
@@ -137,7 +177,8 @@ learning.
 This section provides the theoretical and computational background and
 methods for the different representations investigated here.
 We adopt a model-theoretic perspective that treats both representations as
-different types of mathematical objects \citep{enderton2001mathematical}, or more specifically, relational structures
+different types of mathematical objects \citep{enderton2001mathematical}, or
+more specifically, relational structures
 \citep{rogers2013,chandleeBufia2019,rogers.lambert2019mol}.
 
 \subsection{Representations}
@@ -147,11 +188,15 @@ form $\langle D, \mathcal{R} \rangle$, where $D$ is a finite domain of
 positions, and $\mathcal{R}$ is a set of relations (also known as the
 model \textit{signature}) that connects the composing units of the
 phonological representation \citep{strother2017using, jardine2016locality}.
-Relations may be unary, indicating the identity of an element, or binary, specifying the relationship between pairs of elements.
+Relations may be unary, indicating the identity of an element, or binary,
+specifying the relationship between pairs of elements.
 
 The string representation arranges symbols along a single axis.
-The signature of a string model includes unary labeling relations indicating the symbols, and a single binary successor relation $\lhd$ defining linear order.
-For example, the string representation of the tonal structure of the Hausa word \textit{mù.tûm} (``person'') is L.HL.
+The signature of a string model includes unary labeling relations indicating
+the symbols, and a single binary successor relation $\lhd$ defining linear
+order.
+For example, the string representation of the tonal structure of the Hausa word
+\textit{mù.tûm} (``person'') is L.HL.
 It is visualized in Figure~\ref{sec2.fig.string}.
 The domain  $D=\{1,2,3,4\}$ specifies four positions,
 which are labeled by their tone and syllable the boundary marker (.).
@@ -170,10 +215,15 @@ includes single binary successor relation $\lhd$ defining linear order.
 Unlike the string models, there are five unary relations:
 \{ \(+\) Low, \(-\) Low, \(+\) Contour, \(-\) Contour, \(+\) Boundary\}.
 In the string model, each position is true of exactly one unary relation.
-However, in the feature model, positions may be true of more than one unary relation.
-\citet{strother2017using} and \citet{vu2018statistical} refer to such models as unconventional because they are not the standard way to model strings in theoretical computer science (though it is standard in phonology).
-Note in this representation [\(+\)Contour] is only used to indicate monomoraic contour tones.
-Figure~\ref{sec2.fig.feature} shows the feature representation of the tonal structure for the Hausa word \textit{mù.tûm} (``person'') is L.HL.
+However, in the feature model, positions may be true of more than one unary
+relation.
+\citet{strother2017using} and \citet{vu2018statistical} refer to such models as
+unconventional because they are not the standard way to model strings in
+theoretical computer science (though it is standard in phonology).
+Note in this representation [\(+\)Contour] is only used to indicate monomoraic
+contour tones.
+Figure~\ref{sec2.fig.feature} shows the feature representation of the tonal
+structure for the Hausa word \textit{mù.tûm} (``person'') is L.HL.
 
 \input{feature.model.tex}
 
@@ -210,19 +260,25 @@ processes locally \citep{goldsmith1976autosegmental,jardine2017LocalNature}.
 
 One learning system used in this paper is the Bottom-Up
 Factor Inference Algorithm (BUFIA; \citet{chandleeBufia2019}).
-BUFIA learns constraints expressed as relational structures under an arbitrary model-theoretic signature.
-This means the general form of the algorithm can be flexibily applied to very many specific linguistic representations.
-In this work, we used three versions of BUFIA: BUFIA-Str, BUFIA-Ftr and BUFIA-AR.
+BUFIA learns constraints expressed as relational structures under an arbitrary
+model-theoretic signature.
+This means the general form of the algorithm can be flexibily applied to very
+many specific linguistic representations.
+In this work, we used three versions of BUFIA: BUFIA-Str, BUFIA-Ftr and
+BUFIA-AR.
 
 In a nutshell, BUFIA is a deterministic phonotactic learner that traverses a
-hypothesis space of all logically possible structures, finding those relational structures which absent in the data.
+hypothesis space of all logically possible structures, finding those relational
+structures which absent in the data.
 BUFIA constructs the hypothesis space on the fly,
 beginning from the simplest (smallest) relational structures,
 and considering increasing complex ones as needed.
-The notions `simpler' and `more complex' are made concrete by the \textit{containment
+The notions `simpler' and `more complex' are made concrete by the
+\textit{containment
 relation}: some pairs of structures stand in a containment relation (one
 containing the other), while others are not comparable.
-Each logically possible structure, which serve as candidate constraints, are partially ordered by the containment relation.
+Each logically possible structure, which serve as candidate constraints, are
+partially ordered by the containment relation.
 
 As illustrated in
 Figure [maybe??] for strings over the alphabet ${a,b}$, more general
@@ -238,13 +294,17 @@ Two core operations of BUFIA determine its search:
 containment and the sub/superfactor relation.
 The learner is provided with a set of positive data and a complexity bound.
 The search begins a from an initial structure (typically the empty structure).
-For each candidate, BUFIA checks whether it is contained in the positive dataset.
+For each candidate, BUFIA checks whether it is contained in the positive
+dataset.
 If it is attested, the learner generates its next superfactors and
 continues searching upward.
-Otherwise, the structure is identified as a forbidden factor (i.e., a constraint), and its superfactors are pruned from the rest of the space.
+Otherwise, the structure is identified as a forbidden factor (i.e., a
+constraint), and its superfactors are pruned from the rest of the space.
 \citet{chandleeBufia2019} prove that, in this way,
-BUFIA identifies the most general constraints within the complexity bounds that are consistent with the data.
-The resulting grammar guarantees full coverage of the observed data while remaining maximally general.
+BUFIA identifies the most general constraints within the complexity bounds that
+are consistent with the data.
+The resulting grammar guarantees full coverage of the observed data while
+remaining maximally general.
 
 As said before, a key merit of BUFIA is its representational flexibility.
 The algorithm can operate over any representational choices,
@@ -279,7 +339,8 @@ recent implementations induce phonological tiers to capture long-distance
 patterns \citep{GouskovaGallagher2020} and
 metrical structure \citet{lee2025representing}.
 These studies suggest that probabilistic string-based approaches can
-learn structural regularities that are not directly visible in surface sequences.
+learn structural regularities that are not directly visible in surface
+sequences.
 However, these representations differ from ARs in that
 they typically do not encode association relations between
 individual elements on separate tiers.
@@ -297,7 +358,8 @@ different representations and the two learning schemes.
 \section{Experiment: Hausa Tonotactics}
 
 To test tonotactic learnability across representations and models,
-we conducted a series of controlled computational experiments on the same dataset.
+we conducted a series of controlled computational experiments on the same
+dataset.
 This section details the experimental setup,
 including construction of the training and test data, and
 the evaluation metrics used to compare model performance.
@@ -338,9 +400,12 @@ includes forms violating these two constraints.
 % where each TBU is represented by a single symbol or a feature bundle. When
 % multiple tones map onto a single TBU, such as monomoraic LH or monomoraic
 % HL, these are represented as distinct symbols in the string alphabet (R and F,
-% respectively). For the feature system, we adopt a two-feature specification: \{L,
-% Contour\}. Level tones are specified as either [+L] or [−L], while contour tones
-% are specified as [+Contour] in addition to their initial tone value. For example,
+% respectively). For the feature system, we adopt a two-feature specification:
+\{L,
+% Contour\}. Level tones are specified as either [+L] or [−L], while contour
+tones
+% are specified as [+Contour] in addition to their initial tone value. For
+example,
 % in Table \ref{tab.threereps}, the Hausa word \textit{mù.tûm} ‘person’ is
 % represented as \textit{L.HL} in the string format, and its feature
 % representation is [+L].[−L][+Contour]. A nonce word such as \textit{R.H}
@@ -366,20 +431,24 @@ Both BUFIA and MaxEnt specify thresholds that limit the maximum length
 or structural complexity of learned constraints.
 These can be set manually, or ``tuned" according to data.
 However, the data used for tuning cannot be used for training or testing.
-Since our corpus is small (64 forms), we elected to manually set these thresholds.
+Since our corpus is small (64 forms), we elected to manually set these
+thresholds.
 We chose to set values according to the constraints in the baseline grammar,
 which helps provide a fair comparison.
 
-Thus, we set the thresholds to the most complex constraint in the baseline grammar.
+Thus, we set the thresholds to the most complex constraint in the baseline
+grammar.
 For string and featural representations,
 the most complex baseline constraint has length 3 (e.g., *HL.).
 For AR representations, the threshold consists of three parameters:
 $t$ (maximum number of tonal units), $s$ (maximum number of syllables), and
 $m$ (maximum number of moras).
-Since the most complex constraint in the baseline grammar has two tones, two syllables and three moras,
+Since the most complex constraint in the baseline grammar has two tones, two
+syllables and three moras,
 we set $t=2$, $s=2$, and $m=3$.
 %
-%In addition, we also report results for $k=4$ for all string-based representations
+%In addition, we also report results for $k=4$ for all string-based
+representations
 %to examine whether increasing the complexity bound affects performance. A
 %comprehensive table of AR parameter settings is provided in the Appendix.
 
@@ -417,7 +486,8 @@ We evaluated each model using 4-fold cross-validation.
 The dataset was partitioned into four equally sized folds (16 forms per fold).
 In each iteration, three folds were used for training
 and the remaining fold provided the positive items in the test set.
-This process was repeated four times, with each fold serving as the test set once.
+This process was repeated four times, with each fold serving as the test set
+once.
 
 Arguably, if the test set only contains positive items, then it can mislead.
 For example, a grammar with no constraints will accept the entire test set
@@ -426,9 +496,11 @@ Such a grammar overgenerates.
 The inclusion of negative forms in the test set helps detect overgeneration.
 While the grammar with no constraints would correctly classify all positive
 forms, it would also incorrectly classify all negative forms.
-Similarly, a grammar with too many constraints may correctly classify all negative forms,
+Similarly, a grammar with too many constraints may correctly classify all
+negative forms,
 and incorrecty reject all positive forms.
-Grammars that more correctly classify both positive and negative forms are desirable.
+Grammars that more correctly classify both positive and negative forms are
+desirable.
 
 Therefore, we also constructed negative items to include in the test set.
 Since there were 16 positive items in each test set,
@@ -436,8 +508,10 @@ we constructed 16 negative items, and added them to each test set.
 Thus, each test set contained 32 forms.
 
 In the absence of native speaker judgments,
-there is less certainty regarding whether an unattested form is negative or positive.
-For example, the baseline grammar includes two constraints that are known to have exceptions.
+there is less certainty regarding whether an unattested form is negative or
+positive.
+For example, the baseline grammar includes two constraints that are known to
+have exceptions.
 
 We therefore constructed negative forms that met two conditions.
 First, each negative form was unattested in the corpus.
@@ -449,8 +523,10 @@ One positive and one negative form are shown in Table~\ref{tab.threereps}.
 \input{reps.examples.tex}
 
 %?For the frequency-sensitive models, evaluation was
-%conducted over token data. Each fold contained 159 tokens, and the corresponding
-%test fold was augmented with an equal number of negative tokens, resulting in 318
+%conducted over token data. Each fold contained 159 tokens, and the
+corresponding
+%test fold was augmented with an equal number of negative tokens, resulting in
+318
 %tokens per test set.
 
 For training and testing each model, all data was converted into
@@ -474,27 +550,35 @@ based on a weighted sum of constraint violations.
 A zero score means the form violates no constraints, and higher scores
 indicate the form violates multiple, or higher-weighted, constraints.
 
-There are many ways this score can be intepreted to produce a binary classification.
+There are many ways this score can be intepreted to produce a binary
+classification.
 We considered a simple threshold.
-If the score the grammar assigns to a form is greater than the threshold then it is rejected;
+If the score the grammar assigns to a form is greater than the threshold then
+it is rejected;
 otherwise it is accepted.
-We examined a few possible thesholds and selected the one that gave the best results.
+We examined a few possible thesholds and selected the one that gave the best
+results.
 Again, normally the threshold could be set as part of a tuning phase,
 but we did not want to spare any data for this.
 
 The three thresholds we considered are the following.
-First, over-zero: a form is rejected if its total weighted violation score is greater than zero.
+First, over-zero: a form is rejected if its total weighted violation score is
+greater than zero.
 Second, over-average: a form is rejected if its total weighted violation score
 exceeds the average violation score across all candidate forms.
 Third, over-median: a form is rejected if its total weighted violation score
 exceeds the median score across all candidate forms.
-These three criteria are different ways to categorically interpret the gradient grammar.
+These three criteria are different ways to categorically interpret the gradient
+grammar.
 
 In all of our experiments, the over-average interpretation performed the best.
-The over-zero interpretation was the worst, and tended to reject more than half of the positive forms.
+The over-zero interpretation was the worst, and tended to reject more than half
+of the positive forms.
 This is likely because constraints with small non-zero weights were learned.
-Generally, the over-median approach performed similarly to over-average, but had lower scores.
-Consequently, in what follows, the MaxEnt results are reported with the over-average threshold.
+Generally, the over-median approach performed similarly to over-average, but
+had lower scores.
+Consequently, in what follows, the MaxEnt results are reported with the
+over-average threshold.
 
 \section{Results}
 
@@ -510,9 +594,12 @@ how a fixed grammar classifies forms.
 \input{results1.tex}
 
 On the other hand, for the BUFIA and MaxEnt models, which learn constraints,
-performance does vary depending on both the representation and the learning model.
-Among the BUFIA models, while there is no difference between BUFIA-Seg and BUFIA-Ftr,
-both achieve an F1 score of 0.992. BUFIA-AR, however performs perfectly (F1 = 1.000).
+performance does vary depending on both the representation and the learning
+model.
+Among the BUFIA models, while there is no difference between BUFIA-Seg and
+BUFIA-Ftr,
+both achieve an F1 score of 0.992. BUFIA-AR, however performs perfectly (F1 =
+1.000).
 Although it is true that BUFIA-AR outperforms BUFIA-Seg and BUFIA-Ftr,
 all the BUFIA models are exhibiting ceiling levels of performance,
 or are extremely close to it.
@@ -602,7 +689,8 @@ For BUFIA-AR, when \(m<3\) the highest F1 score was 0.842.
 When the search for constraints cannot consider structures with three moras,
 BUFIA-AR will not find the constraint against trimoraic contours.
 Similarly, when \(t=1\), the hard constraints against monosyllabic rises
-and monomoraic contours cannot be learned which significantly brought down performance.
+and monomoraic contours cannot be learned which significantly brought down
+performance.
 On the other hand, F1 scores were at 1.000 in the following three settings:
 \([m=3, s=1, t=2], [m=3, s=1, t=3], [m=3, s=2, t=2]\).
 In the maximum setting when \([m=3, s=1, t=3]\), the F1 scored dropped to 0.967,
