@@ -391,7 +391,7 @@ They are never violated in the corpus.
 Constraint \textsc{*NonFinHL} applies to the non-derived Hausa words
 where the falling contour (HL) can only occur word finally.
 The constraint \textsc{*Lapse} is proposed by \citet{zoll2003optimal}
-to explain the rarity of L tone spreading.
+to explain the rarity of adjacent L-toned syllables.
 \citet{Newmanbook} points out that there are exceptional words that
 violate \textsc{*NonFinHL} and \textsc{*Lapse}.
 \citet{li2025learning} also reports that the corpus itself
@@ -401,12 +401,9 @@ includes forms violating these two constraints.
 % where each TBU is represented by a single symbol or a feature bundle. When
 % multiple tones map onto a single TBU, such as monomoraic LH or monomoraic
 % HL, these are represented as distinct symbols in the string alphabet (R and F,
-% respectively). For the feature system, we adopt a two-feature specification:
-\{L,
-% Contour\}. Level tones are specified as either [+L] or [−L], while contour
-tones
-% are specified as [+Contour] in addition to their initial tone value. For
-example,
+% respectively). For the feature system, we adopt a two-feature specification:\{L,
+% Contour\}. Level tones are specified as either [+L] or [−L], while contour tones
+% are specified as [+Contour] in addition to their initial tone value. For example,
 % in Table \ref{tab.threereps}, the Hausa word \textit{mù.tûm} ‘person’ is
 % represented as \textit{L.HL} in the string format, and its feature
 % representation is [+L].[−L][+Contour]. A nonce word such as \textit{R.H}
@@ -448,8 +445,7 @@ Since the most complex constraint in the baseline grammar has two tones, two
 syllables and three moras,
 we set $t=2$, $s=2$, and $m=3$.
 %
-%In addition, we also report results for $k=4$ for all string-based
-representations
+%In addition, we also report results for $k=4$ for all string-based representations
 %to examine whether increasing the complexity bound affects performance. A
 %comprehensive table of AR parameter settings is provided in the Appendix.
 
@@ -476,13 +472,6 @@ MaxEnt-Ftr   & $ k =3 $            \\
 \label{tab.all.models}
 \end{table}
 
-%\begin{figure}
-%\centering
-%	\includegraphics[width=1.05\linewidth]{"Concept map"}
-%	\caption{Flowchart of the experimental pipeline}
-%	\label{fig:concept-map}
-%\end{figure}
-
 We evaluated each model using 4-fold cross-validation.
 The dataset was partitioned into four equally sized folds (16 forms per fold).
 In each iteration, three folds were used for training
@@ -493,13 +482,13 @@ once.
 Arguably, if the test set only contains positive items, then it can mislead.
 For example, a grammar with no constraints will accept the entire test set
 because no test form violates any constraint.
-Such a grammar overgenerates.
+Such a grammar therefore overgenerates.
 The inclusion of negative forms in the test set helps detect overgeneration.
 While the grammar with no constraints would correctly classify all positive
 forms, it would also incorrectly classify all negative forms.
 Similarly, a grammar with too many constraints may correctly classify all
 negative forms,
-and incorrecty reject all positive forms.
+and incorrectly reject all positive forms.
 Grammars that more correctly classify both positive and negative forms are
 desirable.
 
@@ -524,10 +513,8 @@ One positive and one negative form are shown in Table~\ref{tab.threereps}.
 \input{reps.examples.tex}
 
 %?For the frequency-sensitive models, evaluation was
-%conducted over token data. Each fold contained 159 tokens, and the
-corresponding
-%test fold was augmented with an equal number of negative tokens, resulting in
-318
+%conducted over token data. Each fold contained 159 tokens, and the corresponding
+%test fold was augmented with an equal number of negative tokens, resulting in 318
 %tokens per test set.
 
 For training and testing each model, all data was converted into
@@ -551,13 +538,13 @@ based on a weighted sum of constraint violations.
 A zero score means the form violates no constraints, and higher scores
 indicate the form violates multiple, or higher-weighted, constraints.
 
-There are many ways this score can be intepreted to produce a binary
+There are many ways this score can be interpreted to produce a binary
 classification.
 We considered a simple threshold.
 If the score the grammar assigns to a form is greater than the threshold then
 it is rejected;
 otherwise it is accepted.
-We examined a few possible thesholds and selected the one that gave the best
+We examined a few possible thresholds and selected the one that gave the best
 results.
 Again, normally the threshold could be set as part of a tuning phase,
 but we did not want to spare any data for this.
