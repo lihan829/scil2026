@@ -23,6 +23,7 @@
 \usepackage{tikz}
 \usetikzlibrary{positioning}
 \usepackage{multicol}
+\usepackage{multirow}
 \usepackage{amsmath, amssymb,stackengine,scalerel}
 \usepackage{booktabs}
 \usepackage{todonotes}
@@ -101,7 +102,7 @@ Segmental phonotactics is typically modeled using linear
 representations such as strings, which makes it readily
 compatible with a wide range of existing learning models.
 Tonotactics, by contrast, has long been analyzed over
-non-linear structures, most widely autosegmental
+non-linear structures in linguistics, most widely autosegmental
 representations \citep[ARs,][]{goldsmith1976autosegmental}.
 These more complex representations pose challenges for many
 existing computational models, which are unable to operate
@@ -125,8 +126,7 @@ and encoded the same dataset in three ways (strings,
 sequences of features, ARs). One representation was as a sequence of
 symbols representing low (L), high (H), rising (R), and
 falling (F) tones. A second representation encoded the data as a
-sequence of feature bundles with the features [\(\pm\)
-high] and [\(\pm\) contour]. The third representation provided ARs
+sequence of feature bundles with the features \texttt{[\(\pm\)high]} and \texttt{[\(\pm\)contour]}. The third representation provided ARs
 (see \S2). These representations are evaluated using
 two learning models: the Bottom-Up Factor Inference
 Algorithm \citep[BUFIA;][]{chandleeBufia2019} and the
@@ -160,7 +160,7 @@ retain only tonal and TBU information.
 %and examples are provided in \S\ref{sec:experiment}.
 For each representation and model, cross-fold validation was conducted and
 their model performance examined.
-In every case, the evaluation set was augmented to include word-forms
+In every case, the evaluation set was augmented to include forms
 that violated the constraints in the baseline grammar,
 and precision, recall, and F1 scores, were reported.
 These measures help identify
@@ -173,7 +173,7 @@ under BUFIA and only show marginal and inconsistent differences
 under MaxEnt. Second, BUFIA over ARs achieve the best performance.
 Third, learning
 outcomes are influenced by other factors such as frequency
-information, complexity thresholds, and evaluation criteria.
+information, complexity bounds, and evaluation criteria.
 Frequency substantially improves MaxEnt performance and gives
 comparable results to BUFIA-AR, while categorical learners such
 as BUFIA remain stable without frequency.
@@ -187,7 +187,7 @@ learning.
 
 This section provides the theoretical and computational background and
 methods for the different representations investigated here.
-We adopt a model-theoretic perspective that treats both representations as
+We adopt a model-theoretic perspective that treats all representations as
 different types of mathematical objects \citep{enderton2001mathematical}, or
 more specifically, relational structures
 \citep{rogers2013,chandleeBufia2019,rogers.lambert2019mol}.
@@ -197,7 +197,7 @@ more specifically, relational structures
 We define a phonological representation as relational structures of the
 form $\langle D, \mathcal{R} \rangle$, where $D$ is a finite domain of
 positions, and $\mathcal{R}$ is a set of relations (also known as the
-model \textit{signature}) that connects the composing units of the
+model \textit{signature}) that connect the composing units of the
 phonological representation \citep{strother2017using, jardine2016locality}.
 Relations may be unary, indicating the identity of an element, or binary,
 specifying the relationship between pairs of elements.
@@ -211,7 +211,7 @@ For example, the string representation of the tonal structure of the Hausa word
 It is visualized in Figure~\ref{sec2.fig.string}.
 The domain  $D=\{1,2,3,4\}$ specifies four positions,
 which are labeled by their tone and syllable the boundary marker (.).
-The successor relation encodes temporal order.
+The successor relation encodes the temporal order.
 Each position occupied by a tone can be thought of representing a single mora.
 Thus bimoraic syllables will contain a sequence of two tones.
 For complex tonal forms where a single mora is associated with contour tones,
@@ -224,7 +224,7 @@ The featural representation also arranges symbols along a single axis.
 Like the string model, the signature of the feature model
 includes single binary successor relation $\rightarrow$ defining linear order.
 Unlike the string models, there are five unary relations:
-\texttt{\{+Low, -Low, +Contour, -Contour, +Boundary\}} (We exclude \texttt{-Boundary}).
+\texttt{\{+Low, -Low, +Contour, -Contour, +Boundary\}} (we exclude \texttt{-Boundary}).
 In the string model, each position is true of exactly one unary relation.
 However, in the feature model, positions may be true of more than one unary
 relation.
@@ -233,7 +233,7 @@ relation.
 theoretical computer science (though it is standard in phonology).
 Note in this representation \texttt{[$\pm$Contour]} is only used to indicate monomoraic
 contour tones.
-Figure~\ref{sec2.fig.feature} shows the feature representation of same tonal strcuture of the word in Figure~\ref{sec2.fig.feature}
+Figure~\ref{sec2.fig.feature} shows the feature representation of same tonal structure of the word in Figure~\ref{sec2.fig.feature}
 \input{feature.model.tex}
 
 ARs, in contrast, correspond to multi-linear (tiered) relational structures.
@@ -247,7 +247,7 @@ This relation captures associations across tiers.
 In this representation, structural dependencies,
 such as tone spreading or contour formation,
 are encoded directly as relations rather than inferred from symbol sequences.
-For example, in Figure~\ref{armodel}, the AR consists of eight units,
+For example, Figure~\ref{armodel} shows the AR model for the same word \textit{mù.tûm}. The model consists of eight units,
 defined by $D=\{1,\ldots,8\}$, arranged across three tiers, each following
 a successor relation $\rightarrow=\{(1,2),(2,3),\ldots\}$. The association
 relations, on the other hand, are expressed as a set of unordered pairs
@@ -423,7 +423,7 @@ The experiment compares grammars learned under multiple conditions,
 varying both learning model (BUFIA vs.\ MaxEnt) and
 representation (Segment, Feature, AR).
 These learned grammars are evaluated against baseline grammars defined over the
-corresponding representations (Baseline-Seg/Ftr/AR).
+corresponding representations (Baseline-Seg/Ftr/AR, see Appendix~\ref{sec:appendix}).
 Table~\ref{tab.all.models} summarizes all model conditions.
 As mentioned, MaxEnt-AR is one model we are unable to test.
 
@@ -474,8 +474,9 @@ MaxEnt-Ftr   & $ k =3 $            \\
 \label{tab.all.models}
 \end{table}
 
-We evaluated each model using 4-fold cross-validation.
-The dataset was partitioned into four equally sized folds (16 forms per fold).
+We evaluated each model using 4-fold cross-validation. 
+The dataset was partitioned into four equally sized 
+folds (16 forms per fold).
 In each iteration, three folds were used for training
 and the remaining fold provided the positive items in the test set.
 This process was repeated four times, with each fold serving as the test set
@@ -513,11 +514,6 @@ Since there were 16 negative forms and three constraints,
 at least five forms violated each constraint.
 One positive and one negative form are shown in Table~\ref{tab.threereps}.
 \input{reps.examples.tex}
-
-%?For the frequency-sensitive models, evaluation was
-%conducted over token data. Each fold contained 159 tokens, and the corresponding
-%test fold was augmented with an equal number of negative tokens, resulting in 318
-%tokens per test set.
 
 For training and testing each model, all data was converted into
 each of the three representational systems: string, feature, and ARs.
@@ -702,26 +698,26 @@ presented separately in Table~\ref{tab:ar_grid} for clarity.
 \toprule
  $m$ & $s$ & $t$ & Recall & Precision & F1    \\
  \midrule
-  1   & 1   & 1   & 1.000  & 0.500     & 0.667 \\
-  1   & 1   & 2   & 1.000  & 0.615     & 0.762 \\
-  1   & 1   & 3   & 1.000  & 0.615     & 0.762 \\
-  1   & 2   & 1   & 1.000  & 0.500     & 0.667 \\
-  1   & 2   & 2   & 1.000  & 0.615     & 0.762 \\
-  1   & 2   & 3   & 1.000  & 0.615     & 0.762 \\
-  1   & 3   & 1   & 1.000  & 0.500     & 0.667 \\
-  1   & 3   & 2   & 1.000  & 0.615     & 0.762 \\
-  1   & 3   & 3   & 1.000  & 0.615     & 0.762 \\
-  \midrule
-  2   & 1   & 1   & 1.000  & 0.500     & 0.667 \\
-  2   & 1   & 2   & 1.000  & 0.727     & 0.842 \\
-  2   & 1   & 3   & 1.000  & 0.727     & 0.842 \\
-  2   & 2   & 1   & 1.000  & 0.500     & 0.667 \\
-  2   & 2   & 2   & 1.000  & 0.727     & 0.842 \\
-  2   & 2   & 3   & 0.969  & 0.721     & 0.826 \\
-  2   & 3   & 1   & 1.000  & 0.500     & 0.667 \\
-  2   & 3   & 2   & 1.000  & 0.727     & 0.842 \\
-  2   & 3   & 3   & 0.969  & 0.721     & 0.826 \\
- \midrule
+%  1   & 1   & 1   & 1.000  & 0.500     & 0.667 \\
+%  1   & 1   & 2   & 1.000  & 0.615     & 0.762 \\
+%  1   & 1   & 3   & 1.000  & 0.615     & 0.762 \\
+%  1   & 2   & 1   & 1.000  & 0.500     & 0.667 \\
+%  1   & 2   & 2   & 1.000  & 0.615     & 0.762 \\
+%  1   & 2   & 3   & 1.000  & 0.615     & 0.762 \\
+%  1   & 3   & 1   & 1.000  & 0.500     & 0.667 \\
+%  1   & 3   & 2   & 1.000  & 0.615     & 0.762 \\
+%  1   & 3   & 3   & 1.000  & 0.615     & 0.762 \\
+%  \midrule
+%  2   & 1   & 1   & 1.000  & 0.500     & 0.667 \\
+%  2   & 1   & 2   & 1.000  & 0.727     & 0.842 \\
+%  2   & 1   & 3   & 1.000  & 0.727     & 0.842 \\
+%  2   & 2   & 1   & 1.000  & 0.500     & 0.667 \\
+%  2   & 2   & 2   & 1.000  & 0.727     & 0.842 \\
+%  2   & 2   & 3   & 0.969  & 0.721     & 0.826 \\
+%  2   & 3   & 1   & 1.000  & 0.500     & 0.667 \\
+%  2   & 3   & 2   & 1.000  & 0.727     & 0.842 \\
+%  2   & 3   & 3   & 0.969  & 0.721     & 0.826 \\
+% \midrule
  3   & 1   & 1   & 1.000  & 0.615     & 0.762 \\
  3   & 1   & 2   & 1.000  & 1.000     & 1.000 \\
  3   & 1   & 3   & 1.000  & 1.000     & 1.000 \\
@@ -794,7 +790,14 @@ The results suggest that AR-based learning is a promising
 direction for modeling tonal grammars and tonal processes,
 where phonological changes often involve modifications of
 associations between tiers rather than individual symbols.
+
 \bibliography{refs.bib}
 
 
+\appendix
+\renewcommand{\thetable}{A\arabic{table}}
+\setcounter{table}{0}
+\section{Appendix}
+\label{sec:appendix}
+\input{appx.tex}
 \end{document}
