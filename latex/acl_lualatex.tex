@@ -605,7 +605,6 @@ MaxEnt-Seg and MaxEnt-Ftr. We were surprised by this result and
 conducted follow-up experiments to see if we could improve the
 MaxEnt models performance.
 
-
 One finding is AR provide a learning advantage over segmental or
 feature-based representations.
 However, the improvement is marginal as all the BUFIA models performed at,
@@ -613,18 +612,20 @@ or close to, ceiling.
 We therefore conclude that while there is some evidence that
 AR representations improve tonotactic learnability,
 we believe it is premature to draw firm conclusions.
-The tonotactics of Hausa may simply be too simple to see
-any significant difference in BUFIA's learning capacity
+The tonotactics of Hausa does not include complex constraints to see
+any significant difference in BUFIA's learning capacity.
 Therefore, we think that similar experiments ought to be conducted
 on languages with more complex tonotactics as that may allow for
 clearer distinctions to emerge when learning over
 segmental, featural, or autosegmental representations.
 
+
 \section{Follow-Up Experiments}
+
 
 We were curious what hindered the performance of the MaxEnt model.
 In the previous experiments,
-the model was trained on types rather than tokens; therefore,
+the model was trained on dataset of types rather than tokens; therefore,
 frequency information was not available during learning.
 Since MaxEnt determines weights for the constraints it learns
 partially based on frequencies,
@@ -636,12 +637,9 @@ than type data (621 tokens in total).
 As in the previous setup, we conducted cross-fold validation over four
 folds (each fold contained 156 or 155 tokens per fold).
 As before, an equal number of negative forms were included in the test set.
-Since the \textit{over-zero} criterion does not give satisfactory
-result in the previous experiment, here we use and report ``over-mean" 
-criterion to calculate recall, precision, and F1 scores.
-We find the inclusion of frequency information makes a substantial difference.
+The same ``over-mean" criterion was used to calculate recall, precision, and F1 scores. 
+As shown in Table~\ref{tab.results2}, including frequency information makes a substantial difference.
 The average F1 scores for both MaxEnt-Seg and MaxEnt-Ftr was 0.990.
-
 
 Another question is how to determine an appropriate
 complexity bound that accounts for the data without leading to
@@ -649,7 +647,11 @@ over-generalization. To examine this, we also ran experiments with
 MaxEnt models where the maximum constraint length was set to 4.
 This is the highest value permitted by the implementation we used.
 We conducted experiments where these MaxEnt models had access to 
-frequency information, and where they did not.
+frequency information, and where they did not. In terms of the 
+feature vs.\ segment comparison, the results are inconsistent. 
+MaxEnt-Ftr performs better when frequency information
+is not included, whereas MaxEnt-Seg-freq outperforms MaxEnt-Ftr once
+frequency information is incorporated.
 
 The results reinforced the importance of frequency information 
 for the MaxEnt models. When frequency information was included, 
