@@ -1,10 +1,11 @@
 \begin{table}[t]
-\small
 \setlength{\tabcolsep}{3pt}
 \begin{tabular}{lccccc}
 \toprule
 Model             & $k$ & Recall & Precision & F1    \\
 \midrule
+MaxEnt-Seg 		& 3 & 0.922  & 0.827     & 0.871 \\
+MaxEnt-Ftr  & 3&0.906  & 0.773     & 0.832 \\
 MaxEnt-Seg-freq   & 3   & 1.000  & 0.981     & 0.990 \\
 MaxEnt-Ftr-freq   & 3   & 1.000  & 0.981     & 0.990 \\
 MaxEnt-Seg        & 4   & 0.644  & 0.866     & 0.651 \\
@@ -19,6 +20,6 @@ BUFIA-Seg/Ftr     & 6   & 0.782  & 1.000     & 0.873 \\
 BUFIA-Seg/Ftr     & 7   & 0.656  & 1.000     & 0.782 \\
 \bottomrule
 \end{tabular}
-\caption{Performance of MaxEnt and BUFIA models under different complexity bounds, evaluation criteria, and frequency settings.}
+\caption{Performance of MaxEnt and BUFIA models across complexity bounds and frequency settings. The MaxEnt-Seg and MaxEnt-Ftr results for \(k = 3\) are repeated from Table~\ref{tab.all.models} for ease of comparison.}
 \label{tab.results2}
 \end{table}
