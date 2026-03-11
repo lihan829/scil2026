@@ -29,7 +29,7 @@
 \usepackage{todonotes}
 \usepackage{makecell}
 %%%%%
-\title{Representation Matters: Tonotactic Learning across Representations}
+\title{What Matters in Tonotactic Learning}
 % Author information can be set in various styles:5
 % For several authors from the same institution:
 % \author{Author 1 \and ... \and Author n \\
@@ -62,7 +62,7 @@
 \begin{abstract}
 
 This paper investigates whether tonotactic learning differs
-across representational choices. We conduct an experiment
+across representations and learning models. We conduct an experiment
 using the same dataset encoded in three representations:
 segments, features, and autosegmental representations (ARs).
 To the extent possible, two learning models are evaluated, the Maximum Entropy
@@ -71,12 +71,15 @@ To the extent possible, two learning models are evaluated, the Maximum Entropy
 model type and representations. A follow-up experiment
 further explores the roles of frequency and complexity
 thresholds. The results show that (1) AR-based
-learning gives the strongest overall performance,
+learning gives the strongest overall performance;
 (2) there is no consistent advantage between
 segmental and feature-based representations
-across learning models, and
+across learning models;
 (3) MaxEnt performance improves substantially when
-frequency information is introduced. These findings suggest that tonotactic
+frequency information is introduced and lastly (4)
+the effects of complexity bounds interact with 
+representation type and frequency information.
+These findings suggest that tonotactic
 learning benefits from structurally explicit
 representations. Overall this work highlights
 the importance of using linguistically meaningful
@@ -91,7 +94,7 @@ or tonotactics, which addresses the question of how tones
 and tone-bearing units (TBUs, such as syllable or mora) are
 organized in tonal languages. More specifically, we examine
 how the learning outcomes are influenced by representations
-used in learning tasks.
+and learning models.
 
 For a long time, despite the widespread distribution of tonal
 languages across the world \citep{yip2002tone}, tonotactics
@@ -123,7 +126,8 @@ tonotactic learning.
 
 To fill this gap, we conducted computational experiments
 and encoded the same dataset in three ways (strings,
-sequences of features, ARs). One representation was as a sequence of
+sequences of features, ARs). One representation was 
+as a sequence of
 symbols representing low (L), high (H), rising (R), and
 falling (F) tones. A second representation encoded the data as a
 sequence of feature bundles with the features \texttt{[\(\pm\)high]} and \texttt{[\(\pm\)contour]}. The third representation provided ARs
@@ -163,8 +167,7 @@ their model performance examined.
 In every case, the evaluation set was augmented to include forms
 that violated the constraints in the baseline grammar,
 and precision, recall, and F1 scores, were reported.
-These measures help identify
-whether that the models generalize and not overgeneralize.
+These measures help identify whether the models generalize appropriately without overgeneralizing.
 
 The results show three main findings. First, segmental and
 feature-based representations do not show a consistent
@@ -220,7 +223,7 @@ and F (representing falling HL on one mora) are used.
 
 \input{string.model.tex}
 
-The featural representation also arranges symbols along a single axis.
+The feature-based representation also arranges symbols along a single axis.
 Like the string model, the signature of the feature model
 includes single binary successor relation $\rightarrow$ defining linear order.
 Unlike the string models, there are five unary relations:
@@ -269,22 +272,24 @@ processes locally \citep{goldsmith1976autosegmental,jardine2017LocalNature}.
 
 One learning system used in this paper is the BUFIA \citep{chandleeBufia2019} which learns constraints expressed as relational structures under an arbitrary
 model-theoretic signature.
-This means the general form of the algorithm can be flexibily applied to very
+This means the general form of the algorithm can be flexibly applied to very
 many specific linguistic representations.
-In this work, we used three versions of BUFIA: BUFIA-Str, BUFIA-Ftr and
+In this work, we used three versions of BUFIA: BUFIA-Seg, BUFIA-Ftr and
 BUFIA-AR.
 
-In a nutshell, BUFIA is a deterministic phonotactic learner that traverses a
-hypothesis space of all logically possible structures, finding those relational
-structures which absent in the data.
+In a nutshell, BUFIA is a deterministic phonotactic learner that 
+traverses a hypothesis space of all logically possible structures, 
+finding those relational structures which absent in the data.
 BUFIA constructs the hypothesis space on the fly,
 beginning from the simplest (smallest) relational structures,
 and considering increasing complex ones as needed.
 The notions `simpler' and `more complex' are made concrete by the
-\textit{containment
-relation}: some pairs of structures stand in a containment relation (one containing the other, where the more complex structure is referred to as the \textit{superfactor} and the contained structure is the \textit{subfactor}), while others are not comparable.
-Each logically possible structure, which serve as candidate constraints, are
-partially ordered by the containment relation.
+\textit{containment relation}: some pairs of structures stand in a 
+containment relation (one containing the other, where the more complex 
+structure is referred to as the \textit{superfactor} and the contained 
+structure is the \textit{subfactor}), while others are not comparable.
+Each logically possible structure, which serve as candidate constraints, 
+are partially ordered by the containment relation.
 %
 %As illustrated in
 %Figure [maybe??] for strings over the alphabet ${a,b}$, more general
@@ -296,21 +301,20 @@ partially ordered by the containment relation.
 %that are one level above the current candidate are referred to as its
 %\textit{next superfactors}.
 
-Two core operations of BUFIA determine its search:
-containment and the sub/superfactor relation.
-The learner is provided with a set of positive data and a complexity bound.
-The search begins from an initial structure at the bottom of hypothesis space (typically the empty structure).
+Two core operations of BUFIA determine its search: containment and the 
+sub/superfactor relation. The learner is provided with a set of positive 
+data and a complexity bound. The search begins from an initial structure 
+at the bottom of hypothesis space (typically the empty structure).
 For each candidate, BUFIA checks whether it is contained in the positive
 dataset. If it is attested, the learner generates its \textit{next
         superfactors} (i.e., minimally more complex superfactors) and
         continues searching upward.
 Otherwise, the structure is identified as a forbidden factor (i.e., a
-\textit{constraint}), and its superfactors are pruned from the rest of the space.
-\citet{chandleeBufia2019} prove that
-BUFIA identifies the most general constraints within the complexity bounds that
-are consistent with the data.
-The resulting grammar guarantees full coverage of the observed data while
-remaining maximally general.
+\textit{constraint}), and its superfactors are pruned from the rest of the 
+space. \citet{chandleeBufia2019} prove that BUFIA identifies the most 
+general constraints within the complexity bounds that are consistent with 
+the data. The resulting grammar guarantees full coverage of the observed 
+data while remaining maximally general.
 
 As said before, a key merit of BUFIA is its representational flexibility.
 The algorithm can operate over any representational choices,
@@ -322,8 +326,9 @@ as well as the \citep{hayes2008maximum, wilson2018accidental}.
 \citet{li2025learning} introduced a version of BUFIA that
 operates directly over ARs for tonotactic learning and
 showed that it could learn tonotactic constraints.
-This representational flexibility allows controlled comparison of
-different representations of the same data under a shared learning framework.
+This representational flexibility allows controlled comparison 
+of different representations of the same data under a shared 
+learning framework.
 
 BUFIA is a categorical learner: a candidate structure is
 either well-formed or ill-formed,
@@ -331,7 +336,8 @@ depending on whether it contains any forbidden subfactor.
 In contrast, probabilistic models, such as MaxEnt
 \citep{hayes2008maximum}, assign gradient well-formedness values
 to candidate forms. Well-formedness is interpreted as a probability
-rather than a binary value; consequently, constraints are treated as violable, each associated with a penalty weight.
+rather than a binary value; consequently, constraints are treated as 
+violable, each associated with a penalty weight.
 This evaluation is cumulative: the more constraints a candidate
 violates, and the higher the weights of those constraints,
 the lower its predicted probability of well-formedness.
@@ -387,8 +393,8 @@ These 621 words yield a total of 64 tonal structures.
 
 Among the constraints in Table~\ref{rules}, the first three constraints,
 \textsc{*Rise$_\sigma$},\textsc{*Contour$_{\mu}$},\textsc{*3T}, are hard
-constraints that define the basic phonology of tones and syllable structures
-of Hausa.
+constraints that define the basic phonology of tones and syllable 
+structures of Hausa.
 They are never violated in the corpus.
 Constraint \textsc{*NonFinHL} applies to the non-derived Hausa words
 where the falling contour (HL) can only occur word finally.
@@ -434,10 +440,8 @@ However, the data used for tuning cannot be used for training or testing.
 Since our corpus is small (64 forms), we elected to manually set these
 thresholds.
 We chose to set values according to the constraints in the baseline grammar,
-which helps provide a fair comparison.
-
-Thus, we set the thresholds to the most complex constraint in the baseline
-grammar.
+which helps provide a fair comparison. Thus, we set the thresholds to the 
+most complex constraint in the baseline grammar.
 For string and featural representations,
 the most complex baseline constraint has length 3 (e.g., *HL.).
 For AR representations, the threshold consists of three parameters:
@@ -449,22 +453,22 @@ we set $t=2$, $s=2$, and $m=3$.
 
 \begin{table}[t]
 \centering
-\begin{tabular}{lccc}
-\toprule
-Model        & length              \\
-\midrule
-Baseline-Seg & $ k =3 $            \\
-Baseline-Ftr & $ k =3 $            \\
-Baseline-AR  & $t = 2, s = 2, m=3$ \\
-\midrule
-BUFIA-Seg    & $ k =3 $            \\
-BUFIA-Ftr    & $ k =3 $            \\
-BUFIA-AR     & $t = 2,s = 2, m=3$  \\
-\midrule
-MaxEnt-Seg   & $ k =3 $            \\
-MaxEnt-Ftr   & $ k =3 $            \\
-\bottomrule
-\end{tabular}
+	\begin{tabular}{lccc}
+	\toprule
+		Model        & length              \\
+	\midrule
+		Baseline-Seg & $ k =3 $            \\
+		Baseline-Ftr & $ k =3 $            \\
+		Baseline-AR  & $t = 2, s = 2, m=3$ \\
+	\midrule
+		BUFIA-Seg    & $ k =3 $            \\
+		BUFIA-Ftr    & $ k =3 $            \\
+		BUFIA-AR     & $t = 2,s = 2, m=3$  \\
+	\midrule
+		MaxEnt-Seg   & $ k =3 $            \\
+		MaxEnt-Ftr   & $ k =3 $            \\
+	\bottomrule
+	\end{tabular}
 \caption{Learning models in the experiment}
 \label{tab.all.models}
 \end{table}
@@ -473,15 +477,15 @@ We evaluated each model using 4-fold cross-validation.
 The dataset was partitioned into four equally sized 
 folds (16 forms per fold).
 In each iteration, three folds were used for training
-and the remaining fold provided the positive items in the test set.
-This process was repeated four times, with each fold serving as the test set
-once.
+and the remaining fold provided the positive items in 
+the test set. This process was repeated four times, with 
+each fold serving as the test set once.
 
 Arguably, if the test set only contains positive items, then it can mislead.
 For example, a grammar with no constraints will accept the entire test set
 because no test form violates any constraint.
-Such a grammar therefore overgenerates.
-The inclusion of negative forms in the test set helps detect overgeneration.
+Such a grammar therefore over-generates.
+The inclusion of negative forms in the test set helps detect over-generation.
 While the grammar with no constraints would correctly classify all positive
 forms, it would also incorrectly classify all negative forms.
 Similarly, a grammar with too many constraints may correctly classify all
@@ -549,8 +553,7 @@ Second, over-average: a form is rejected if its total weighted violation score
 exceeds the average violation score across all candidate forms.
 Third, over-median: a form is rejected if its total weighted violation score
 exceeds the median score across all candidate forms.
-These three criteria are different ways to categorically interpret the gradient
-grammar.
+These criteria are different ways to categorically interpret the gradient grammar.
 
 In all of our experiments, the over-average interpretation 
 performed the best.
@@ -586,7 +589,7 @@ Although it is true that BUFIA-AR outperforms BUFIA-Seg and BUFIA-Ftr,
 all the BUFIA models are exhibiting ceiling levels of performance,
 or are extremely close to it.
 
-Choice of representation also impact the MaxEnt models.
+Choice of representation also impacts the MaxEnt models.
 MaxEnt-Ftr achieves an F1 score of 0.832, while MaxEnt-Seg reaches
 0.871. The better performance on segmental representations over featural ones
 contrasts with earlier studies with MaxEnt on segmental phonotactics, which
@@ -643,7 +646,7 @@ MaxEnt models where the maximum constraint length was set to 4.
 This is the highest value permitted by the implementation we used.
 We conducted experiments where these MaxEnt models had access to 
 frequency information, and where they did not. 
-
+\input{results2.tex}
 
 As shown in Table~\ref{tab.results2}, 
 the inclusion of frequency information makes a substantial 
@@ -651,18 +654,17 @@ difference. When frequency information was included,
 all MaxEnt models performed close to ceiling with F1 scores
 greater than or equal to 0.990 regardless of the complexity bound. 
 Without frequency information, the highest F1 score, achieved by 
-MaxEnt-Seg, is 0.871 when $k=3$. The other MaxEnt models perform 
-when $k$ increases to $4$.
+MaxEnt-Seg, is 0.871 when $k=3$, and the other MaxEnt models get
+even lower when $k$ increases to $4$.
 
-In terms of the feature vs.\ segment comparison, the results are inconsistent. 
-When $k=3$ and  when frequency information is not included,
-MaxEnt-Seg performs better than MaxEnt-Ftr. However, this 
-pattern reverses when $k=4$, with MaxEnt-Ftr outperforming 
-MaxEnt-Seg. Once the frequency information is introduced, 
+In terms of the feature vs.\ segment comparison, the results are 
+inconsistent. When frequency information is not included, the advantage 
+between MaxEnt-Seg and MaxEnt-Ftr reverses between complexity bounds: 
+MaxEnt-Seg performs better at $k=3$, whereas MaxEnt-Ftr performs 
+better at $k=4$. Once the frequency information is introduced, 
 there appears to be no appreciable difference among the F1 
-scores on the grammars obtained by MaxEnt models between 
-the constraint lengths 3 and 4, as these results are effectively
-at ceiling.
+scores on the grammars obtained by the MaxEnt models between constraint lengths $3$ and $4$, as these results are effectively at ceiling.
+
 
 For the sake of comparison, we also examined the grammars returned by
 the BUFIA models when we varied the maximum sizes of the constraints.
@@ -670,16 +672,15 @@ For BUFIA-Seg and BUFIA-Ftr, we examined constraint lengths from
 3 to 7, as shown in Table~\ref{tab.results2};
 For BUFIA-AR, we explore parameter settings for $t,m,s$ up to $3$,
 The results for $m=3$ are presented in Table~\ref{tab:ar_grid}, while 
-the complete set of results is provided in the Appendix.
+the complete set of results is provided in the Appendix~\ref{sec:appendix2}
 
-\input{results2.tex}
 
 For BUFIA-Seg and BUFIA-Ftr, the highest F1 score is 0.992 when \(k=3\).
 For \(k=4\), the F1 is still close to ceiling at 0.984.
 As \(k\) increases, the F1 continues to drop for these models,
 indicating over-fitting.
 
-For BUFIA-AR, when \(m<3\) the highest F1 score was 0.842.
+For BUFIA-AR, when \(m<3\), the highest F1 score was 0.842.
 When the search for constraints cannot consider structures with three moras,
 BUFIA-AR will not find the constraint against trimoraic contours.
 Similarly, when \(t=1\), the hard constraints against monosyllabic rises
@@ -691,7 +692,7 @@ In the maximum setting when \([m=3, s=3, t=3]\), the F1 scored dropped to 0.967,
 indicating the beginning of the cline towards over-fitting.
 
 
-\begin{table}[t]
+\begin{table}
 \centering
 \setlength{\tabcolsep}{6pt}
 \begin{tabular}{cccccc}
@@ -741,7 +742,7 @@ First, \citet{wilson2018accidental} show that for segmental
 phonotactics, learning tends to be more successful over
 feature-based representations than over segments. Our results
 in tonal phonology, however, do not show a consistent difference
-between feature and segment representations. Under the BUFIA
+between featural and segmental representations. Under the BUFIA
 model, the two representations yield identical performance,
 while under MaxEnt the difference is marginal and inconsistent.
 One possible explanation is that string-based tonal representations
@@ -765,8 +766,9 @@ set of surface tonal constraints, the optimal complexity
 threshold appears to lie between $k=3$ and $k=5$ for string
 representations, or under AR settings where $\mu \geq 3$
 and $t > 1$. We believe for more complex tonal systems, learners
-like BUFIA-AR are advantageous because they can control complexity along
-multiple tiers which searching the hypothesis space.
+like BUFIA-AR are advantageous as they allow complexity to be
+controlled more finely across multiple tiers while searching the
+hypothesis space.
 
 We aim to draw attention to the use of computational methods
 for evaluating competing representational choices and theories
@@ -797,8 +799,6 @@ associations between tiers rather than individual symbols.
 \renewcommand{\thetable}{A\arabic{table}}
 \setcounter{table}{0}
 \section{Appendix}
-\label{sec:appendix}
 \input{appx.tex}
-\label{sec:appendix2}
 \input{appx2.tex}
 \end{document}
