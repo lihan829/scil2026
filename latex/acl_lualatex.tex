@@ -158,18 +158,18 @@ In addition, a set of linguistically motivated grammars,
 encoded in the corresponding representations, serves as
 a baseline for comparison with the learned grammars.
 
-One limitation of this study is that the current
-implementation of MaxEnt does not support ARs.
-A more comprehensive study would also include a
-version of MaxEnt which can operate over ARs.
-In addition, other approaches have been proposed for 
-learning phonotactic or stress patterns using neural 
-models \citep{mayer2020phonotactic,prickett2025learning}, 
-which this study does not cover exhaustively. Furthermore, 
-we did not address the problem of representational parsing \todo{any refs?} 
-or acquisition. We leave these questions for future work. 
-Despite these limitations, the results presented here
-help assess whether ARs contribute to learning. 
+One limitation of this study is that the current implementation of
+MaxEnt does not support ARs.  A more comprehensive study would also
+include a version of MaxEnt which operates over ARs.  In addition,
+neural models have been proposed for learning phonotactic or stress
+patterns using
+\citep{goldsmith94,mayer2020phonotactic,prickett2025learning}, which
+are not studied here. Furthermore, we do not address the problem of
+representational parsing or acquisition.\footnote{Though see
+\citet{jardine2015concatenation} for one method for deriving ARs from
+strings.} We leave these questions for future work.  Despite these
+limitations, the results presented here help assess the extent to
+which ARs facilitate learning.
 
 The corpus in this study comes from the Hausa database in the
 \textit{World Loanword Database} \citep{wold-4}, which was curated by
@@ -193,9 +193,9 @@ These measures help identify whether the models generalize appropriately without
 
 The results show three main findings. First, segmental and
 feature-based representations do not show a consistent
-difference in learning outcomes: they perform identically
+difference in learning outcomes: they perform more or less identically
 under BUFIA and only show marginal and inconsistent differences
-under MaxEnt. Second, BUFIA over ARs achieve the best performance.
+under MaxEnt. Second, BUFIA over ARs achieves the best performance.
 Third, learning
 outcomes are influenced by other factors such as frequency
 information, complexity bounds, and evaluation criteria.
@@ -203,9 +203,11 @@ Frequency substantially improves MaxEnt performance and gives
 comparable results to BUFIA-AR, while categorical learners such
 as BUFIA remain stable without frequency.
 
-Overall, this work highlights the importance of incorporating linguistically
-meaningful representations into computational models of phonological
-learning.
+Overall, this work highlights the importance of incorporating
+linguistically meaningful representations into computational models of
+phonological learning. It further suggests these approaches should be
+evaluated on larger-scale and more complex datasets to better identify
+differences between the approaches.
 
 \section{Background}
 \label{sec:background}
@@ -841,10 +843,14 @@ it will become easier to investigate representational learning itself
 or phonological transformations in the future.
 
 \section*{Acknowledgments}
-\todo{addmore?}Han Li would like to express her gratitude for the support of the 
-Institute for Advanced Computational Science at Stony Brook University
-through the Junior Research Fellowship. The authors would also like to 
-thank the four anonymous reviewers for their thoughtful feedback.
+\todo{addmore? Maybe the ling department or your QP2 committee? John
+  Goldsmith?}HL would like to express her gratitude for the support of
+the Institute for Advanced Computational Science at Stony Brook
+University through the Junior Research Fellowship. This research was
+also supported by US NSF grant #2416183 to JH. The authors would also
+like to thank the four anonymous reviewers for their thoughtful
+feedback.
+
 \bibliography{refs.bib}
 
 
